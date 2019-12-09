@@ -1,4 +1,8 @@
-## You have an empty repository
+## GLOBE - Grocery Tracker - Trimester 3 2019.
+
+This is the start of the ReadMe document. More information will follow soon. In the interim, please get familiar with the below.
+
+SourceTree (https://www.sourcetreeapp.com/) is the recommended repository tool for this project. Please install it, and then let me know if you need assistance setting it up.
 
 To get started you will need to run these commands in your terminal.
 New to Git? [Learn the basic Git commands](http://docs.atlassian.com/bitbucketserver/docs-061/Basic+Git+commands?utm_campaign=in-app-help&amp;utm_medium=in-app-help&amp;utm_source=stash)
