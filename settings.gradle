@@ -1,0 +1,2 @@
+rootProject.name='GLOBE Grocery Tracker'
+include ':app'
