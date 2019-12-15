@@ -1,0 +1,13 @@
+Document any bugs observed while coding here.
+
+You need to notate:
+* In which file the bug exists (e.g. screens/Login.java
+* The error message you observed (if any)
+* What behaviour the application exhibits when this bug occurs.
+
+As bugs are resolved, they need to be marked as resolved and move to the resolved list to enable regression testing (do not delete resolved bugs)
+
+/** ACTIVE BUGS **/
+
+
+/** RESOLVED BUGS **/

@@ -1,11 +1,17 @@
-package com.stevecrossin.grocerytracker;
+package com.stevecrossin.grocerytracker.screens;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
+import com.stevecrossin.grocerytracker.R;
+
 public class MainActivity extends AppCompatActivity {
 
+    /**
+     * Sets the content view to the activity_main layout.
+     * This will also initialise any UI elements, and control core behaviour of the main activity.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

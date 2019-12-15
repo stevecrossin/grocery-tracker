@@ -1,0 +1,14 @@
+Changelog - please add all changes you make here at the end of each coding session.
+
+Format needs to have - your name, day, date, the files that you worked on, and changes you made to them. First entry is an example.
+
+Sunday 15 December - Steve C
+
+* Overall project structure - created folders for files to be sorted into (e.g. screens, entities for DB entities, database for the definition of database)
+* Created AppDataRepo & AppDB - these form the basic structure of the applications database and defines the tables in that database.
+* Created Login & MainActivity with basic pseudocode to explain their functions.
+* Created tables for grocery items (Items.java/ItemsDao.java, User.java/UserDao.java and created basic constructors, getter/setter methods and defined the rows in each table based on old ERD diagram).
+* Created changelog (this file), to do list, and bugs file, which are for documenting changes made, overall tasks that need doing (and who is working on them), and bugs observed (which need to be marked resolved, NOT deleted, once they are resolved.)
+
+
+

@@ -6,6 +6,8 @@ This is a test commit only.
 
 SourceTree (https://www.sourcetreeapp.com/) is the recommended repository tool for this project. Please install it, and then let me know if you need assistance setting it up.
 
+Tutorial on setting up Android Studio to connect to BitBucket: http://theworkingdad.it/2018/10/04/quickly-setup-android-studio-with-git-and-bitbucket/
+
 To get started you will need to run these commands in your terminal.
 New to Git? [Learn the basic Git commands](http://docs.atlassian.com/bitbucketserver/docs-061/Basic+Git+commands?utm_campaign=in-app-help&amp;utm_medium=in-app-help&amp;utm_source=stash)
 
@@ -15,13 +17,11 @@ New to Git? [Learn the basic Git commands](http://docs.atlassian.com/bitbucketse
     git config --global user.name "Your Name"
     git config --global user.email "yourusername@deakin.edu.au"
 
-	
 ### Working with your repository
 
 
 #### **How do I obtain a Repository Git URL ?**
-  
-  
+
 #### Browse to the Repository browse page location that you wish to clone/fork from the server
 [https://bitbucket-students.deakin.edu.au](https://bitbucket-students.deakin.edu.au)
 
