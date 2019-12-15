@@ -6,7 +6,10 @@
     </shared>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="25346364-0add-4d79-abd1-a32c55adc614" name="Default Changelist" comment="" />
+    <list default="true" id="25346364-0add-4d79-abd1-a32c55adc614" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/globe---t319/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/globe---t319/README.md" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,7 +30,8 @@
     </system>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/globe---t319" />
+    <option name="ROOT_SYNC" value="SYNC" />
   </component>
   <component name="ProjectId" id="1V0QJi9KRdGWxZWZ3dDL39h5KJB" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
@@ -135,9 +139,19 @@
       <option name="presentableId" value="Default" />
       <updated>1576387462744</updated>
     </task>
+    <task id="LOCAL-00001" summary="Commit some core files.">
+      <created>1576390319296</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1576390319296</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+    <MESSAGE value="Commit some core files." />
+    <option name="LAST_COMMIT_MESSAGE" value="Commit some core files." />
   </component>
 </project>
