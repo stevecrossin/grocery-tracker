@@ -7,7 +7,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="25346364-0add-4d79-abd1-a32c55adc614" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/globe---t319/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/globe---t319/README.md" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -146,12 +145,27 @@
       <option name="project" value="LOCAL" />
       <updated>1576390319296</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Testing commit.">
+      <created>1576391008456</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1576391008456</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Testing commit.">
+      <created>1576391083366</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1576391083366</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="Commit some core files." />
-    <option name="LAST_COMMIT_MESSAGE" value="Commit some core files." />
+    <MESSAGE value="Testing commit." />
+    <option name="LAST_COMMIT_MESSAGE" value="Testing commit." />
   </component>
 </project>
