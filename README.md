@@ -39,4 +39,9 @@ git clone &quot;Insert-your-git-url-here&quot;
 
   
     **Example only:** git clone https://bitbucket-students.deakin.edu.au/scm/test/testing.git
-    
+
+#### **I just want to check commit in this project**
+ 
+If you want to check who pushed commit 
+
+You can use #git log
