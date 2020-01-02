@@ -8,8 +8,7 @@ import androidx.room.PrimaryKey;
 @Entity
 public class Items {
     //** Users table structure in room database//
-    @Entity(tableName = "items", indices = {@Index(value = {"item_name"}, unique = true)})
-    public class User {
+
         @PrimaryKey(autoGenerate = true)
         private int itemID;
 
