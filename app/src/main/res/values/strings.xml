@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Grocery Tracker</string>
+    <string name="login_title">Login to App</string>
+    <string name="signInLabel">Sign In</string>
+    <string name="enterPasswordHint">Enter a password</string>
+    <string name="emailAddressHint">Enter email address</string>
 </resources>
