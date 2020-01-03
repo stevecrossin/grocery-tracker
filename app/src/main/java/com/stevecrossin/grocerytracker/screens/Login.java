@@ -1,5 +1,7 @@
 package com.stevecrossin.grocerytracker.screens;
 
+import android.os.Build;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -9,6 +11,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.stevecrossin.grocerytracker.other.AppLoginState;
 import com.stevecrossin.grocerytracker.other.PasswordScrambler;
 import com.stevecrossin.grocerytracker.database.AppDataRepo;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import static com.stevecrossin.grocerytracker.other.AppLoginState.NEW_ACCOUNT;
 import static com.stevecrossin.grocerytracker.other.AppLoginState.EXISTING_ACCOUNT;
 import static com.stevecrossin.grocerytracker.other.AppLoginState.INVALID_PASS;
@@ -36,26 +42,47 @@ public class Login extends AppCompatActivity {
     AppDataRepo repo = new AppDataRepo(Login.this);
 
 
+    /**
+     * Check if user already logged in, and hasn't logged out. Will perform DB query defined lower, to check DB for users that match the loggedIn = true, and if so, it will skip login/sign up and navigate directly to main home page.
+     */
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        //isSignedIn();
 
-/**
- * Check if user already logged in, and hasn't logged out. Will perform DB query defined lower, to check DB for users that match the loggedIn = true, and if so, it will skip login/sign up and navigate directly to main home page.
- *
- */
+    }
 
-@Override
-protected void onStart()
-{
-    super.onStart();
-    //isSignedIn();
+    /***
+     * isValidEmail: checks to see if email is not empty and also is a valid email address.
+     */
+    private boolean isValidEmail() {
+        String emailAddress = enterUsername.getText().toString();
+        if (null == emailAddress || emailAddress.length() == 0) {
+            return false;
+        }
+        Pattern emailPattern = Pattern
+                .compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+                        + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
+        return emailPattern.matcher(emailAddress).matches();
+    }
 
+    /***
+     * isValidPassword: checks to see if password entered is valid.
+     * It requires the password to at least 1 digit,
+     * at least 1 capital letter, at least 1 special character (@#$%^&+=!),
+     * no white space and be at least 4 characters long.
+     */
+    private boolean isValidPassword() {
+        String passwordValue = enterPassword.getText().toString();
+        Pattern pattern;
+        Matcher matcher;
+        final String PASSWORD_PATTERN = "^(?=.*[0-9])(?=.*[A-Z])(?=.* [@#$%^&+=!])(?=\\S+$).{4,}$";
+        pattern = Pattern.compile(PASSWORD_PATTERN);
+        matcher = pattern.matcher(passwordValue);
+        return matcher.matches();
+    }
 }
-
-/***
- * Block here - need to do checks to see if email/password entered is valid. Code belongs here before the onCreate method is initialised rather than lower in the file, otherwise checks don't operate correctly.
- *
- */
-
 
 /** Unwritten method, commented out. Will do the user signed in check
     private void isSignedIn() {
@@ -65,4 +92,3 @@ protected void onStart()
 /**
  * OnCreate method to go here, that sets current view as login activity XML file, sets elements to display based on their ID, sets a listener for the views, and will add a textwatcher to username field to ensure details are valid.
  */
-}
