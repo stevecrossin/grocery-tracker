@@ -47,11 +47,13 @@ public class Items {
             this.itemCategory = itemCategory;
         }
 
-        /**Constructor **/
-        public User(int itemID, String itemName, String itemCategory) {
+        /**Constructor
+        //public User(int itemID, String itemName, String itemCategory) {
             this.itemID = itemID;
             this.itemName = itemName;
             this.itemCategory = itemCategory;
-        }
+        //}
+         **/
     }
-}
+
+

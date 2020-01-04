@@ -41,7 +41,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/height" />
+        android:text="@string/Height" />
     <EditText
         android:id="@+id/etHeight"
         android:layout_width="fill_parent"
@@ -77,7 +77,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/postcode" />
+        android:text="@string/postcode"/>
     <EditText
         android:id="@+id/etPostcode"
         android:layout_width="fill_parent"
@@ -89,7 +89,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/nohoushold" />
+        android:text="@string/household" />
     <EditText
         android:id="@+id/etNumberOfHouseHoldMember"
         android:layout_width="fill_parent"
@@ -101,7 +101,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/householdMakeup" />
+        android:text="@string/makeup" />
     <EditText
         android:id="@+id/etHouseHoldMkeup"
         android:layout_width="fill_parent"
@@ -139,13 +139,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="1dp"
-        android:text="@string/SubmitButton_label" />
+        android:text="@string/btnSubmit" />
 
     <Button
         android:id="@+id/Bcancel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="1dp"
-        android:text="@string/cancelButton_label" />
+        android:text="@string/lblCancel" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>
