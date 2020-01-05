@@ -1,6 +1,7 @@
 package com.stevecrossin.grocerytracker.screens;
 
 import android.os.Build;
+import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
@@ -8,9 +9,12 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.stevecrossin.grocerytracker.R;
 import com.stevecrossin.grocerytracker.other.AppLoginState;
 import com.stevecrossin.grocerytracker.other.PasswordScrambler;
 import com.stevecrossin.grocerytracker.database.AppDataRepo;
+import com.stevecrossin.grocerytracker.entities.User;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -36,10 +40,12 @@ public class Login extends AppCompatActivity {
     private AutoCompleteTextView enterUsername;
     private EditText enterPassword;
     private View loginProg;
-    private View loginUiView;
+    private View loginUIView;
+    private AutoCompleteTextView usernameView;
+    private EditText passwordView;
     private Button loginButton;
     private AppLoginState appLoginState = INVALID_PASS;
-    AppDataRepo repo = new AppDataRepo(Login.this);
+    //AppDataRepo repo = new AppDataRepo(Login.this); - buggy code, need to fix DB
 
 
     /**
@@ -82,7 +88,8 @@ public class Login extends AppCompatActivity {
         matcher = pattern.matcher(passwordValue);
         return matcher.matches();
     }
-}
+
+
 
 /** Unwritten method, commented out. Will do the user signed in check
     private void isSignedIn() {
@@ -92,4 +99,14 @@ public class Login extends AppCompatActivity {
 /**
  * OnCreate method to go here, that sets current view as login activity XML file, sets elements to display based on their ID, sets a listener for the views, and will add a textwatcher to username field to ensure details are valid.
  */
-
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_login);
+    loginUIView = findViewById(R.id.signInForm);
+    loginProg = findViewById(R.id.loginprog);
+    usernameView = findViewById(R.id.enterUsername);
+    passwordView = findViewById(R.id.passwordEntry);
+    loginButton = findViewById(R.id.loginButton);
+}
+}
