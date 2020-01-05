@@ -12,5 +12,5 @@ Sunday 15 December - Steve C
 
 Sun 5 Jan - Steve
 * Fixed bug causing crash - commented out code
-* Implemented sign-up button and onClick to Sign Up screen./.
+* Implemented sign-up button and onClick to Sign Up screen./..
 
