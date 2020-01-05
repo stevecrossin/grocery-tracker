@@ -118,4 +118,10 @@ protected void onCreate(Bundle savedInstanceState) {
         Intent intent = new Intent(this, Signup.class);
         startActivity(intent);
     }
+
+    public void switchToFeedBackPage (View view)
+    {
+        Intent intent = new Intent ( this,Feedback.class);
+        startActivity(intent);
+    }
 }
