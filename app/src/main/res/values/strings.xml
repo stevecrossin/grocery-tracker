@@ -16,4 +16,5 @@
     <string name="btnSubmit">Submit</string>
     <string name="lblCancel">Cancel</string>
     <string name="lblWelcome">This is where welcome goes</string>
+    <string name="signUp">No Account? Sign Up</string>
 </resources>

@@ -1,5 +1,6 @@
 package com.stevecrossin.grocerytracker.screens;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Patterns;
@@ -109,4 +110,12 @@ protected void onCreate(Bundle savedInstanceState) {
     passwordView = findViewById(R.id.passwordEntry);
     loginButton = findViewById(R.id.loginButton);
 }
+
+    /**
+     * This is an OnClick method that is called when the "Pick Ingredients" button is clicked in the activity. It will load the CategoryPicker.class/
+     */
+    public void navSignUp(View view) {
+        Intent intent = new Intent(this, Signup.class);
+        startActivity(intent);
+    }
 }
