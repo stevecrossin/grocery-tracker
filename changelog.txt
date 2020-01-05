@@ -10,5 +10,7 @@ Sunday 15 December - Steve C
 * Created tables for grocery items (Items.java/ItemsDao.java, User.java/UserDao.java and created basic constructors, getter/setter methods and defined the rows in each table based on old ERD diagram).
 * Created changelog (this file), to do list, and bugs file, which are for documenting changes made, overall tasks that need doing (and who is working on them), and bugs observed (which need to be marked resolved, NOT deleted, once they are resolved.)
 
-
+Sun 5 Jan - Steve
+* Fixed bug causing crash - commented out code
+* Implemented sign-up button and onClick to Sign Up screen.
 

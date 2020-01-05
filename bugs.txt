@@ -8,6 +8,6 @@ You need to notate:
 As bugs are resolved, they need to be marked as resolved and move to the resolved list to enable regression testing (do not delete resolved bugs)
 
 /** ACTIVE BUGS **/
-
+Login.java - AppDb initialisation causing crash (probably DB not setup correctly, need to resolve)
 
 /** RESOLVED BUGS **/
