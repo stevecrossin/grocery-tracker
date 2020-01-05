@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:padding="10dp"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.stevecrossin.grocerytracker.screens.Signup">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/sign_up_detail_label" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/name" />
+    <EditText
+        android:id="@+id/etName"
+        android:layout_width="fill_parent"
+        android:layout_height="16dp"
+        android:padding="2dp"
+        android:background="#FFF"
+        android:textSize="10dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/age" />
+    <EditText
+        android:id="@+id/etAge"
+        android:layout_width="fill_parent"
+        android:layout_height="16dp"
+        android:padding="2dp"
+        android:background="#FFF"
+        android:textSize="10dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/Height" />
+    <EditText
+        android:id="@+id/etHeight"
+        android:layout_width="fill_parent"
+        android:layout_height="16dp"
+        android:padding="2dp"
+        android:background="#FFF"
+        android:textSize="10dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/weight" />
+    <EditText
+        android:id="@+id/etWeight"
+        android:layout_width="fill_parent"
+        android:layout_height="16dp"
+        android:padding="2dp"
+        android:background="#FFF"
+        android:textSize="10dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/gender" />
+    <EditText
+        android:id="@+id/etGender"
+        android:layout_width="fill_parent"
+        android:layout_height="16dp"
+        android:padding="2dp"
+        android:background="#FFF"
+        android:textSize="10dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/postcode"/>
+    <EditText
+        android:id="@+id/etPostcode"
+        android:layout_width="fill_parent"
+        android:layout_height="16dp"
+        android:padding="2dp"
+        android:background="#FFF"
+        android:textSize="10dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/household" />
+    <EditText
+        android:id="@+id/etNumberOfHouseHoldMember"
+        android:layout_width="fill_parent"
+        android:layout_height="16dp"
+        android:padding="2dp"
+        android:background="#FFF"
+        android:textSize="10dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/makeup" />
+    <EditText
+        android:id="@+id/etHouseHoldMkeup"
+        android:layout_width="fill_parent"
+        android:layout_height="16dp"
+        android:padding="2dp"
+        android:background="#FFF"
+        android:textSize="10dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/emailAddressHint" />
+    <EditText
+        android:id="@+id/etEmail"
+        android:layout_width="fill_parent"
+        android:layout_height="16dp"
+        android:padding="2dp"
+        android:background="#FFF"
+        android:textSize="10dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/enterPasswordHint" />
+    <EditText
+        android:id="@+id/etPassword"
+        android:layout_width="fill_parent"
+        android:layout_height="16dp"
+        android:padding="2dp"
+        android:background="#FFF"
+        android:textSize="10dp"/>
+
+    <Button
+        android:id="@+id/Bsubmit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="1dp"
+        android:text="@string/btnSubmit" />
+
+    <Button
+        android:id="@+id/Bcancel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="1dp"
+        android:text="@string/lblCancel" />
+
+</androidx.appcompat.widget.LinearLayoutCompat>

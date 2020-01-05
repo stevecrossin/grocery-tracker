@@ -1,3 +1,20 @@
 <resources>
     <string name="app_name">Grocery Tracker</string>
+    <string name="login_title">Login to App</string>
+    <string name="signInLabel">Sign In</string>
+    <string name="enterPasswordHint">Enter a password</string>
+    <string name="emailAddressHint">Enter email address</string>
+    <string name="sign_up_detail_label">Sign UP</string>
+    <string name="name">Name</string>
+    <string name="age">Age</string>
+    <string name="Height">Height</string>
+    <string name="weight">Weight</string>
+    <string name="gender">Gender</string>
+    <string name="postcode">Postcode</string>
+    <string name="household">Number in household</string>
+    <string name="makeup">Make-up in house</string>
+    <string name="btnSubmit">Submit</string>
+    <string name="lblCancel">Cancel</string>
+    <string name="lblWelcome">This is where welcome goes</string>
+    <string name="signUp">No Account? Sign Up</string>
 </resources>
