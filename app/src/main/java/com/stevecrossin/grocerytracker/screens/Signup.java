@@ -64,14 +64,15 @@ public class Signup extends AppCompatActivity implements View.OnClickListener {
                 Signup.userAppDb.userDao().insertUser(user);
                 Toast.makeText(getApplicationContext(),"User Added Successfully!", Toast.LENGTH_LONG).show();
 
-
-
-
+                startActivity(new Intent(this, Welcome.class));
                 break;
+
+                
             case R.id.Bcancel:
                 startActivity(new Intent(this, Login.class));
                 break;
         }
     }
-}
+
+
 
