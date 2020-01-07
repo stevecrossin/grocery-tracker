@@ -1,8 +1,8 @@
 package com.stevecrossin.grocerytracker.screens;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
+import android.net.Uri; //URL
 import android.os.Bundle;
 import android.view.View;
 
@@ -19,9 +19,41 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
     }
-    public void switchToFeedBackPage (View view)
-    {
-        Intent intent = new Intent ( this,Feedback.class);
-        startActivity(intent);
+
+    /**
+     * This is Share Receipts Button function to connect to ShareReceipts interface.
+     *
+     *     public void GotoReceipts(View view) {
+     *         Intent intent = new Intent(this, ShareReceipts.class);
+     *         startActivity(intent);
+     *     }
+     */
+
+
+    /**
+     * This is Online Survey Button function to link to Survey website.
+     *
+     *     public void GoToSurvey(View view) {
+     *         Intent intent = new Intent();
+     *         intent.setData(Uri.parse("URL")); // URL is the survey website address.
+     *         intent.setAction(Intent.ACTION_VIEW);
+     *         this.startActivity(intent);    //Launch browser
+     *     }
+     */
+
+
+    /**
+     * This is About GLOBE button function, to link to GLOBE website.
+     * Need to fix for internet issue.
+     */
+    public void GotoGlobeWeb(View view) {
+//        Uri uri = Uri.parse("https://www.google.com");    //Set up a redirected website
+//        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+//        startActivity(intent);
+        Intent intent = new Intent();
+        intent.setData(Uri.parse("https://www.google.com"));
+        intent.setAction(Intent.ACTION_VIEW);
+        this.startActivity(intent);    //Launch browser
+
     }
 }

@@ -17,5 +17,6 @@
     <string name="lblCancel">Cancel</string>
     <string name="lblWelcome">This is where welcome goes</string>
     <string name="signUp">No Account? Sign Up</string>
-    <string name="addFeedback">If you enjoy the app, would you take a minute give us a feedback</string>
+    <string name="Welcome_message_Button">Get Started</string>
+    <string name="Welcome_Message">Welcome To Online Grocery Pattern Tracker!</string>
 </resources>
