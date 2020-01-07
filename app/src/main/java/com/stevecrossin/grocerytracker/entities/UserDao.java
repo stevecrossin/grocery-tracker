@@ -15,21 +15,11 @@ public interface UserDao {
      */
     @Insert()
     void insertUser(User user);
+
     /**
      * Get all users from the database
      */
     @Query("SELECT * FROM user;")
     List<User> getAllUsers();
 
-    /**
-     * Sets the loginStatus for the user based on the based on the user ID given
-     */
-    @Query("UPDATE user SET login_status = :isLogin  WHERE userID = :userId;")
-    void updateLoginStatus(int userId, boolean isLogin);
-
-    /**
-     * Selects all users from the database that are currently logged in
-     */
-    @Query("SELECT * from user WHERE login_status= 1")
-    User getSignInUser();
 }

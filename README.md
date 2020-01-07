@@ -45,3 +45,12 @@ git clone &quot;Insert-your-git-url-here&quot;
 If you want to check who pushed commit 
 
 You can use #git log
+
+
+#### **I just want to switch the branch**
+ 
+If you want to switch your local branch
+
+You can use #git checkout branchname
+
+**Example only: git checkout working-files 

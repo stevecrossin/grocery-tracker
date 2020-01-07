@@ -14,3 +14,5 @@ Sun 5 Jan - Steve
 * Fixed bug causing crash - commented out code
 * Implemented sign-up button and onClick to Sign Up screen./..
 
+Tuesday - remediation
+

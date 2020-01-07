@@ -19,4 +19,12 @@
     <string name="signUp">No Account? Sign Up</string>
     <string name="Welcome_message_Button">Get Started</string>
     <string name="Welcome_Message">Welcome To Online Grocery Pattern Tracker!</string>
+    <string name="addFeedback">Add Feedback</string>
+    <string name="aboutGLOBE">About GLOBE</string>
+    <string name="onlineSurvey">Online Survey</string>
+    <string name="shareReceipts">Share Receipts</string>
+    <string name="FAQ">FAQ</string>
+    <string name="faqlong">Frequently Asked Questions</string>
+    <string name="provideFeedback">Feedback</string>
+    <string name="aboutTitle">About GLOBE</string>
 </resources>
