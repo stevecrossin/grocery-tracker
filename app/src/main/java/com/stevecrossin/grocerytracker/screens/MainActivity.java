@@ -31,13 +31,11 @@ public class MainActivity extends AppCompatActivity {
 
 
     /**
-     * This is Online Survey Button function to link to Survey website.
+     * This is Online Survey Button function to link to Survey website. Placeholder URL at present
      */
      public void GoToSurvey(View view) {
-     Intent intent = new Intent();
-     intent.setData(Uri.parse("URL")); // URL is the survey website address.
-     intent.setAction(Intent.ACTION_VIEW);
-     this.startActivity(intent);    //Launch browser
+         String url = "https://globalobesity.com.au";
+         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
      }
 
 
