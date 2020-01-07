@@ -1,5 +1,7 @@
 package com.stevecrossin.grocerytracker.entities;
 
+import android.widget.EditText;
+
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Index;
@@ -34,6 +36,9 @@ public class User {
 
     @ColumnInfo(name = "householdChildren")
     private String childrenInHouse;
+
+    public User(EditText etName, EditText etAge, EditText etHeight, EditText etWeight, EditText etGender, EditText etPassword, EditText etNumberOfHouseHoldMember, EditText etHouseHoldMkeup, EditText etEmail, EditText etPassword1) {
+    }
 
     /**
      * Getter and setter methods for the database. Each method returns or sets the relevant field in the database
