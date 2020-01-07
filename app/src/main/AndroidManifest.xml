@@ -21,6 +21,7 @@
         <activity android:name=".screens.MainActivity" />
         <activity android:name=".screens.Signup" />
         <activity android:name=".screens.Feedback"/>
+        <activity android:name=".screens.Welcome"/>
     </application>
 
 </manifest>

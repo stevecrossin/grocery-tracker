@@ -2,6 +2,7 @@ package com.stevecrossin.grocerytracker.entities;
 
 import android.widget.EditText;
 
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Index;
@@ -16,35 +17,36 @@ public class User {
     @ColumnInfo(name = "user_name")
     private String userName;
 
-    @ColumnInfo(name = "pass_key")
-    private String passKey;
+    @ColumnInfo(name = "age")
+    private String userAge;
 
-    @ColumnInfo(name = "login_status")
-    private boolean isLoggedIn;
+    @ColumnInfo(name = "height")
+    private String userHeight;
+
+    @ColumnInfo(name = "weight")
+    private String userWeight;
 
     @ColumnInfo(name = "user_gender")
     private String userGender;
 
-    @ColumnInfo(name = "age")
-    private int userAge;
-
     @ColumnInfo(name = "postcode")
-    private int postCode;
+    private String postCode;
 
-    @ColumnInfo(name = "householdAdults")
+    @ColumnInfo(name = "householdMembers")
     private String adultsInHouse;
 
-    @ColumnInfo(name = "householdChildren")
-    private String childrenInHouse;
+    @ColumnInfo(name = "householdMakeup")
+    private String houseHoldMakeup;
 
-    public User(EditText etName, EditText etAge, EditText etHeight, EditText etWeight, EditText etGender, EditText etPassword, EditText etNumberOfHouseHoldMember, EditText etHouseHoldMkeup, EditText etEmail, EditText etPassword1) {
-    }
+    @ColumnInfo(name = "email")
+    private String email;
+
+    @ColumnInfo(name = "pass_key")
+    private String passKey;
 
     /**
-     * Getter and setter methods for the database. Each method returns or sets the relevant field in the database
-     * Some setter methods are not utilised as the fields are never called to be changed (e.g. id, category) as they are fixed values.
+     * Getter & Setters
      */
-
     public int getUserID() {
         return userID;
     }
@@ -61,20 +63,28 @@ public class User {
         this.userName = userName;
     }
 
-    public String getPassKey() {
-        return passKey;
+    public String getUserAge() {
+        return userAge;
     }
 
-    public void setPassKey(String passKey) {
-        this.passKey = passKey;
+    public void setUserAge(String userAge) {
+        this.userAge = userAge;
     }
 
-    public boolean isLoggedIn() {
-        return isLoggedIn;
+    public String getUserHeight() {
+        return userHeight;
     }
 
-    public void setLoggedIn(boolean loggedIn) {
-        isLoggedIn = loggedIn;
+    public void setUserHeight(String userHeight) {
+        this.userHeight = userHeight;
+    }
+
+    public String getUserWeight() {
+        return userWeight;
+    }
+
+    public void setUserWeight(String userWeight) {
+        this.userWeight = userWeight;
     }
 
     public String getUserGender() {
@@ -85,19 +95,11 @@ public class User {
         this.userGender = userGender;
     }
 
-    public int getUserAge() {
-        return userAge;
-    }
-
-    public void setUserAge(int userAge) {
-        this.userAge = userAge;
-    }
-
-    public int getPostCode() {
+    public String getPostCode() {
         return postCode;
     }
 
-    public void setPostCode(int postCode) {
+    public void setPostCode(String postCode) {
         this.postCode = postCode;
     }
 
@@ -109,28 +111,41 @@ public class User {
         this.adultsInHouse = adultsInHouse;
     }
 
-    public String getChildrenInHouse() {
-        return childrenInHouse;
+    public String getHouseHoldMakeup() {
+        return houseHoldMakeup;
     }
 
-    public void setChildrenInHouse(String childrenInHouse) {
-        this.childrenInHouse = childrenInHouse;
+    public void setHouseHoldMakeup(String houseHoldMakeup) {
+        this.houseHoldMakeup = houseHoldMakeup;
     }
 
-    /** Constructor **/
+    public String getEmail() {
+        return email;
+    }
 
-    public User(int userID, String userName, String passKey, boolean isLoggedIn, String userGender, int userAge, int postCode, String adultsInHouse, String childrenInHouse) {
-        this.userID = userID;
-        this.userName = userName;
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassKey() {
+        return passKey;
+    }
+
+    public void setPassKey(String passKey) {
         this.passKey = passKey;
-        this.isLoggedIn = isLoggedIn;
-        this.userGender = userGender;
+    }
+
+    public User(String userName, String userAge, String userHeight, String userWeight, String userGender, String postCode, String adultsInHouse, String houseHoldMakeup, String email, String passKey) {
+        this.userName = userName;
         this.userAge = userAge;
+        this.userHeight = userHeight;
+        this.userWeight = userWeight;
+        this.userGender = userGender;
         this.postCode = postCode;
         this.adultsInHouse = adultsInHouse;
-        this.childrenInHouse = childrenInHouse;
-
-
+        this.houseHoldMakeup = houseHoldMakeup;
+        this.email = email;
+        this.passKey = passKey;
     }
 }
 

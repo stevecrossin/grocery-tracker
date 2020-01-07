@@ -19,4 +19,5 @@
     <string name="signUp">No Account? Sign Up</string>
     <string name="Welcome_message_Button">Get Started</string>
     <string name="Welcome_Message">Welcome To Online Grocery Pattern Tracker!</string>
+    <string name="addFeedback">Add Feedback</string>
 </resources>
