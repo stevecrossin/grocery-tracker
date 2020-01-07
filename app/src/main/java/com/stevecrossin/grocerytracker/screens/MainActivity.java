@@ -62,6 +62,6 @@ public class MainActivity extends AppCompatActivity {
                 "mailto", "stevecrossin@gmail.com", null));
         intent.putExtra(Intent.EXTRA_SUBJECT, "Feedback on Grocery Tracker Application");
         intent.putExtra(Intent.EXTRA_TEXT, "What I would like to give feedback about:");
-        startActivity(Intent.createChooser(intent, "Choose an Email client:"));
+        startActivity(intent);
     }
 }
