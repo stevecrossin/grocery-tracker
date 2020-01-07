@@ -112,16 +112,10 @@ protected void onCreate(Bundle savedInstanceState) {
 }
 
     /**
-     * This is an OnClick method that is called when the "Pick Ingredients" button is clicked in the activity. It will load the CategoryPicker.class/
+     * This is an OnClick method that is called when the "Sign Up" button is clicked in the activity. It will load the Sign Up class.
      */
     public void navSignUp(View view) {
         Intent intent = new Intent(this, Signup.class);
-        startActivity(intent);
-    }
-
-    public void switchToFeedBackPage (View view)
-    {
-        Intent intent = new Intent ( this,Feedback.class);
         startActivity(intent);
     }
 }
