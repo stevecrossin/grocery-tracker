@@ -22,39 +22,37 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * This is Share Receipts Button function to connect to ShareReceipts interface.
-     *
-     *     public void GotoReceipts(View view) {
-     *         Intent intent = new Intent(this, ShareReceipts.class);
-     *         startActivity(intent);
-     *     }
      */
+
+    public void GotoReceipts(View view)
+    { Intent intent = new Intent(this, Receipts.class);
+        startActivity(intent);
+    }
 
 
     /**
      * This is Online Survey Button function to link to Survey website.
-     *
-     *     public void GoToSurvey(View view) {
-     *         Intent intent = new Intent();
-     *         intent.setData(Uri.parse("URL")); // URL is the survey website address.
-     *         intent.setAction(Intent.ACTION_VIEW);
-     *         this.startActivity(intent);    //Launch browser
-     *     }
      */
+     public void GoToSurvey(View view) {
+     Intent intent = new Intent();
+     intent.setData(Uri.parse("URL")); // URL is the survey website address.
+     intent.setAction(Intent.ACTION_VIEW);
+     this.startActivity(intent);    //Launch browser
+     }
 
 
     /**
-     * This is About GLOBE button function, to link to GLOBE website.
-     * Need to fix for internet issue.
+     * This is About GLOBE button function, to link to About screen.
      */
-    public void GotoGlobeWeb(View view) {
-//        Uri uri = Uri.parse("https://www.google.com");    //Set up a redirected website
-//        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-//        startActivity(intent);
-        Intent intent = new Intent();
-        intent.setData(Uri.parse("https://www.google.com"));
-        intent.setAction(Intent.ACTION_VIEW);
-        this.startActivity(intent);    //Launch browser
+    public void GoToAbout(View view) {
+       Intent intent = new Intent(this, About.class);
+       startActivity(intent);
+    }
 
+    /** Navigate to FAQ screen */
+    public void GotoFAQ(View view) {
+        Intent intent = new Intent(this, FaqscreenActivity.class);
+        startActivity(intent);
     }
 
     public void sendFeedbackMail(View view) {
