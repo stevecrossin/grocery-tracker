@@ -19,7 +19,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView6"
+        android:id="@+id/notification"
         android:layout_width="286dp"
         android:layout_height="60dp"
         android:layout_marginTop="136dp"
@@ -34,16 +34,16 @@
         android:id="@+id/button2"
         android:layout_width="137dp"
         android:layout_height="63dp"
-        android:layout_marginEnd="50dp"
-        android:layout_marginRight="50dp"
-        android:layout_marginBottom="29dp"
+        android:layout_marginEnd="48dp"
+        android:layout_marginRight="48dp"
+        android:layout_marginBottom="28dp"
         android:onClick="Cancel"
         android:text="@string/lblCancel"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/submit"
         android:layout_width="137dp"
         android:layout_height="63dp"
         android:layout_marginStart="50dp"
@@ -54,7 +54,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/button4"
+        android:id="@+id/selectFile"
         android:layout_width="219dp"
         android:layout_height="94dp"
         android:text="Add Receipt"
