@@ -1,146 +1,225 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.LinearLayoutCompat
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:padding="10dp"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="com.stevecrossin.grocerytracker.screens.Signup">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#ecfffa">
 
     <TextView
+        android:id="@+id/signUpTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/sign_up_detail_label" />
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="24dp"
+        android:text="@string/lblSignUpTitle"
+        android:textAlignment="textStart"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:gravity="start" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/name" />
-    <EditText
+    <AutoCompleteTextView
         android:id="@+id/etName"
-        android:layout_width="fill_parent"
-        android:layout_height="16dp"
-        android:padding="2dp"
-        android:background="#FFF"
-        android:textSize="10dp"/>
-
-    <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/age" />
-    <EditText
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="24dp"
+        android:ems="10"
+        android:textSize="16sp"
+        android:hint="@string/lblName"
+        android:inputType="text"
+        android:background="#FFFFFF"
+        app:layout_constraintBottom_toTopOf="@+id/etAge"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/signUpTitle" />
+
+    <AutoCompleteTextView
         android:id="@+id/etAge"
-        android:layout_width="fill_parent"
-        android:layout_height="16dp"
-        android:padding="2dp"
-        android:background="#FFF"
-        android:textSize="10dp"/>
-
-    <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/Height" />
-    <EditText
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="24dp"
+        android:ems="10"
+        android:textSize="16sp"
+        android:hint="@string/lblAge"
+        android:inputType="number"
+        android:background="#FFFFFF"
+        app:layout_constraintBottom_toTopOf="@+id/etHeight"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/etName" />
+
+    <AutoCompleteTextView
         android:id="@+id/etHeight"
-        android:layout_width="fill_parent"
-        android:layout_height="16dp"
-        android:padding="2dp"
-        android:background="#FFF"
-        android:textSize="10dp"/>
-
-    <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/weight" />
-    <EditText
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="24dp"
+        android:ems="10"
+        android:textSize="16sp"
+        android:hint="@string/lblHeight"
+        android:inputType="number"
+        android:background="#FFFFFF"
+        app:layout_constraintBottom_toTopOf="@+id/etWeight"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/etAge" />
+
+    <AutoCompleteTextView
         android:id="@+id/etWeight"
-        android:layout_width="fill_parent"
-        android:layout_height="16dp"
-        android:padding="2dp"
-        android:background="#FFF"
-        android:textSize="10dp"/>
-
-    <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/gender" />
-    <EditText
-        android:id="@+id/etGender"
-        android:layout_width="fill_parent"
-        android:layout_height="16dp"
-        android:padding="2dp"
-        android:background="#FFF"
-        android:textSize="10dp"/>
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="24dp"
+        android:ems="10"
+        android:textSize="16sp"
+        android:hint="@string/lblWeight"
+        android:inputType="numberDecimal"
+        android:background="#FFFFFF"
+        app:layout_constraintBottom_toTopOf="@+id/cbGender"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/etHeight" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/postcode"/>
-    <EditText
+    <Spinner
+        android:id="@+id/cbGender"
+        android:layout_width="match_parent"
+        android:layout_height="24dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="24dp"
+        android:ems="10"
+        android:textSize="16sp"
+        android:background="#FFFFFF"
+        app:layout_constraintBottom_toTopOf="@+id/etPostcode"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/etWeight" />
+
+    <AutoCompleteTextView
         android:id="@+id/etPostcode"
-        android:layout_width="fill_parent"
-        android:layout_height="16dp"
-        android:padding="2dp"
-        android:background="#FFF"
-        android:textSize="10dp"/>
-
-    <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/household" />
-    <EditText
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="24dp"
+        android:ems="10"
+        android:textSize="16sp"
+        android:hint="@string/lblPostcode"
+        android:inputType="number"
+        android:background="#FFFFFF"
+        app:layout_constraintBottom_toTopOf="@+id/etNumberOfHouseHoldMember"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cbGender" />
+
+    <AutoCompleteTextView
         android:id="@+id/etNumberOfHouseHoldMember"
-        android:layout_width="fill_parent"
-        android:layout_height="16dp"
-        android:padding="2dp"
-        android:background="#FFF"
-        android:textSize="10dp"/>
-
-    <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/makeup" />
-    <EditText
-        android:id="@+id/etHouseHoldMkeup"
-        android:layout_width="fill_parent"
-        android:layout_height="16dp"
-        android:padding="2dp"
-        android:background="#FFF"
-        android:textSize="10dp"/>
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="24dp"
+        android:ems="10"
+        android:textSize="16sp"
+        android:hint="@string/lblNumberHouse"
+        android:inputType="number"
+        android:background="#FFFFFF"
+        app:layout_constraintBottom_toTopOf="@+id/etHouseHoldAdults"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/etPostcode" />
 
-    <TextView
-        android:layout_width="wrap_content"
+    <AutoCompleteTextView
+        android:id="@+id/etHouseHoldAdults"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/emailAddressHint" />
-    <EditText
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="24dp"
+        android:ems="10"
+        android:textSize="16sp"
+        android:hint="@string/lblNumberAdults"
+        android:inputType="number"
+        android:background="#FFFFFF"
+        app:layout_constraintBottom_toTopOf="@+id/etHouseHoldChild"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/etNumberOfHouseHoldMember" />
+
+    <AutoCompleteTextView
+        android:id="@+id/etHouseHoldChild"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="24dp"
+        android:ems="10"
+        android:textSize="16sp"
+        android:hint="@string/lblNumberChild"
+        android:inputType="number"
+        android:background="#FFFFFF"
+        app:layout_constraintBottom_toTopOf="@+id/etEmail"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/etHouseHoldAdults" />
+
+    <AutoCompleteTextView
         android:id="@+id/etEmail"
-        android:layout_width="fill_parent"
-        android:layout_height="16dp"
-        android:padding="2dp"
-        android:background="#FFF"
-        android:textSize="10dp"/>
-
-    <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/enterPasswordHint" />
-    <EditText
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="24dp"
+        android:ems="10"
+        android:textSize="16sp"
+        android:hint="@string/emailAddressHint"
+        android:inputType="text"
+        android:background="#FFFFFF"
+        app:layout_constraintBottom_toTopOf="@+id/etPassword"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/etHouseHoldChild" />
+
+    <AutoCompleteTextView
         android:id="@+id/etPassword"
-        android:layout_width="fill_parent"
-        android:layout_height="16dp"
-        android:padding="2dp"
-        android:background="#FFF"
-        android:textSize="12sp"/>
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="24dp"
+        android:ems="10"
+        android:textSize="16sp"
+        android:hint="@string/lblPassword"
+        android:inputType="textPassword"
+        android:background="#FFFFFF"
+        app:layout_constraintBottom_toTopOf="@+id/Bsubmit"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/etEmail" />
 
     <Button
         android:id="@+id/Bsubmit"
         android:onClick="submitSignUp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="1dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="24dp"
         android:text="@string/btnSubmit"
+        app:layout_constraintBottom_toTopOf="@+id/Bcancel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/etPassword"
         tools:ignore="OnClick" />
 
     <Button
@@ -148,7 +227,12 @@
         android:onClick="cancelSignUp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="1dp"
-        android:text="@string/lblCancel" />
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:text="@string/lblCancel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/Bsubmit"/>
 
-</androidx.appcompat.widget.LinearLayoutCompat>
+</androidx.constraintlayout.widget.ConstraintLayout>
