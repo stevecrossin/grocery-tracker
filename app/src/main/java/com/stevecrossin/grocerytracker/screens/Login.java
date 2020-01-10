@@ -21,18 +21,20 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.stevecrossin.grocerytracker.R;
-import com.stevecrossin.grocerytracker.other.AppLoginState;
-import com.stevecrossin.grocerytracker.other.PasswordScrambler;
 import com.stevecrossin.grocerytracker.database.AppDataRepo;
 import com.stevecrossin.grocerytracker.entities.User;
+import com.stevecrossin.grocerytracker.other.AppLoginState;
+import com.stevecrossin.grocerytracker.other.PasswordScrambler;
 
 import java.util.List;
 
-import static com.stevecrossin.grocerytracker.other.AppLoginState.INVALID_USER;
 import static com.stevecrossin.grocerytracker.other.AppLoginState.EXISTING_ACCOUNT;
-import static com.stevecrossin.grocerytracker.other.AppLoginState.INVALID_PASS;
 import static com.stevecrossin.grocerytracker.other.AppLoginState.HASH_ERROR;
+import static com.stevecrossin.grocerytracker.other.AppLoginState.INVALID_PASS;
+import static com.stevecrossin.grocerytracker.other.AppLoginState.INVALID_USER;
 
 public class Login extends AppCompatActivity {
 
@@ -46,6 +48,7 @@ public class Login extends AppCompatActivity {
     private EditText passwordView;
     private Button loginButton;
     private AppLoginState appLoginState = INVALID_PASS;
+    private StorageReference mStorageRef;
 
     /**
      * Check if user already logged in, and hasn't logged out. Will perform DB query defined lower, to check DB for users that match the loggedIn = true, and if so, it will skip login/sign up and navigate directly to main home page.
@@ -72,6 +75,7 @@ public class Login extends AppCompatActivity {
 protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_login);
+    mStorageRef = FirebaseStorage.getInstance().getReference();
     loginUIView = findViewById(R.id.signInForm);
     loginProg = findViewById(R.id.loginprog);
     usernameView = findViewById(R.id.enterUsername);
@@ -130,10 +134,6 @@ protected void onCreate(Bundle savedInstanceState) {
         finish();
         startActivity(new Intent(Login.this, MainActivity.class));
     }
-
-    /** Massive code block - in progress
-     * This block will handle authentication tasks
-     */
 
     /**
      * This handles the attempt to login, after the login/sign in button is clicked. It will only call the async task if it's not running.
@@ -237,7 +237,7 @@ protected void onCreate(Bundle savedInstanceState) {
                     String hashPass = PasswordScrambler.scramblePassword(passKey);
                     List<User> users = new AppDataRepo(Login.this).getAllUsers();
 
-                    int i=0;
+                    int i;
                     for (i = 0; i < users.size(); i++) {
                      if(users.get(i).getEmail().equalsIgnoreCase(userName)){
                          if (users.get(i).getPassKey().equals(hashPass)) {

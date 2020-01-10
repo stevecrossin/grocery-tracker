@@ -39,6 +39,14 @@
     <string name="lblNumberAdults">Number of adults in your household</string>
     <string name="lblNumberChild">Number of children in your household</string>
     <string name="lblPassword">Enter your preferred password</string>
+    <string name="receiptLabelName">Enter a name for your receipt</string>
+    <string name="lblNoFile">No file selected</string>
+    <string name="btnUploadLabel">Upload receipt</string>
+    <string name="lblReceiptDescription">Add your grocery shopping receipt here</string>
+    <string name="lblTitle">Global Obesity Center</string>
+    <string name="msgUploadFailed">Upload Failed</string>
+    <string name="msgUploadSuccess">Upload Complete</string>
+    <string name="msgNoFile">Please select a file</string>
 
     <string-array name="gender">
         <item>Select Gender</item>

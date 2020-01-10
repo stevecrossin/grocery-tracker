@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "403836245569",
+    "firebase_url": "https://grocerytracker-d0dc2.firebaseio.com",
+    "project_id": "grocerytracker-d0dc2",
+    "storage_bucket": "grocerytracker-d0dc2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:403836245569:android:a25076a969aae920f218c0",
+        "android_client_info": {
+          "package_name": "com.stevecrossin.grocerytracker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "403836245569-a0dooja1i4s9icv6jpq9oig95rano6di.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.stevecrossin.grocerytracker",
+            "certificate_hash": "b9c1178efdb43e14710760ca8df4f01611e23d47"
+          }
+        },
+        {
+          "client_id": "403836245569-npdbli5qj0tajqqfpc77lh682g01r30b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAHW1i04gwXrh-sXj8X6zYCeuqVqJ0JVy4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "403836245569-npdbli5qj0tajqqfpc77lh682g01r30b.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
