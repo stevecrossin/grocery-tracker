@@ -309,4 +309,10 @@ protected void onCreate(Bundle savedInstanceState) {
         Intent intent = new Intent(this, Signup.class);
         startActivity(intent);
     }
+
+    public void GotoReceipts(View view) {
+        Intent intent = new Intent(this, Receipts.class);
+        startActivity(intent);
+    }
+
 }
