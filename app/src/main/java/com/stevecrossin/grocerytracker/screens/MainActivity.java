@@ -1,12 +1,17 @@
 package com.stevecrossin.grocerytracker.screens;
 
-import androidx.appcompat.app.AppCompatActivity;
+import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.net.Uri; //URL
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.stevecrossin.grocerytracker.R;
+import com.stevecrossin.grocerytracker.database.AppDataRepo;
+import com.stevecrossin.grocerytracker.entities.User;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -29,7 +34,6 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-
     /**
      * This is Online Survey Button function to link to Survey website. Placeholder URL at present
      */
@@ -37,7 +41,6 @@ public class MainActivity extends AppCompatActivity {
          String url = "https://globalobesity.com.au";
          startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
      }
-
 
     /**
      * This is About GLOBE button function, to link to About screen.
@@ -51,6 +54,39 @@ public class MainActivity extends AppCompatActivity {
     public void GotoFAQ(View view) {
         Intent intent = new Intent(this, FaqscreenActivity.class);
         startActivity(intent);
+    }
+
+    /**
+     * This is an OnClick method that is called when the "Logout" button is clicked in the activity.
+     * It will create a new instance of the AppDataRepo and get the signed in user, and their user ID will be updated as per the DB operation, to set isLogin for that user in
+     * the DB to "false".
+     * <p>
+     * Once this is completed, the method will load the Login.class, and then start that activity.
+     */
+    @SuppressLint("StaticFieldLeak")
+    public void logout(View view) {
+        new AsyncTask<Void, Void, Void>() {
+
+            @Override
+            protected Void doInBackground(Void... voids) {
+                AppDataRepo repo = new AppDataRepo(MainActivity.this);
+                User user = repo.getSignedUser();
+
+                if (user != null && repo !=null) {
+                    repo.updateLoginStatus(user.getUserID(), false);
+                }
+                return null;
+            }
+
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+                finish();
+                startActivity(new Intent(MainActivity.this, Login.class));
+
+            }
+        }.execute();
     }
 
     public void sendFeedbackMail(View view) {

@@ -1,42 +1,42 @@
 {
   "project_info": {
-    "project_number": "303765626920",
-    "firebase_url": "https://globe-9c0a3.firebaseio.com",
-    "project_id": "globe-9c0a3",
-    "storage_bucket": "globe-9c0a3.appspot.com"
+    "project_number": "403836245569",
+    "firebase_url": "https://grocerytracker-d0dc2.firebaseio.com",
+    "project_id": "grocerytracker-d0dc2",
+    "storage_bucket": "grocerytracker-d0dc2.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:303765626920:android:9350eb9ef172f1f5bb551d",
+        "mobilesdk_app_id": "1:403836245569:android:a25076a969aae920f218c0",
         "android_client_info": {
           "package_name": "com.stevecrossin.grocerytracker"
         }
       },
       "oauth_client": [
         {
-          "client_id": "303765626920-ghb8f259e7mp61kqb005kkb2i3td610d.apps.googleusercontent.com",
+          "client_id": "403836245569-a0dooja1i4s9icv6jpq9oig95rano6di.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.stevecrossin.grocerytracker",
-            "certificate_hash": "b271a83bba0ee23dece9ee49ef643436301abbf8"
+            "certificate_hash": "b9c1178efdb43e14710760ca8df4f01611e23d47"
           }
         },
         {
-          "client_id": "303765626920-s8o9ig1lov7r6l13ogcnnp05nv3kaug9.apps.googleusercontent.com",
+          "client_id": "403836245569-npdbli5qj0tajqqfpc77lh682g01r30b.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCASkd5sbtKSz0OkrpEZBexRV392hIFlIs"
+          "current_key": "AIzaSyAHW1i04gwXrh-sXj8X6zYCeuqVqJ0JVy4"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "303765626920-s8o9ig1lov7r6l13ogcnnp05nv3kaug9.apps.googleusercontent.com",
+              "client_id": "403836245569-npdbli5qj0tajqqfpc77lh682g01r30b.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

@@ -33,16 +33,22 @@ public class User {
     private String postCode;
 
     @ColumnInfo(name = "householdMembers")
-    private String adultsInHouse;
+    private String householdMembers;
 
-    @ColumnInfo(name = "householdMakeup")
-    private String houseHoldMakeup;
+    @ColumnInfo(name = "householdAdults")
+    private String houseHoldAdults;
+
+    @ColumnInfo(name = "householdChildren")
+    private String houseHoldChildren;
 
     @ColumnInfo(name = "email")
     private String email;
 
     @ColumnInfo(name = "pass_key")
     private String passKey;
+
+    @ColumnInfo(name ="login_status")
+    private boolean isLoggedIn;
 
     /**
      * Getter & Setters
@@ -103,20 +109,28 @@ public class User {
         this.postCode = postCode;
     }
 
-    public String getAdultsInHouse() {
-        return adultsInHouse;
+    public String getHouseholdMembers() {
+        return householdMembers;
     }
 
-    public void setAdultsInHouse(String adultsInHouse) {
-        this.adultsInHouse = adultsInHouse;
+    public void setHouseholdMembers(String householdMembers) {
+        this.householdMembers = householdMembers;
     }
 
-    public String getHouseHoldMakeup() {
-        return houseHoldMakeup;
+    public String getHouseHoldAdults() {
+        return houseHoldAdults;
     }
 
-    public void setHouseHoldMakeup(String houseHoldMakeup) {
-        this.houseHoldMakeup = houseHoldMakeup;
+    public void setHouseHoldAdults(String houseHoldAdults) {
+        this.houseHoldAdults = houseHoldAdults;
+    }
+
+    public String getHouseHoldChildren() {
+        return houseHoldChildren;
+    }
+
+    public void setHouseHoldChildren(String houseHoldChildren) {
+        this.houseHoldChildren = houseHoldChildren;
     }
 
     public String getEmail() {
@@ -135,18 +149,29 @@ public class User {
         this.passKey = passKey;
     }
 
-    public User(String userName, String userAge, String userHeight, String userWeight, String userGender, String postCode, String adultsInHouse, String houseHoldMakeup, String email, String passKey) {
+    public boolean isLoggedIn() {
+        return isLoggedIn;
+    }
+
+    public void setLoggedIn(boolean loggedIn) {
+        isLoggedIn = loggedIn;
+    }
+
+    public User(String userName, String userAge, String userHeight, String userWeight, String userGender, String postCode, String householdMembers, String houseHoldAdults, String houseHoldChildren, String email, String passKey) {
         this.userName = userName;
         this.userAge = userAge;
         this.userHeight = userHeight;
         this.userWeight = userWeight;
         this.userGender = userGender;
         this.postCode = postCode;
-        this.adultsInHouse = adultsInHouse;
-        this.houseHoldMakeup = houseHoldMakeup;
+        this.householdMembers = householdMembers;
+        this.houseHoldAdults = houseHoldAdults;
+        this.houseHoldChildren = houseHoldChildren;
         this.email = email;
         this.passKey = passKey;
     }
+
+
 }
 
 

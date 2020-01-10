@@ -16,3 +16,17 @@ Sun 5 Jan - Steve
 
 Tuesday - remediation
 
+Wednesday 8 Jan - Steve - login code
+Login.java
+* Implement login code, this checks existing user fields in DB and either allows login, returns error that pass is wrong, or user doesnt exist.
+** Performs this by hashing the entered password in the password entry and comparing with hashed password in user DB.
+* Checks if user is already logged into app and will skip login task and proceed direct to Main Activity
+
+Signup.java
+* Re-designed UI, and changed the way that data is stored (passwords are now hashed).
+
+Other
+* Added ability to logout in main activity, added appropriate DB operations.
+* Other layout/style changes
+* Updated changelog, other notes.
+

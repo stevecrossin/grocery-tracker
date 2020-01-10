@@ -60,6 +60,18 @@
         app:layout_constraintTop_toBottomOf="@+id/ShareBtn" />
 
     <Button
+        android:id="@+id/feedback"
+        android:layout_width="96dp"
+        android:layout_height="58dp"
+        android:layout_marginEnd="148dp"
+        android:layout_marginRight="148dp"
+        android:layout_marginBottom="16dp"
+        android:onClick="sendFeedbackMail"
+        android:text="@string/provideFeedback"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
         android:id="@+id/faqBtn"
         android:layout_width="96dp"
         android:layout_height="58dp"
@@ -72,16 +84,18 @@
         app:layout_constraintEnd_toEndOf="parent" />
 
     <Button
-        android:id="@+id/feedback"
+        android:id="@+id/logout"
         android:layout_width="96dp"
         android:layout_height="58dp"
-        android:layout_marginEnd="148dp"
-        android:layout_marginRight="148dp"
+        android:layout_marginEnd="300dp"
+        android:layout_marginRight="250dp"
         android:layout_marginBottom="16dp"
-        android:onClick="sendFeedbackMail"
-        android:text="@string/provideFeedback"
+        android:onClick="logout"
+        android:text="@string/logout"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
