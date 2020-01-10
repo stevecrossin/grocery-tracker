@@ -93,9 +93,16 @@ public class Receipts extends AppCompatActivity {
                             public void onComplete(@NonNull Task<Void> task) {
                                 if(task.isSuccessful())
                                     Toast.makeText(Receipts.this,"File successfully uploaded",Toast.LENGTH_SHORT).show();
+                                else
+                                    Toast.makeText(Receipts.this,"File not successfully uploaded",Toast.LENGTH_SHORT).show();
                             }
                         });
                     }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(Receipts.this,"File not successfully uploaded",Toast.LENGTH_SHORT).show();
+            }
         }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
