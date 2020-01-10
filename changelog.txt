@@ -30,3 +30,6 @@ Other
 * Other layout/style changes
 * Updated changelog, other notes.
 
+11 Jan
+Steve rewrote receipts function.
+
