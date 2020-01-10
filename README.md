@@ -2,6 +2,8 @@
 
 This is the start of the ReadMe document. More information will follow soon. In the interim, please get familiar with the below.
 
+color tool merge by radika
+
 This is a test commit only.
 Test by Radika
 
