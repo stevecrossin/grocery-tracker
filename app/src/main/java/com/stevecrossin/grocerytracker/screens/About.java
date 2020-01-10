@@ -17,7 +17,6 @@ public class About extends AppCompatActivity {
     /**
      * On creation of the activity, perform these functions.
      * Set the current view as the activity_about XML and load the UI elements in that XML file into that view, being the TextView box.
-     * Load Google Ads for the activity and send an adRequest to load an ad.
      * <p>
      * Using a TextInputStream, the application will read the contents of the about text file and while the contents are not equal to -1,
      * it will take the contents and write them to a buffer in memory. Once this is complete. the output will be converted to a string and then
