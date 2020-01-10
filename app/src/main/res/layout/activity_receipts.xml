@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#f2ffc7"
     tools:context=".screens.Receipts">
 
     <TextView
@@ -11,6 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="58dp"
+        android:background="@color/secondaryColor"
         android:text="Global Obesity Center"
         android:textSize="36sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -20,10 +22,11 @@
 
     <TextView
         android:id="@+id/textView6"
-        android:layout_width="286dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="136dp"
+        android:layout_width="335dp"
+        android:layout_height="56dp"
+        android:layout_marginTop="132dp"
         android:text="Add your grocery shopping receipt here"
+        android:background="@color/primaryDarkColor"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -38,6 +41,7 @@
         android:layout_marginRight="50dp"
         android:layout_marginBottom="29dp"
         android:onClick="Cancel"
+        android:background="@color/secondaryDarkColor"
         android:text="@string/lblCancel"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -50,6 +54,7 @@
         android:layout_marginLeft="50dp"
         android:layout_marginBottom="29dp"
         android:text="@string/btnSubmit"
+        android:background="@color/secondaryDarkColor"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -58,6 +63,7 @@
         android:layout_width="219dp"
         android:layout_height="94dp"
         android:text="Add Receipt"
+        android:background="@color/primaryLightColor"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/button2"
         app:layout_constraintEnd_toEndOf="parent"
