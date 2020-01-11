@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ecfffa">
+    android:background="#f2ffc7">
 
 
     <TextView
@@ -19,6 +19,7 @@
         android:layout_marginBottom="120dp"
         android:gravity="center"
         android:text="@string/Welcome_Message"
+        android:background="#FFFFFF"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
         android:textSize="20sp"
         android:textStyle="bold|italic"
@@ -35,7 +36,7 @@
         android:layout_marginTop="100dp"
         android:layout_marginBottom="240dp"
         android:text="@string/Welcome_message_Button"
-        android:background="#bf5c"
+        android:background="@color/secondaryColor"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
