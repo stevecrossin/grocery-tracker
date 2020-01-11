@@ -47,6 +47,7 @@
     <string name="msgUploadFailed">Upload Failed</string>
     <string name="msgUploadSuccess">Upload Complete</string>
     <string name="msgNoFile">Please select a file</string>
+    <string name="loginTitle">Global Obesity Center</string>
 
     <string-array name="gender">
         <item>Select Gender</item>

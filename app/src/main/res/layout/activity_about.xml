@@ -23,7 +23,7 @@
         android:gravity="start" />
 
     <TextView
-        android:id="@+id/aboutTextView"
+        android:id="@+id/faqTextView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"

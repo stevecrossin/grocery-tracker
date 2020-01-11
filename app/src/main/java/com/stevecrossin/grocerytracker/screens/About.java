@@ -28,7 +28,7 @@ public class About extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
-        TextView aboutText = findViewById(R.id.aboutTextView);
+        TextView aboutText = findViewById(R.id.faqTextView);
         InputStream textInputStream = getResources().openRawResource(R.raw.about);
         ByteArrayOutputStream textOutputStream = new ByteArrayOutputStream();
 
