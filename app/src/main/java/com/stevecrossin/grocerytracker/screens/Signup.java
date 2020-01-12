@@ -20,6 +20,7 @@ import com.stevecrossin.grocerytracker.entities.User;
 import com.stevecrossin.grocerytracker.other.PasswordScrambler;
 
 
+
 public class Signup extends AppCompatActivity {
 
     Button Bsubmit, Bcancel;
@@ -90,22 +91,33 @@ public class Signup extends AppCompatActivity {
                     genderValue, etPostcode.getText().toString(),
                        etNumberOfHouseHoldMember.getText().toString(), etHouseholdAdults.getText().toString(), etHouseholdChildren.getText().toString(), etEmail.getText().toString(),
                     PasswordScrambler.scramblePassword(etPassword.getText().toString()));
-
-
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... voids) {
-                repository.insertUser(newUser);
-                //Toasts don't work at this stage, removed.
-                //Toast.makeText(getApplicationContext(),"User Added Successfully!", Toast.LENGTH_LONG).show();
+                if(repository.insertUser(newUser))
+                {
+                    Intent intent = new Intent (Signup.this, Welcome.class);
+                    startActivity(intent);
+                }
+                else
+                {
+                    runOnUiThread(
+                            new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(Signup.this, "An account with this email address already exists, please login", Toast.LENGTH_LONG).show();
+                                    Intent intent = new Intent (Signup.this, Login.class);
+                                    startActivity(intent);
+                                    finish();
+                                }
+                            });
+                }
                 return null;
             }
         }.execute();
-        } catch (Exception e) {
-            e.printStackTrace();
+        }  catch (Exception ex) {
+            Toast.makeText(Signup.this, "Error scrambling password", Toast.LENGTH_SHORT).show();
         }
-        Intent intent = new Intent (this, Welcome.class);
-        startActivity(intent);
     }
     public void cancelSignUp(View view) {
         Intent intent = new Intent (this, Login.class);

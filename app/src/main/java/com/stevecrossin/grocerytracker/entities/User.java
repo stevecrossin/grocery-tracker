@@ -9,7 +9,7 @@ import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 //** Users table structure in room database//
-@Entity(tableName = "user", indices = {@Index(value = {"user_name"}, unique = true)})
+@Entity(tableName = "user", indices = {@Index(value = {"email"}, unique = true)})
 public class User {
     @PrimaryKey(autoGenerate = true)
     private int userID;

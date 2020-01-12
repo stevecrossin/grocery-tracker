@@ -1,15 +1,13 @@
 package com.stevecrossin.grocerytracker.database;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
-import android.os.AsyncTask;
+import android.database.sqlite.SQLiteConstraintException;
+
 
 import com.stevecrossin.grocerytracker.entities.ItemsDao;
 import com.stevecrossin.grocerytracker.entities.User;
 import com.stevecrossin.grocerytracker.entities.UserDao;
-import com.stevecrossin.grocerytracker.screens.Login;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -22,10 +20,16 @@ public class AppDataRepo {
     }
 
     /**
-     * Wrapper method. Perform dao operation to add one recipe to the db.
+     * Wrapper method. Perform dao operation to add one recipe to the db. Catches SQlite exception if it occurs.
      */
-    public void insertUser(User user) {
+    public boolean insertUser(User user) {
+        try {
         userDao.insertUser(user);
+        }
+        catch (SQLiteConstraintException exc){
+            return false;
+            }
+        return true;
     }
 
     /**
