@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="#ecfffa">
+    android:background="#f2ffc7">
 
     <TextView
         android:id="@+id/aboutTitle"
@@ -23,7 +23,7 @@
         android:gravity="start" />
 
     <TextView
-        android:id="@+id/aboutTextView"
+        android:id="@+id/faqTextView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
@@ -33,7 +33,7 @@
         android:textSize="12sp"
         android:gravity="top"
         android:textAlignment="center"
-        android:background="#fffcf1"
+        android:background="#f2ffc7"
         android:autoLink="web"
         android:textColorLink="@android:color/holo_blue_dark"
         app:layout_constraintBottom_toBottomOf="parent"
