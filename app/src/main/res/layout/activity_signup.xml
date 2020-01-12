@@ -34,10 +34,44 @@
         android:hint="@string/lblName"
         android:inputType="text"
         android:background="#FFFFFF"
-        app:layout_constraintBottom_toTopOf="@+id/etAge"
+        app:layout_constraintBottom_toTopOf="@+id/etEmail"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/signUpTitle" />
+
+    <AutoCompleteTextView
+        android:id="@+id/etEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="24dp"
+        android:ems="10"
+        android:textSize="16sp"
+        android:hint="@string/emailAddressHint"
+        android:inputType="text"
+        android:background="#FFFFFF"
+        app:layout_constraintBottom_toTopOf="@+id/etPassword"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/etName" />
+
+    <AutoCompleteTextView
+        android:id="@+id/etPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="24dp"
+        android:ems="10"
+        android:textSize="16sp"
+        android:hint="@string/lblPassword"
+        android:inputType="textPassword"
+        android:background="#FFFFFF"
+        app:layout_constraintBottom_toTopOf="@+id/etAge"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/etEmail" />
 
     <AutoCompleteTextView
         android:id="@+id/etAge"
@@ -54,7 +88,7 @@
         app:layout_constraintBottom_toTopOf="@+id/etHeight"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/etName" />
+        app:layout_constraintTop_toBottomOf="@id/etPassword" />
 
     <AutoCompleteTextView
         android:id="@+id/etHeight"
@@ -168,44 +202,10 @@
         android:hint="@string/lblNumberChild"
         android:inputType="number"
         android:background="#FFFFFF"
-        app:layout_constraintBottom_toTopOf="@+id/etEmail"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/etHouseHoldAdults" />
-
-    <AutoCompleteTextView
-        android:id="@+id/etEmail"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="24dp"
-        android:ems="10"
-        android:textSize="16sp"
-        android:hint="@string/emailAddressHint"
-        android:inputType="text"
-        android:background="#FFFFFF"
-        app:layout_constraintBottom_toTopOf="@+id/etPassword"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/etHouseHoldChild" />
-
-    <AutoCompleteTextView
-        android:id="@+id/etPassword"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="24dp"
-        android:ems="10"
-        android:textSize="16sp"
-        android:hint="@string/lblPassword"
-        android:inputType="textPassword"
-        android:background="#FFFFFF"
         app:layout_constraintBottom_toTopOf="@+id/Bsubmit"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/etEmail" />
+        app:layout_constraintTop_toBottomOf="@id/etHouseHoldAdults" />
 
     <Button
         android:id="@+id/Bsubmit"
@@ -220,7 +220,7 @@
         app:layout_constraintBottom_toTopOf="@+id/Bcancel"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/etPassword"
+        app:layout_constraintTop_toBottomOf="@id/etHouseHoldChild"
         tools:ignore="OnClick" />
 
     <Button

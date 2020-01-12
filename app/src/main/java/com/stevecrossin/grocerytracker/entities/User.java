@@ -17,6 +17,12 @@ public class User {
     @ColumnInfo(name = "user_name")
     private String userName;
 
+    @ColumnInfo(name = "email")
+    private String email;
+
+    @ColumnInfo(name = "pass_key")
+    private String passKey;
+
     @ColumnInfo(name = "age")
     private String userAge;
 
@@ -40,12 +46,6 @@ public class User {
 
     @ColumnInfo(name = "householdChildren")
     private String houseHoldChildren;
-
-    @ColumnInfo(name = "email")
-    private String email;
-
-    @ColumnInfo(name = "pass_key")
-    private String passKey;
 
     @ColumnInfo(name ="login_status")
     private boolean isLoggedIn;
@@ -157,8 +157,10 @@ public class User {
         isLoggedIn = loggedIn;
     }
 
-    public User(String userName, String userAge, String userHeight, String userWeight, String userGender, String postCode, String householdMembers, String houseHoldAdults, String houseHoldChildren, String email, String passKey) {
+    public User(String userName, String email, String passKey, String userAge, String userHeight, String userWeight, String userGender, String postCode, String householdMembers, String houseHoldAdults, String houseHoldChildren) {
         this.userName = userName;
+        this.email = email;
+        this.passKey = passKey;
         this.userAge = userAge;
         this.userHeight = userHeight;
         this.userWeight = userWeight;
@@ -167,8 +169,6 @@ public class User {
         this.householdMembers = householdMembers;
         this.houseHoldAdults = houseHoldAdults;
         this.houseHoldChildren = houseHoldChildren;
-        this.email = email;
-        this.passKey = passKey;
     }
 
 
