@@ -89,10 +89,10 @@ public class Signup extends AppCompatActivity {
 
         final User newUser;
         try {
-            newUser = new User(etName.getText().toString(), etHouseholdChildren.getText().toString(), etEmail.getText().toString(),
+            newUser = new User(etName.getText().toString(), etEmail.getText().toString(),
                     PasswordScrambler.scramblePassword(etPassword.getText().toString()), etAge.getText().toString(), etHeight.getText().toString(), etWeight.getText().toString(),
                     genderValue, etPostcode.getText().toString(),
-                       etNumberOfHouseHoldMember.getText().toString(), etHouseholdAdults.getText().toString());
+                       etNumberOfHouseHoldMember.getText().toString(), etHouseholdAdults.getText().toString(), etHouseholdChildren.getText().toString());
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... voids) {
