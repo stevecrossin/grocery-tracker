@@ -19,7 +19,6 @@ import com.stevecrossin.grocerytracker.database.AppDataRepo;
 import com.stevecrossin.grocerytracker.entities.User;
 import com.stevecrossin.grocerytracker.other.PasswordScrambler;
 
-
 public class Signup extends AppCompatActivity {
 
     Button Bsubmit, Bcancel;
@@ -54,17 +53,13 @@ public class Signup extends AppCompatActivity {
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.gender, android.R.layout.simple_spinner_dropdown_item);
 
         cbGender.setAdapter(adapter);
-
         cbGender.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
                 selectedGenderPosition = position;
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
             }
         });
 
@@ -75,37 +70,56 @@ public class Signup extends AppCompatActivity {
     NOTE: Not sure if it is storing properly.
      */
 
+    /**
+     * Submits sign up. Checks if gender was selected, if not, shows toast and returns to the task
+     * After this validation check passes. it will run the insertUser method from AppDataRepo. This method has an exception check -
+     * as the email needs to be a unique field, if the end user tries to sign up with an account that already exists, the operation will fail,
+     * a Toast will be shown advising email already exists and to login, and then will navigate them to that activity. Otherwise, the insert will be successful
+     * and they will be navigated to the welcome screen.
+     */
     @SuppressLint("StaticFieldLeak")
     public void submitSignUp(View view) {
     String genderValue="";
         if(selectedGenderPosition==0){
             Toast.makeText(Signup.this, "Please select gender", Toast.LENGTH_LONG).show();
             return;
-        }else
+        }
+        else
             genderValue = getResources().getStringArray(R.array.gender)[selectedGenderPosition];
 
         final User newUser;
         try {
-            newUser = new User(etName.getText().toString(), etAge.getText().toString(), etHeight.getText().toString(), etWeight.getText().toString(),
+            newUser = new User(etName.getText().toString(), etHouseholdChildren.getText().toString(), etEmail.getText().toString(),
+                    PasswordScrambler.scramblePassword(etPassword.getText().toString()), etAge.getText().toString(), etHeight.getText().toString(), etWeight.getText().toString(),
                     genderValue, etPostcode.getText().toString(),
-                       etNumberOfHouseHoldMember.getText().toString(), etHouseholdAdults.getText().toString(), etHouseholdChildren.getText().toString(), etEmail.getText().toString(),
-                    PasswordScrambler.scramblePassword(etPassword.getText().toString()));
-
-
+                       etNumberOfHouseHoldMember.getText().toString(), etHouseholdAdults.getText().toString());
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... voids) {
-                repository.insertUser(newUser);
-                //Toasts don't work at this stage, removed.
-                //Toast.makeText(getApplicationContext(),"User Added Successfully!", Toast.LENGTH_LONG).show();
+                if(repository.insertUser(newUser))
+                {
+                    Intent intent = new Intent (Signup.this, Welcome.class);
+                    startActivity(intent);
+                }
+                else
+                {
+                    runOnUiThread(
+                            new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(Signup.this, "An account with this email address already exists, please login", Toast.LENGTH_LONG).show();
+                                    Intent intent = new Intent (Signup.this, Login.class);
+                                    startActivity(intent);
+                                    finish();
+                                }
+                            });
+                }
                 return null;
             }
         }.execute();
-        } catch (Exception e) {
-            e.printStackTrace();
+        }  catch (Exception ex) {
+            Toast.makeText(Signup.this, "Error scrambling password", Toast.LENGTH_SHORT).show();
         }
-        Intent intent = new Intent (this, Welcome.class);
-        startActivity(intent);
     }
     public void cancelSignUp(View view) {
         Intent intent = new Intent (this, Login.class);
