@@ -1,10 +1,6 @@
 ## GLOBE - Grocery Tracker - Trimester 3 2019.
 
-This is the start of the ReadMe document. More information will follow soon. In the interim, please get familiar with the below.
-
-This is a test commit only.
-Test by Radika
-
+This is the start of the ReadMe document for the GLOBE grocery tracker. More information will follow soon. In the interim, please get familiar with the below.
 SourceTree (https://www.sourcetreeapp.com/) is the recommended repository tool for this project. Please install it, and then let me know if you need assistance setting it up.
 
 Tutorial on setting up Android Studio to connect to BitBucket: http://theworkingdad.it/2018/10/04/quickly-setup-android-studio-with-git-and-bitbucket/
@@ -12,14 +8,12 @@ Tutorial on setting up Android Studio to connect to BitBucket: http://theworking
 To get started you will need to run these commands in your terminal.
 New to Git? [Learn the basic Git commands](http://docs.atlassian.com/bitbucketserver/docs-061/Basic+Git+commands?utm_campaign=in-app-help&amp;utm_medium=in-app-help&amp;utm_source=stash)
 
-  
 ### Configure Git for the first time
 
     git config --global user.name "Your Name"
     git config --global user.email "yourusername@deakin.edu.au"
 
 ### Working with your repository
-
 
 #### **How do I obtain a Repository Git URL ?**
 
