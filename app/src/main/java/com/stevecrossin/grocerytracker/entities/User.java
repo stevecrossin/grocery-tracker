@@ -50,6 +50,9 @@ public class User {
     @ColumnInfo(name ="login_status")
     private boolean isLoggedIn;
 
+    @ColumnInfo(name = "shop_number")
+    private String shopNumber;
+
     /**
      * Getter & Setters
      */
@@ -133,6 +136,14 @@ public class User {
         this.houseHoldChildren = houseHoldChildren;
     }
 
+    public String getShopNumber() {
+        return shopNumber;
+    }
+
+    public void setShopNumber(String shopNumber) {
+        this.shopNumber = shopNumber;
+    }
+
     public String getEmail() {
         return email;
     }
@@ -157,7 +168,7 @@ public class User {
         isLoggedIn = loggedIn;
     }
 
-    public User(String userName, String email, String passKey, String userAge, String userHeight, String userWeight, String userGender, String postCode, String householdMembers, String houseHoldAdults, String houseHoldChildren) {
+    public User(String userName, String email, String passKey, String userAge, String userHeight, String userWeight, String userGender, String postCode, String householdMembers, String houseHoldAdults, String houseHoldChildren, String shopNumber) {
         this.userName = userName;
         this.email = email;
         this.passKey = passKey;
@@ -169,6 +180,7 @@ public class User {
         this.householdMembers = householdMembers;
         this.houseHoldAdults = houseHoldAdults;
         this.houseHoldChildren = houseHoldChildren;
+        this.shopNumber = shopNumber;
     }
 
 

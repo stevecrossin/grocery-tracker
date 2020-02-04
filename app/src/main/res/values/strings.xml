@@ -53,6 +53,12 @@
         <item>Select Gender</item>
         <item>Male</item>
         <item>Female</item>
+    </string-array>
 
+    <string-array name="shopnumber">
+        <item>Select how often you shop</item>
+        <item>Weekly or more</item>
+        <item>Fortnightly</item>
+        <item>Monthly or less</item>
     </string-array>
 </resources>
