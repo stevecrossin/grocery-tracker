@@ -6,4 +6,4 @@ We wish to track household purchases over time so that we can use this data to i
 
 With the simple click of a button your anonymized purchase record will be sent to our database where it will be then stored in our cloud for further analysis.
 
-You have the option to opt out of the study at any time.
+You have the option to opt out of the study at any time. Just send feedback in-app and we will remove you from the study.
