@@ -18,15 +18,15 @@
     <string name="lblWelcome">This is where welcome goes</string>
     <string name="signUp">No Account? Sign Up</string>
     <string name="Welcome_message_Button">Get Started</string>
-    <string name="Welcome_Message">Welcome To Online Grocery Pattern Tracker!</string>
+    <string name="Welcome_Message">Welcome To the GLOBE Online Grocery Study</string>
     <string name="addFeedback">Add Feedback</string>
-    <string name="aboutGLOBE">About GLOBE</string>
+    <string name="aboutGLOBE">About the study</string>
     <string name="onlineSurvey">Online Survey</string>
     <string name="shareReceipts">Share Receipts</string>
     <string name="FAQ">FAQ</string>
     <string name="faqlong">Frequently Asked Questions</string>
     <string name="provideFeedback">Feedback</string>
-    <string name="aboutTitle">About GLOBE</string>
+    <string name="aboutTitle">About the study</string>
     <string name="sign_in_text">Sign In</string>
     <string name="logout">Logout</string>
     <string name="lblSignUpTitle">Sign Up</string>
@@ -43,18 +43,19 @@
     <string name="lblNoFile">No file selected</string>
     <string name="btnUploadLabel">Upload receipt</string>
     <string name="lblReceiptDescription">Add your grocery shopping receipt here</string>
-    <string name="lblTitle">Global Obesity Center</string>
+    <string name="lblTitle">Online Grocery Tracker</string>
     <string name="msgUploadFailed">Upload Failed</string>
     <string name="msgUploadSuccess">Upload Complete</string>
     <string name="msgNoFile">Please select a file</string>
-    <string name="loginTitle">Global Obesity Center</string>
-
+    <string name="loginTitle">Online Grocery Tracker</string>
+    <string name="AboutText"><![CDATA[<b>Thank you for agreeing to join our \'Grocery Tracker\' research study.</b><br> What we eat and how much we eat has substantial health, social and economic implications for individuals, families, and societies. We wish to track household purchases over time so that we can use this data to inform policy and practice to ensure healthy foods and beverage are affordable for everyone. With the simple click of a button your anonymized purchase record will be sent to our database where it will be then stored in our cloud for further analysis. You have the option to opt out of the study at any time.]]></string>
+    <string name="uploadReceiptTitle">Share your receipts</string>
+    <string name="globe_logo_desc">GLOBE logo</string>
     <string-array name="gender">
         <item>Select Gender</item>
         <item>Male</item>
         <item>Female</item>
     </string-array>
-
     <string-array name="shopnumber">
         <item>Select how often you shop</item>
         <item>Weekly or more</item>

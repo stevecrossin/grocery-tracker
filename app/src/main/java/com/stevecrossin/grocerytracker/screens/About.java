@@ -29,6 +29,7 @@ public class About extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
         TextView aboutText = findViewById(R.id.faqTextView);
+
         InputStream textInputStream = getResources().openRawResource(R.raw.about);
         ByteArrayOutputStream textOutputStream = new ByteArrayOutputStream();
 

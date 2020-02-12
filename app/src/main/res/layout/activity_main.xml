@@ -9,62 +9,64 @@
 
     <TextView
         android:id="@+id/mainTitle"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="32dp"
+        android:text="@string/app_name"
         android:textAlignment="center"
-        android:layout_marginTop="32dp"
-        android:text="@string/loginTitle"
-        android:textSize="28sp"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@id/ShareBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:gravity="center_horizontal" />
 
-    <Button
+    <ImageView
         android:id="@+id/ShareBtn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="32dp"
+        android:layout_width="0dp"
+        android:layout_height="150dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
         android:onClick="GotoReceipts"
-        android:text="@string/shareReceipts"
-        android:background="@color/secondaryColor"
+        app:layout_constraintBottom_toTopOf="@+id/SurveyBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/mainTitle"
-        app:layout_constraintBottom_toTopOf="@+id/SurveyBtn"/>
+        app:layout_constraintTop_toBottomOf="@+id/mainTitle"
+        app:srcCompat="@drawable/sharepurchases" />
 
-    <Button
+    <ImageView
         android:id="@+id/SurveyBtn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="32dp"
+        android:layout_width="0dp"
+        android:layout_height="150dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
         android:onClick="GoToSurvey"
-        android:text="@string/onlineSurvey"
-        android:background="@color/secondaryColor"
+        app:layout_constraintBottom_toTopOf="@+id/AboutBtn"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/ShareBtn"
-        app:layout_constraintBottom_toTopOf="@+id/AboutBtn" />
+        app:layout_constraintTop_toBottomOf="@+id/ShareBtn"
+        app:srcCompat="@drawable/survey" />
 
-    <Button
+    <ImageView
         android:id="@+id/AboutBtn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="32dp"
+        android:layout_width="0dp"
+        android:layout_height="150dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="16dp"
         android:onClick="GoToAbout"
-        android:text="@string/aboutGLOBE"
-        android:background="@color/secondaryColor"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/SurveyBtn" />
+        app:layout_constraintTop_toBottomOf="@+id/SurveyBtn"
+        app:srcCompat="@drawable/aboutglobe" />
 
-    <Button
+      <Button
         android:id="@+id/logout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -104,5 +106,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/feedback" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,1 +1,13 @@
-FAQs go here
+Will my shopping data be distributed to third parties?
+
+No. All information collected will be de-identified. We will keep track of your data by using a random unique identification number that no third party will have access to. Even in de-identified form we will not release your data to anyone other than the research team.
+Your data will not be used for any other purposes other than public health research purposes of the research team at Deakin University.
+
+
+What if I forget to upload my receipt for a weekly shop?
+
+You can go back to the email you received after completing your shop and log this through the application at any time.
+
+I do not want to be part of this study anymore, how do I withdraw?
+
+Simply send feedback through the application that you wish to withdraw from the study. You will receive email confirmation once this has been completed.
