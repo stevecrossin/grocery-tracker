@@ -59,13 +59,16 @@ public class Login extends AppCompatActivity {
         super.onStart();
         isSignedIn();
 
+        /**
+         * Checks if password or email entered is valid. If password is less than or equal to 5 characters, invalid password will be thrown.
+         */
     }
     public static boolean isEmaiValid(CharSequence target) {
         return (!TextUtils.isEmpty(target) && Patterns.EMAIL_ADDRESS.matcher(target).matches());
     }
 
     private boolean isPasswordValid(String password) {
-        return password.length() > 6;
+        return password.length() > 5;
     }
 
 /**
@@ -181,7 +184,7 @@ protected void onCreate(Bundle savedInstanceState) {
             authTask.execute((Void) null);
         }
 
-    }
+}
 
     /**
      * Shows the progress UI and hides the login form.

@@ -95,21 +95,20 @@ public class Signup extends AppCompatActivity {
      */
     @SuppressLint("StaticFieldLeak")
     public void submitSignUp(View view) {
-        String genderValue="";
-        if(selectedGenderPosition==0){
+        String genderValue = "";
+        if (selectedGenderPosition == 0) {
             Toast.makeText(Signup.this, "Please select gender", Toast.LENGTH_LONG).show();
             return;
-        }
-        else
+        } else
             genderValue = getResources().getStringArray(R.array.gender)[selectedGenderPosition];
 
-        String shopNumberValue="";
-        if(selectedShopNumber==0){
+        String shopNumberValue = "";
+        if (selectedShopNumber == 0) {
             Toast.makeText(Signup.this, "Please select how often you shop", Toast.LENGTH_LONG).show();
             return;
-        }
-        else
+        } else
             shopNumberValue = getResources().getStringArray(R.array.shopnumber)[selectedShopNumber];
+
 
         final User newUser;
         try {
