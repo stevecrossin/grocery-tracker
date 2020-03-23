@@ -37,7 +37,7 @@ import static com.stevecrossin.grocerytracker.other.AppLoginState.INVALID_PASS;
 import static com.stevecrossin.grocerytracker.other.AppLoginState.INVALID_USER;
 
 public class Login extends AppCompatActivity {
-    /** Test commit */
+
     /**
      * Initialisation of objects/variables. Helps to setup the view, keep track of user login state
      */
@@ -49,7 +49,7 @@ public class Login extends AppCompatActivity {
     private Button loginButton;
     private AppLoginState appLoginState = INVALID_PASS;
     private StorageReference mStorageRef;
-
+    
     /**
      * Check if user already logged in, and hasn't logged out. Will perform DB query defined lower, to check DB for users that match the loggedIn = true, and if so, it will skip login/sign up and navigate directly to main home page.
      */
