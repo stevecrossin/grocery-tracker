@@ -37,7 +37,7 @@ import static com.stevecrossin.grocerytracker.other.AppLoginState.INVALID_PASS;
 import static com.stevecrossin.grocerytracker.other.AppLoginState.INVALID_USER;
 
 public class Login extends AppCompatActivity {
-
+    /** Test commit */
     /**
      * Initialisation of objects/variables. Helps to setup the view, keep track of user login state
      */
