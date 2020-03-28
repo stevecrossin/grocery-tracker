@@ -2,6 +2,7 @@ package com.stevecrossin.grocerytracker.screens;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -20,10 +21,21 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.itextpdf.text.pdf.PdfReader;
+import com.itextpdf.text.pdf.parser.PdfTextExtractor;
 import com.stevecrossin.grocerytracker.R;
 import com.stevecrossin.grocerytracker.other.Constants;
+import com.stevecrossin.grocerytracker.other.FileUtil;
 
+import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Receipts extends AppCompatActivity implements View.OnClickListener {
 
@@ -75,7 +87,7 @@ public class Receipts extends AppCompatActivity implements View.OnClickListener 
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICK_PDF_CODE && resultCode == RESULT_OK && data != null && data.getData() != null) {
             if (data.getData() != null) {
-                uploadFile(data.getData());
+                parseAndUploadPDF(data.getData());
             } else {
                 textViewStatus.setText(R.string.msgNoFile);
             }
@@ -88,8 +100,9 @@ public class Receipts extends AppCompatActivity implements View.OnClickListener 
      * After the upload is successfully completed, the status textview will be updated with a success message, the filename box will be cleared, and the uploading bar will disappear.
      * <p>
      * Similar operations will happen if file upload fails, but the message to the end user will differ.
+     * This code is depreceated, replaced with parse & upload PDF
      */
-    private void uploadFile(Uri data) {
+ /*   private void uploadFile(Uri data) {
         progressBar.setVisibility(View.VISIBLE);
         StorageReference sRef = mStorageReference.child(Constants.STORAGE_PATH_UPLOADS + System.currentTimeMillis() + ".pdf");
         sRef.putFile(data)
@@ -120,10 +133,227 @@ public class Receipts extends AppCompatActivity implements View.OnClickListener 
                     }
                 });
 
+    }*/
+
+    /**
+     * Beginning of implementation of pdf to CSV. Code is currently not 100% working. Fuller explanation of function to be written.
+     * Uses a file utility, a fork of PDFbox as well as itextPDF, to parse the content of PDFs.
+     * Will parse based off the headers in the table, in particular, Woolworths receipts which have specific table headers.
+     * Once this data is parsed, pruned, and processed, it will write this content into a CSV file.
+     *
+     * This file will later need to be inserted into the RoomDB, and will also need to get the current logged in user to ensure it is inserted into the relevant table, or at least with identifying information for the user.
+     * TODO: Fully comment all methods and functions.
+     * TODO: Troubleshoot issues where code is not correctly handling PDF receipt.
+     * TODO: Remove redundant/depreceated lines of code
+     */
+
+    public void parseAndUploadPDF(final Uri pdfUri) {
+        if (pdfUri == null) {
+            // Throw exception/Error Log
+            return;
+        }
+
+     String uriPath = pdfUri.getPath();
+        if (uriPath == null || uriPath.isEmpty()) {
+            // Throw exception/Error Log
+            return;
+        }
+        final String pdfUriPath = uriPath.substring(uriPath.indexOf("/storage"));
+
+        AsyncTask.execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    String parsedText="";
+                    PdfReader reader = new PdfReader(pdfUriPath);
+                    int n = reader.getNumberOfPages();
+                    for (int i = 0; i <n ; i++) {
+                        parsedText   = parsedText + PdfTextExtractor.getTextFromPage(reader, i+1).trim()+"\n"; //Extracting the content from the different pages
+                    }
+                    parseReceiptPdf(parsedText);
+                    reader.close();
+                } catch (Exception e) {
+                    // TODO: Properly catch exception and handle.
+
+                }
+            }
+        });
+    }
+
+    private void parseReceiptPdf(String parsedText) {
+        String headerText = parsedText.substring(0, parsedText.lastIndexOf(": \n"));
+        headerText = headerText.substring(headerText.lastIndexOf("\n") + 1  );
+        String tableText = parsedText.substring(parsedText.lastIndexOf(": \n") + 3, parsedText.indexOf("Subtotal")).trim();
+        List<ReceiptLineItem> receiptLineItems =  parseReceipt(tableText);
+
+        String receiptCSVFilename = getExternalFilesDir(null).getAbsolutePath()
+                + "/TestData/receipt_" + System.currentTimeMillis() + ".csv";
+        writeToCSV(headerText.split(": ") ,receiptLineItems, receiptCSVFilename);
+        uploadCSVFileToRoomDB(receiptCSVFilename);
+    }
+
+    private List<ReceiptLineItem> parseReceipt(String receipt) {
+        String[] lines = receipt.split("\n");
+        List<String> prunedLines = pruneLines(lines);
+        int i = 0;
+        List<String> receiptLines = new ArrayList<>();
+        while (i < prunedLines.size()) {
+            String prunedLine = prunedLines.get(i).trim();
+            if (endsWithFloat(prunedLine)) {
+                receiptLines.add(prunedLine);
+                i++;
+            } else {
+                if (isOnlyIntegers(prunedLines.get(i + 1))) {
+                    receiptLines.add(prunedLine + " " + prunedLines.get(i + 2).trim() + " " + prunedLines.get(i + 1).trim());
+                    i += 3;
+                } else {
+                    List<String> itemLines = new ArrayList<>();
+                    int j = i;
+                    while (j < prunedLines.size()) {
+                        itemLines.add(prunedLines.get(j).trim());
+                        if (!prunedLines.get(j).endsWith(" ")) {
+                            break;
+                        }
+                        j++;
+                    }
+                    receiptLines.add(processItemLines(itemLines));
+                    i = j + 1;
+                }
+            }
+        }
+
+        return processReceiptLines(receiptLines);
+    }
+
+    private String processItemLines(List<String> itemLines) {
+        String numerics = "";
+        StringBuilder builder = new StringBuilder();
+        for (String itemLine : itemLines) {
+            if (endsWithFloat(itemLine)) {
+                ReceiptLineItem item = parseLineItem(itemLine);
+                builder.append(item.itemDescription);
+                numerics = item.unitPrice + " " + item.quantity + " " + item.price;
+            } else {
+                builder.append(itemLine);
+            }
+            builder.append(" ");
+        }
+        builder.append(numerics);
+        return builder.toString().trim();
+    }
+
+    private boolean endsWithFloat(String line) {
+        char lastChar = line.charAt(line.length() - 1);
+        char lastBeforeChar = line.charAt(line.length() - 2);
+        char periodCharacter = line.charAt(line.length() - 3);
+
+        if (lastChar >= '0' && lastChar <= '9' && lastBeforeChar >= '0' && lastBeforeChar <= '9'
+                && periodCharacter == '.') {
+            return true;
+        }
+        return false;
+    }
+
+    private boolean isOnlyIntegers(String text) {
+        char[] characters = text.toCharArray();
+        for (char c : characters) {
+            if (c == '.' || c == ' ') {
+                continue;
+            }
+
+            if (c < '0' || c > '9') {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private ReceiptLineItem parseLineItem(String lineItem) {
+        String[] columns = lineItem.split(" ");
+        ReceiptLineItem receiptLineItem = new ReceiptLineItem();
+        receiptLineItem.price = Float.parseFloat(columns[columns.length - 1]);
+        receiptLineItem.quantity = Integer.parseInt(columns[columns.length - 2]);
+        receiptLineItem.unitPrice = Float.parseFloat(columns[columns.length - 3]);
+
+        receiptLineItem.itemDescription = "";
+        for (int i = 0; i < columns.length - 3; i++) {
+            receiptLineItem.itemDescription = receiptLineItem.itemDescription + " ";
+            receiptLineItem.itemDescription = receiptLineItem.itemDescription + columns[i];
+        }
+        receiptLineItem.itemDescription = receiptLineItem.itemDescription.trim();
+        return receiptLineItem;
+    }
+
+    private List<ReceiptLineItem> processReceiptLines(List<String> receiptLines) {
+        List<ReceiptLineItem> receiptLineItems = new ArrayList<>();
+        for (String receiptLine : receiptLines) {
+            receiptLineItems.add(parseLineItem(receiptLine));
+        }
+
+        return receiptLineItems;
+    }
+
+    private List<String> pruneLines(String[] lines) {
+        List<String> prunedLines = new ArrayList<>();
+        for (String line : lines) {
+            if (!line.startsWith(" ")) {
+                prunedLines.add(line);
+            }
+        }
+        return prunedLines;
+    }
+
+    private static final String CSV_SEPARATOR = ",";
+    private static void writeToCSV(String[] columnHeader, List<ReceiptLineItem> receiptLineItems, String fileName)
+    {
+        try
+        {
+            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fileName), "UTF-8"));
+            StringBuffer headerLine = new StringBuffer();
+            headerLine.append(columnHeader[0]);
+            headerLine.append(CSV_SEPARATOR);
+            headerLine.append(columnHeader[1]);
+            headerLine.append(CSV_SEPARATOR);
+            headerLine.append(columnHeader[2]);
+            headerLine.append(CSV_SEPARATOR);
+            headerLine.append(columnHeader[3]);
+            bw.write(headerLine.toString());
+            bw.newLine();
+            for (ReceiptLineItem receiptLineItem : receiptLineItems)
+            {
+                StringBuffer oneLine = new StringBuffer();
+                oneLine.append(receiptLineItem.itemDescription);
+                oneLine.append(CSV_SEPARATOR);
+                oneLine.append(receiptLineItem.unitPrice);
+                oneLine.append(CSV_SEPARATOR);
+                oneLine.append(receiptLineItem.quantity);
+                oneLine.append(CSV_SEPARATOR);
+                oneLine.append(receiptLineItem.price);
+                bw.write(oneLine.toString());
+                bw.newLine();
+            }
+            bw.flush();
+            bw.close();
+        }
+        catch (UnsupportedEncodingException e) {}
+        catch (FileNotFoundException e){}
+        catch (IOException e){}
+    }
+
+    private class ReceiptLineItem {
+        String itemDescription;
+        float unitPrice;
+        int quantity;
+        float price;
+    }
+
+    private void uploadCSVFileToRoomDB(final String csvFilename) {
+        // TODO: Upload to Room DB.
     }
 
     /**
      * Gets the progress of the upload task to the Firebase data storage.
+     * Depreceated, needs to be repurposed to handle conversion progress of PDF to CSV.
      */
     private double getProgress(UploadTask.TaskSnapshot taskSnapshot) {
         return (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
