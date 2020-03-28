@@ -90,6 +90,8 @@ public class Signup extends AppCompatActivity {
     @SuppressLint("StaticFieldLeak")
     public void submitSignUp(View view) {
         String genderValue = "";
+        boolean cancel = false;
+        View focusView = null;
         if (selectedGenderPosition == 0) {
             Toast.makeText(Signup.this, "Please select gender", Toast.LENGTH_LONG).show();
             return;
@@ -113,25 +115,32 @@ public class Signup extends AppCompatActivity {
         String sHouseholdChildren = etHouseholdChildren.getText().toString();
         int householdChildren = Integer.parseInt(sHouseholdChildren);
 
-        if (totalHouseholdMember != (householdAdults + householdChildren))
-        {
-            Toast.makeText(Signup.this, "HouseHold numbers does not match", Toast.LENGTH_LONG).show();
+        if (totalHouseholdMember != (householdAdults + householdChildren)) {
+            etNumberOfHouseHoldMember.setError("Household members don't match");
+            focusView = etNumberOfHouseHoldMember;
+            focusView.requestFocus();
             return;
-        }
+
+            }
+
+
 
         String sAge = etAge.getText().toString();
         int age = Integer.parseInt(sAge);
 
-        if (age < 16)
+        if (age < 16 || age > 100 )
         {
-            Toast.makeText(Signup.this, "You are not eligible to sign up", Toast.LENGTH_LONG).show();
+            etAge.setError("You are not eligible to sign up");
+            focusView = etAge;
+            focusView.requestFocus();
+            //Toast.makeText(Signup.this, "You are not eligible to sign up", Toast.LENGTH_LONG).show();
             return;
         }
-        else if (age > 100)
-        {
-            Toast.makeText(Signup.this, "Please enter a valid age", Toast.LENGTH_LONG).show();
-            return;
-        }
+        //else if (age > 100)
+        //{
+         //   Toast.makeText(Signup.this, "Please enter a valid age", Toast.LENGTH_LONG).show();
+           // return;
+        //}
 
 
         final User newUser;
