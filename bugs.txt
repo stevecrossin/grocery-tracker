@@ -8,6 +8,8 @@ You need to notate:
 As bugs are resolved, they need to be marked as resolved and move to the resolved list to enable regression testing (do not delete resolved bugs)
 
 /** ACTIVE BUGS **/
-Login.java - AppDb initialisation causing crash (probably DB not setup correctly, need to resolve)
+Signup.java/Login.java - due to no data validation on email address/sign up, user can sign up for an account with password that doesn't comply with password length rules, but then not be able to sign in.
+
 
 /** RESOLVED BUGS **/
+Login.java - AppDb initialisation causing crash (probably DB not setup correctly, need to resolve)
