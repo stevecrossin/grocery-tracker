@@ -32,5 +32,4 @@ Other
 
 11 Jan
 Steve rewrote receipts function.
-Test commit by Faiz
 
