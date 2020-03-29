@@ -40,8 +40,7 @@ public class AppDataRepo {
     }
 
     /**
-     * Perform operation to update the login status for the user. If the login status is not true, it will also perform the deleteAllIngredient, deleteAllIntolerance
-     * and then pantry.deleteAll operations
+     * Perform operation to update the login status for the user. If the login status is not true
      */
     public void updateLoginStatus(int userId, boolean isLogin) {
         userDao.updateLoginStatus(userId, isLogin);

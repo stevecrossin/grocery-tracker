@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey;
 
 @Entity(tableName = "receipts", indices = {@Index(value = {"receiptID"}, unique = true)})
 public class Receipts {
-    //** Users table structure in room database//
+    //** Receipts table structure in room database//
 
         @PrimaryKey(autoGenerate = true)
         private int receiptID;

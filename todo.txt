@@ -1,4 +1,6 @@
 Overall to-do list for project.
 
-Test
-..
+1. Fully comment methods/functions in Receipts.java
+2. Enable writing of created CSVs into entities/Receipts table and link to users table
+3. Run test on
+4. Begin testing of integration of dynamic notifications.

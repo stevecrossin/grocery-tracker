@@ -196,6 +196,9 @@ public class Receipts extends AppCompatActivity implements View.OnClickListener 
                 });
     }*/
 
+    /**
+     * Purges (deletes) the contents of temp storage if a file exists in the temporary directory. A temporary directory
+     */
     private void purgeTempStorage() {
         String dirPath = getExternalFilesDir(null).getAbsolutePath()
                 + "/Temp";
@@ -251,7 +254,6 @@ public class Receipts extends AppCompatActivity implements View.OnClickListener 
      * <p>
      * This file will later need to be inserted into the RoomDB, and will also need to get the current logged in user to ensure it is inserted into the relevant table, or at least with identifying information for the user.
      * TODO: Fully comment all methods and functions.
-     * TODO: Troubleshoot issues where code is not correctly handling PDF receipt.
      * TODO: Remove redundant/depreceated lines of code
      */
 
