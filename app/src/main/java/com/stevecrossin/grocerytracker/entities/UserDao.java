@@ -11,7 +11,7 @@ import java.util.List;
 public interface UserDao {
 
     /**
-     * Inserts new user record into the database. Conflict strategy is set to fail the insert if the userRecord already exists.
+     * Inserts new user record into the databases. Conflict strategy is set to fail the insert if the userRecord already exists.
      */
     @Insert()
     void insertUser(User user);
