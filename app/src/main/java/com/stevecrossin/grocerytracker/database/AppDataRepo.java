@@ -4,7 +4,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteConstraintException;
 
 
-import com.stevecrossin.grocerytracker.entities.ItemsDao;
+import com.stevecrossin.grocerytracker.entities.ReceiptsDao;
 import com.stevecrossin.grocerytracker.entities.User;
 import com.stevecrossin.grocerytracker.entities.UserDao;
 
@@ -13,7 +13,7 @@ import java.util.List;
 
 public class AppDataRepo {
     private UserDao userDao;
-    private ItemsDao itemsDao;
+    private ReceiptsDao receiptsDao;
 
     public AppDataRepo(Context context) {
         userDao = AppDb.getDatabase(context).userDao();

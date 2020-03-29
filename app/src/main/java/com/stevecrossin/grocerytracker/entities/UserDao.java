@@ -17,12 +17,6 @@ public interface UserDao {
     void insertUser(User user);
 
     /**
-     * Inserts user record into the database. Conflict strategy is set to fail the insert if the userRecord already exists.
-     */
-    @Insert(onConflict = OnConflictStrategy.FAIL)
-    void insertUserFromLogin(User user);
-
-    /**
      * Get all users from the database
      */
     @Query("SELECT * FROM user;")

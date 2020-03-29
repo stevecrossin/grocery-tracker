@@ -4,10 +4,13 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,9 +31,12 @@ import com.stevecrossin.grocerytracker.other.Constants;
 import com.stevecrossin.grocerytracker.other.FileUtil;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.text.MessageFormat;
@@ -50,6 +56,7 @@ public class Receipts extends AppCompatActivity implements View.OnClickListener 
     ProgressBar progressBar;
     StorageReference mStorageReference;
     DatabaseReference mDatabaseReference;
+    Handler mHandler = new Handler(Looper.getMainLooper());
 
     /**
      * OnCreate method, set the view as per XML file, get firebase objects and draw all the elements on the screen,
@@ -75,23 +82,74 @@ public class Receipts extends AppCompatActivity implements View.OnClickListener 
         Intent intent = new Intent();
         intent.setType("application/pdf");
         intent.setAction(Intent.ACTION_GET_CONTENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
         startActivityForResult(Intent.createChooser(intent, "Select a file"), PICK_PDF_CODE);
     }
 
+
+
     /**
-     * Actions to perform after user picks a file. If user selected a file, the uploadFile method will be called.
+     * Actions to perform after user picks a file. If user selected a file, the parseAndUploadPDF method will be called.
      * Otherwise an error will be thrown advising the user they have not selected a file.
      */
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, final Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICK_PDF_CODE && resultCode == RESULT_OK && data != null && data.getData() != null) {
             if (data.getData() != null) {
-                parseAndUploadPDF(data.getData());
+                AsyncTask.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        setInProgress();
+                        String pdfFilePath = writePDFToTempStorage(data.getData());
+                        if (pdfFilePath == null) {
+                            setFailure();
+                            return;
+                        }
+                        if (!parseAndUploadPDF(pdfFilePath)) {
+                            setFailure();
+                            return;
+                        }
+                        purgeTempStorage();
+                        setSuccess();
+                    }
+                });
             } else {
-                textViewStatus.setText(R.string.msgNoFile);
+                Toast.makeText(this, "Invalid URI", Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    private void setInProgress() {
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                progressBar.setVisibility(View.VISIBLE);
+                textViewStatus.setText("Converting pdf to csv...");
+            }
+        });
+    }
+
+    private void setSuccess() {
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                textViewStatus.setText(R.string.msgUploadSuccess);
+                editTextFilename.setText("");
+                progressBar.setVisibility(View.GONE);
+            }
+        });
+    }
+
+    private void setFailure() {
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                textViewStatus.setText(R.string.msgUploadFailed);
+                editTextFilename.setText("");
+                progressBar.setVisibility(View.GONE);
+            }
+        });
     }
 
     /**
@@ -100,9 +158,8 @@ public class Receipts extends AppCompatActivity implements View.OnClickListener 
      * After the upload is successfully completed, the status textview will be updated with a success message, the filename box will be cleared, and the uploading bar will disappear.
      * <p>
      * Similar operations will happen if file upload fails, but the message to the end user will differ.
-     * This code is depreceated, replaced with parse & upload PDF
      */
- /*   private void uploadFile(Uri data) {
+    private void uploadFile(Uri data) {
         progressBar.setVisibility(View.VISIBLE);
         StorageReference sRef = mStorageReference.child(Constants.STORAGE_PATH_UPLOADS + System.currentTimeMillis() + ".pdf");
         sRef.putFile(data)
@@ -133,63 +190,92 @@ public class Receipts extends AppCompatActivity implements View.OnClickListener 
                     }
                 });
 
-    }*/
-
-    /**
-     * Beginning of implementation of pdf to CSV. Code is currently not 100% working. Fuller explanation of function to be written.
-     * Uses a file utility, a fork of PDFbox as well as itextPDF, to parse the content of PDFs.
-     * Will parse based off the headers in the table, in particular, Woolworths receipts which have specific table headers.
-     * Once this data is parsed, pruned, and processed, it will write this content into a CSV file.
-     *
-     * This file will later need to be inserted into the RoomDB, and will also need to get the current logged in user to ensure it is inserted into the relevant table, or at least with identifying information for the user.
-     * TODO: Fully comment all methods and functions.
-     * TODO: Troubleshoot issues where code is not correctly handling PDF receipt.
-     * TODO: Remove redundant/depreceated lines of code
-     */
-
-    public void parseAndUploadPDF(final Uri pdfUri) {
-        if (pdfUri == null) {
-            // Throw exception/Error Log
-            return;
-        }
-
-     String uriPath = pdfUri.getPath();
-        if (uriPath == null || uriPath.isEmpty()) {
-            // Throw exception/Error Log
-            return;
-        }
-        final String pdfUriPath = uriPath.substring(uriPath.indexOf("/storage"));
-
-        AsyncTask.execute(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    String parsedText="";
-                    PdfReader reader = new PdfReader(pdfUriPath);
-                    int n = reader.getNumberOfPages();
-                    for (int i = 0; i <n ; i++) {
-                        parsedText   = parsedText + PdfTextExtractor.getTextFromPage(reader, i+1).trim()+"\n"; //Extracting the content from the different pages
-                    }
-                    parseReceiptPdf(parsedText);
-                    reader.close();
-                } catch (Exception e) {
-                    // TODO: Properly catch exception and handle.
-
-                }
-            }
-        });
     }
 
-    private void parseReceiptPdf(String parsedText) {
+    private void purgeTempStorage() {
+        String dirPath = getExternalFilesDir(null).getAbsolutePath()
+                + "/Temp";
+        File filePath = new File(dirPath);
+        if (filePath.isDirectory() && filePath.exists()) {
+            String[] files = filePath.list();
+            if (files == null) {
+                return;
+            }
+            for (String file : files) {
+                new File(filePath, file).delete();
+            }
+        }
+    }
+
+    private String writePDFToTempStorage(Uri pdfUri) {
+        if (pdfUri == null) {
+            // Throw exception/Error Log
+            return null;
+        }
+
+        try {
+            InputStream inputStream = getContentResolver().openInputStream(pdfUri);
+            if (inputStream == null) {
+                return null;
+            }
+            byte[] buffer = new byte[inputStream.available()];
+            inputStream.read(buffer);
+            String filePath = getExternalFilesDir(null).getAbsolutePath()
+                    + "/Temp";
+            File targetFilePath = new File(filePath);
+            if (!targetFilePath.exists()) {
+                if (!targetFilePath.mkdirs()) {
+                    return null;
+                }
+            }
+            String fileName = "receipt_" + System.currentTimeMillis()
+                    + ".pdf";
+            File targetFile = new File(targetFilePath, fileName);
+            OutputStream outputStream = new FileOutputStream(targetFile);
+            outputStream.write(buffer);
+            return targetFile.getAbsolutePath();
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    private boolean parseAndUploadPDF(final String pdfUriPath) {
+        try {
+            String parsedText="";
+            PdfReader reader = new PdfReader(pdfUriPath);
+            int n = reader.getNumberOfPages();
+            for (int i = 0; i <n ; i++) {
+                parsedText = parsedText + PdfTextExtractor.getTextFromPage(reader, i+1).trim()+"\n"; //Extracting the content from the different pages
+            }
+            boolean result = parseReceiptPdf(parsedText);
+            reader.close();
+            return result;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    private boolean parseReceiptPdf(String parsedText) {
         String headerText = parsedText.substring(0, parsedText.lastIndexOf(": \n"));
         headerText = headerText.substring(headerText.lastIndexOf("\n") + 1  );
         String tableText = parsedText.substring(parsedText.lastIndexOf(": \n") + 3, parsedText.indexOf("Subtotal")).trim();
         List<ReceiptLineItem> receiptLineItems =  parseReceipt(tableText);
+        if (receiptLineItems == null || receiptLineItems.size() == 0) {
+            return false;
+        }
 
-        String receiptCSVFilename = getExternalFilesDir(null).getAbsolutePath()
-                + "/TestData/receipt_" + System.currentTimeMillis() + ".csv";
+        String filePath = getExternalFilesDir(null).getAbsolutePath()
+                + "/TestData";
+        File receiptCSVFilepath = new File(filePath);
+        if (!receiptCSVFilepath.exists()) {
+            if (!receiptCSVFilepath.mkdirs()) {
+                return false;
+            }
+        }
+        String receiptCSVFilename = filePath + "/receipt_" + System.currentTimeMillis() + ".csv";
         writeToCSV(headerText.split(": ") ,receiptLineItems, receiptCSVFilename);
         uploadCSVFileToRoomDB(receiptCSVFilename);
+        return true;
     }
 
     private List<ReceiptLineItem> parseReceipt(String receipt) {
@@ -353,7 +439,6 @@ public class Receipts extends AppCompatActivity implements View.OnClickListener 
 
     /**
      * Gets the progress of the upload task to the Firebase data storage.
-     * Depreceated, needs to be repurposed to handle conversion progress of PDF to CSV.
      */
     private double getProgress(UploadTask.TaskSnapshot taskSnapshot) {
         return (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
