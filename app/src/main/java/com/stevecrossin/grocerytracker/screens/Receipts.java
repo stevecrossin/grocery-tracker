@@ -86,8 +86,6 @@ public class Receipts extends AppCompatActivity implements View.OnClickListener 
         startActivityForResult(Intent.createChooser(intent, "Select a file"), PICK_PDF_CODE);
     }
 
-
-
     /**
      * Actions to perform after user picks a file. If user selected a file, the parseAndUploadPDF method will be called.
      * Otherwise an error will be thrown advising the user they have not selected a file.
@@ -120,6 +118,12 @@ public class Receipts extends AppCompatActivity implements View.OnClickListener 
         }
     }
 
+    /**
+     * Sets the content of the textView based on the progress of the parse and upload task.
+     * While the method is in progress, the text will be set to "converting pdf to CSV" and a progress spinner will be visible.
+     * Once completed,the text will be altered to "Upload complete" and the spinner will disappear
+     * If the upload fails, the message "upload failed" will appear.
+     */
     private void setInProgress() {
         mHandler.post(new Runnable() {
             @Override
@@ -158,8 +162,9 @@ public class Receipts extends AppCompatActivity implements View.OnClickListener 
      * After the upload is successfully completed, the status textview will be updated with a success message, the filename box will be cleared, and the uploading bar will disappear.
      * <p>
      * Similar operations will happen if file upload fails, but the message to the end user will differ.
+     * This code is depreceated, replaced with parse & upload PDF
      */
-    private void uploadFile(Uri data) {
+/*    private void uploadFile(Uri data) {
         progressBar.setVisibility(View.VISIBLE);
         StorageReference sRef = mStorageReference.child(Constants.STORAGE_PATH_UPLOADS + System.currentTimeMillis() + ".pdf");
         sRef.putFile(data)
@@ -189,8 +194,7 @@ public class Receipts extends AppCompatActivity implements View.OnClickListener 
                         textViewStatus.setText(MessageFormat.format("Uploading...", (int) getProgress(taskSnapshot)));
                     }
                 });
-
-    }
+    }*/
 
     private void purgeTempStorage() {
         String dirPath = getExternalFilesDir(null).getAbsolutePath()
@@ -239,13 +243,25 @@ public class Receipts extends AppCompatActivity implements View.OnClickListener 
         }
     }
 
+    /**
+     * Beginning of implementation of pdf to CSV. Code is currently not 100% working. Fuller explanation of function to be written.
+     * Uses a file utility, a fork of PDFbox as well as itextPDF, to parse the content of PDFs.
+     * Will parse based off the headers in the table, in particular, Woolworths receipts which have specific table headers.
+     * Once this data is parsed, pruned, and processed, it will write this content into a CSV file.
+     * <p>
+     * This file will later need to be inserted into the RoomDB, and will also need to get the current logged in user to ensure it is inserted into the relevant table, or at least with identifying information for the user.
+     * TODO: Fully comment all methods and functions.
+     * TODO: Troubleshoot issues where code is not correctly handling PDF receipt.
+     * TODO: Remove redundant/depreceated lines of code
+     */
+
     private boolean parseAndUploadPDF(final String pdfUriPath) {
         try {
-            String parsedText="";
+            String parsedText = "";
             PdfReader reader = new PdfReader(pdfUriPath);
             int n = reader.getNumberOfPages();
-            for (int i = 0; i <n ; i++) {
-                parsedText = parsedText + PdfTextExtractor.getTextFromPage(reader, i+1).trim()+"\n"; //Extracting the content from the different pages
+            for (int i = 0; i < n; i++) {
+                parsedText = parsedText + PdfTextExtractor.getTextFromPage(reader, i + 1).trim() + "\n"; //Extracting the content from the different pages
             }
             boolean result = parseReceiptPdf(parsedText);
             reader.close();
@@ -438,11 +454,11 @@ public class Receipts extends AppCompatActivity implements View.OnClickListener 
     }
 
     /**
-     * Gets the progress of the upload task to the Firebase data storage.
-     */
-    private double getProgress(UploadTask.TaskSnapshot taskSnapshot) {
+     * Gets the progress of the upload task to the Firebase data storage. This code is depreceated, and  has been commented out.
+     **/
+/*    private double getProgress(UploadTask.TaskSnapshot taskSnapshot) {
         return (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
-    }
+    }*/
 
     /**
      * Handles onClick events. If the user clicks the upload receipt, the getPDF method will be called.
