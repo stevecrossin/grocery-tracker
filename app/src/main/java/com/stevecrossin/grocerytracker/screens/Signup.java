@@ -1,7 +1,5 @@
 package com.stevecrossin.grocerytracker.screens;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -13,14 +11,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
-
 import com.stevecrossin.grocerytracker.R;
 import com.stevecrossin.grocerytracker.database.AppDataRepo;
 import com.stevecrossin.grocerytracker.entities.User;
 import com.stevecrossin.grocerytracker.other.PasswordScrambler;
 
 public class Signup extends AppCompatActivity {
-
     Button Bsubmit, Bcancel;
     EditText etName, etAge, etHeight, etWeight,  etPostcode, etNumberOfHouseHoldMember, etHouseholdAdults, etHouseholdChildren, etEmail, etPassword;
     private AppDataRepo repository;
@@ -85,17 +81,17 @@ public class Signup extends AppCompatActivity {
     RG - Made some changes to add the data into a new User object, and then place into AppDB.
     NOTE: Not sure if it is storing properly.
      */
-
     /**
      * Submits sign up. Checks if gender was selected, if not, shows toast and returns to the task
      * After this validation check passes. it will run the insertUser method from AppDataRepo. This method has an exception check -
      * as the email needs to be a unique field, if the end user tries to sign up with an account that already exists, the operation will fail,
      * a Toast will be shown advising email already exists and to login, and then will navigate them to that activity. Otherwise, the insert will be successful
-     * and they will be navigated to the welcome screen.
-     */
+     * and they will be navigated to the welcome screen */
     @SuppressLint("StaticFieldLeak")
     public void submitSignUp(View view) {
         String genderValue = "";
+        boolean cancel = false;
+        View focusView = null;
         if (selectedGenderPosition == 0) {
             Toast.makeText(Signup.this, "Please select gender", Toast.LENGTH_LONG).show();
             return;
@@ -108,6 +104,43 @@ public class Signup extends AppCompatActivity {
             return;
         } else
             shopNumberValue = getResources().getStringArray(R.array.shopnumber)[selectedShopNumber];
+
+
+        String sTotalHouseholdMember = etNumberOfHouseHoldMember.getText().toString();
+        int totalHouseholdMember = Integer.parseInt(sTotalHouseholdMember);
+
+        String sHouseholdAdults = etHouseholdAdults.getText().toString();
+        int householdAdults = Integer.parseInt(sHouseholdAdults);
+
+        String sHouseholdChildren = etHouseholdChildren.getText().toString();
+        int householdChildren = Integer.parseInt(sHouseholdChildren);
+
+        if (totalHouseholdMember != (householdAdults + householdChildren)) {
+            etNumberOfHouseHoldMember.setError("Household members don't match");
+            focusView = etNumberOfHouseHoldMember;
+            focusView.requestFocus();
+            return;
+
+            }
+
+
+
+        String sAge = etAge.getText().toString();
+        int age = Integer.parseInt(sAge);
+
+        if (age < 16 || age > 100 )
+        {
+            etAge.setError("You are not eligible to sign up");
+            focusView = etAge;
+            focusView.requestFocus();
+            //Toast.makeText(Signup.this, "You are not eligible to sign up", Toast.LENGTH_LONG).show();
+            return;
+        }
+        //else if (age > 100)
+        //{
+         //   Toast.makeText(Signup.this, "Please enter a valid age", Toast.LENGTH_LONG).show();
+           // return;
+        //}
 
 
         final User newUser;
@@ -149,6 +182,3 @@ public class Signup extends AppCompatActivity {
         startActivity(intent);
     }
 }
-
-
-
