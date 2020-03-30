@@ -4,7 +4,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteConstraintException;
 
 
-import com.stevecrossin.grocerytracker.entities.ItemsDao;
+import com.stevecrossin.grocerytracker.entities.ReceiptsDao;
 import com.stevecrossin.grocerytracker.entities.User;
 import com.stevecrossin.grocerytracker.entities.UserDao;
 
@@ -13,7 +13,7 @@ import java.util.List;
 
 public class AppDataRepo {
     private UserDao userDao;
-    private ItemsDao itemsDao;
+    private ReceiptsDao receiptsDao;
 
     public AppDataRepo(Context context) {
         userDao = AppDb.getDatabase(context).userDao();
@@ -40,8 +40,7 @@ public class AppDataRepo {
     }
 
     /**
-     * Perform operation to update the login status for the user. If the login status is not true, it will also perform the deleteAllIngredient, deleteAllIntolerance
-     * and then pantry.deleteAll operations
+     * Perform operation to update the login status for the user. If the login status is not true
      */
     public void updateLoginStatus(int userId, boolean isLogin) {
         userDao.updateLoginStatus(userId, isLogin);

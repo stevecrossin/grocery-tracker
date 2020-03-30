@@ -33,3 +33,22 @@ Other
 11 Jan
 Steve rewrote receipts function.
 
+
+22 March
+Test Commit by Radika to feature/dataValidation
+
+Saturday 28 March - Radika & Steve
+*Worked on Data Validation 
+
+Saturday 28 March - Steve
+* Receipts.java - deprecated method to upload PDF files to Firebase, started integration of tested code to convert PDF to CSV. In standalone test, was able to convert PDF to CSV, having some file permission/conversion issues that
+are still in progress, and have been noted in bugs.txt.
+
+Sunday 29 March - Steve
+* Receipts.java
+- fully depreceated and commented out Firebase upload to PDF functionality.
+- wrote methods to handle PDF to CSV conversion. At the moment, this writes the PDF that's accessed from file storage to temporary storage within the application to enable conversion, prunes irrelevant data and retains any
+information in the PDF table. Writes this to a timestamped CSV file. Still working on insertion into application database. Need to comment methods/functions (this is noted in the TODO section.
+- Renamed Items tables to Receipts, created table structure & getter/setter methods and constructors.
+- Updated bugs.txt with resolved issues, and this changelog.txt with changes made.
+- Updated todo file.
