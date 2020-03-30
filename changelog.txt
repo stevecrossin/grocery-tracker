@@ -33,7 +33,3 @@ Other
 11 Jan
 Steve rewrote receipts function.
 
-22 March
-Test Commit by Radika to feature/dataValidation
-
-28 March Validation
