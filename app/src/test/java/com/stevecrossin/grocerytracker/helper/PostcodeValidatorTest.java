@@ -14,27 +14,27 @@ public class PostcodeValidatorTest {
      */
     @Test
     public void IsExactlyFourNumberDigit_Correct(){
-        assertTrue(validator.IsExactlyFourNumberDigit("1234"));
+        assertTrue(validator.isPostcodeValid("1234")==null);
     }
 
     @Test
     public void IsExactlyForNumberDigit_WithCharacters_False(){
-        assertFalse((validator.IsExactlyFourNumberDigit("abcd")));
+        assertFalse((validator.isPostcodeValid("abcd"))==null);
     }
 
     @Test
     public void IsExactlyForNumberDigit_DigitsAndCharacters_False(){
-        assertFalse((validator.IsExactlyFourNumberDigit("12cd")));
+        assertFalse((validator.isPostcodeValid("12cd"))==null);
     }
 
     @Test
     public void IsExactlyForNumberDigit_MoreThanFour_False(){
-        assertFalse((validator.IsExactlyFourNumberDigit("123456")));
+        assertFalse((validator.isPostcodeValid("123456"))==null);
     }
 
     @Test
     public void IsExactlyForNumberDigit_MoreThanFour_WithCharacters_False() {
-        assertFalse((validator.IsExactlyFourNumberDigit("123avb")));
+        assertFalse((validator.isPostcodeValid("123avb"))==null);
     }
 
 

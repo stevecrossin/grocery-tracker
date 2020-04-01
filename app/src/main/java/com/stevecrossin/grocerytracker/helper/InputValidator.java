@@ -1,5 +1,6 @@
 package com.stevecrossin.grocerytracker.helper;
 
+import android.provider.FontRequest;
 import android.text.TextUtils;
 import android.util.Patterns;
 
@@ -11,6 +12,7 @@ import java.util.regex.Pattern;
 public class InputValidator {
 
     private static final String POSTCODE_NUMBER = "\\d{4}";
+    private static final int MIN_PASSWORD_LENGTH = 5;
     public static final String EMAIL_ADDRESS
             =
             "[a-zA-Z0-9\\+\\.\\_\\%\\-\\+]{1,256}" +
@@ -21,10 +23,30 @@ public class InputValidator {
                     "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,25}" +
                     ")+";
 
+    private static final String EMPTY_NAME_ERROR = "Name is required";
+    private static final String EMPTY_AGE_ERROR = "Age is required";
+    private static final String EMPTY_HEIGHT_ERROR = "Height is required";
+    private static final String EMPTY_WEIGHT_ERROR = "Weight is required";
+    private static final String EMPTY_POSTCODE_ERROR = "Postcode is required";
+    private static final String EMPTY_ADULT_NUMBER_ERROR = "Adult Number is required";
+    private static final String EMPTY_CHILD_NUMBER_ERROR = "Children Number is required";
+    private static final String EMPTY_FAMILY_NUMBER_ERROR = "Family NUmber is required";
+    private static final String EMPTY_EMAIL_ERROR = "Email is required";
+    private static final String FORMAT_EMAIL_ERROR = "Email is not in correct format";
+    private static final String EMPTY_PASSWORD_ERROR = "Password is required";
+    private static final String LENGTH_PASSWORD_ERROR = "Password need to be longer than 5 characters";
+    private static final String EMPTY_GENDER_ERROR = "Gender is required";
+    private static final String EMPTY_SHOP_FREQUENCY_ERROR = "Shopping Frequency is required";
+
 
     public static final boolean IsNotEmpty(String field)
     {
         return (!Strings.isEmptyOrWhitespace(field));
+    }
+
+    public static final boolean IsLengthGreaterThan(String field, int targetLength)
+    {
+        return (field.length()>targetLength);
     }
 
     public static final boolean IsMatchedEmailPattern(String field)
@@ -37,70 +59,92 @@ public class InputValidator {
         return Pattern.compile(POSTCODE_NUMBER).matcher(field).matches();
     }
 
-    public static final boolean isPostcodeValid(String field)
+    public static final String isPostcodeValid(String field)
     {
-        boolean isValid = IsExactlyFourNumberDigit(field);
-        return isValid;
+        if  (!IsNotEmpty(field))
+            return EMPTY_POSTCODE_ERROR;
+        return null;
     }
 
-    public static final boolean isNameValid(String field)
+    public static final String isNameValid(String field)
     {
-        boolean isValid = IsNotEmpty(field);
-        return isValid;
+        if  (!IsNotEmpty(field))
+            return EMPTY_NAME_ERROR;
+        return null;
     }
 
-    public static final boolean isWeightValid(String field)
+    public static final String isAgeValid(String field)
     {
-        boolean isValid = IsNotEmpty(field);
-        return isValid;
+        if  (!IsNotEmpty(field))
+            return EMPTY_AGE_ERROR;
+        return null;
     }
 
-    public static final boolean isHeightValid(String field)
+    public static final String isWeightValid(String field)
     {
-        boolean isValid = IsNotEmpty(field);
-        return isValid;
+        if  (!IsNotEmpty(field))
+            return EMPTY_WEIGHT_ERROR;
+        return null;
     }
 
-    public static final boolean isGenderValid(String field)
+    public static final String isHeightValid(String field)
     {
-        boolean isValid = IsNotEmpty(field);
-        return isValid;
+        if  (!IsNotEmpty(field))
+            return EMPTY_HEIGHT_ERROR;
+        return null;
     }
 
-    public static final boolean isShopFrequencyValid(String field)
+    public static final String isGenderValid(String field)
     {
-        boolean isValid = IsNotEmpty(field);
-        return isValid;
+        if  (!IsNotEmpty(field))
+            return EMPTY_GENDER_ERROR;
+        return null;
     }
 
-    public static final boolean isFamilyNumberValid(String field)
+    public static final String isShopFrequencyValid(String field)
     {
-        boolean isValid = IsNotEmpty(field);
-        return isValid;
+        if  (!IsNotEmpty(field))
+            return EMPTY_SHOP_FREQUENCY_ERROR;
+        return null;
     }
 
-    public static final boolean isAdultNumberValid(String field)
+    public static final String isFamilyNumberValid(String field)
     {
-        boolean isValid = IsNotEmpty(field);
-        return isValid;
+        if  (!IsNotEmpty(field))
+            return EMPTY_FAMILY_NUMBER_ERROR;
+        return null;
     }
 
-    public static final boolean isChildNumberValid(String field)
+    public static final String isAdultNumberValid(String field)
     {
-        boolean isValid = IsNotEmpty(field);
-        return isValid;
+        if  (!IsNotEmpty(field))
+            return EMPTY_ADULT_NUMBER_ERROR;
+        return null;
     }
 
-    public static final boolean isEmailValid(String field)
+    public static final String isChildNumberValid(String field)
     {
-        boolean isValid = IsNotEmpty(field) && IsMatchedEmailPattern(field);
-        return isValid;
+        if  (!IsNotEmpty(field))
+            return EMPTY_CHILD_NUMBER_ERROR;
+        return null;
     }
 
-    public static final boolean isPasswordValid(String field)
+    public static final String isEmailValid(String field)
     {
-        boolean isValid = IsNotEmpty(field);
-        return isValid;
+        if  (!IsNotEmpty(field))
+            return EMPTY_EMAIL_ERROR;
+        if  (!IsMatchedEmailPattern(field))
+            return FORMAT_EMAIL_ERROR;
+        return null;
+    }
+
+    public static final String isPasswordValid(String field)
+    {
+        if  (!IsNotEmpty(field))
+            return EMPTY_PASSWORD_ERROR;
+        if  (!IsMatchedEmailPattern(field))
+            return LENGTH_PASSWORD_ERROR;
+        return null;
     }
 
 }

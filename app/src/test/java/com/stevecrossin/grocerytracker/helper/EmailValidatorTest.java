@@ -15,18 +15,19 @@ public class EmailValidatorTest {
      */
     @Test
     public void IsEmailValid_Correct(){
-        assertTrue(validator.isEmailValid("abc@gmail.com"));
+
+        assertTrue(validator.isEmailValid("abc@gmail.com")==null);
     }
 
     @Test
     public void IsEmailValid_WrongFormat_False(){
-        assertFalse(validator.isEmailValid("abcgmail.com"));
+        assertFalse(validator.isEmailValid("abcgmail.com")==null);
     }
 
 
     @Test
     public void IsEmailValid_IsEmpty_False(){
-        assertFalse(validator.isEmailValid(""));
+        assertFalse(validator.isEmailValid("")==null);
     }
 
 }
