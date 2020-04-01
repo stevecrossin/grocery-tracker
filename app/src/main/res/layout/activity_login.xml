@@ -38,47 +38,73 @@
                 style="@style/header"
                 android:text="@string/login_title"
                 />
-
-            <AutoCompleteTextView
-                android:id="@+id/enterUsername"
-                style="@style/inputField"
+            <LinearLayout
+                style="@style/fieldGroup"
                 android:layout_width="match_parent"
-                android:hint="@string/emailAddressHint"
-                android:inputType="textEmailAddress"
-                 />
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                >
 
-            <EditText
-                android:id="@+id/enterPassword"
-                style="@style/inputField"
+                <TextView
+                    style="@style/labelText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/email" />
+
+                <AutoCompleteTextView
+                    android:id="@+id/enterUsername"
+                    style="@style/inputField"
+                    android:layout_width="match_parent"
+                    android:hint="@string/emailAddressHint"
+                    android:inputType="textEmailAddress"
+                    />
+            </LinearLayout>
+            <LinearLayout
+                style="@style/fieldGroup"
                 android:layout_width="match_parent"
-                android:autofillHints=""
-                android:hint="@string/enterPasswordHint"
-                android:inputType="textPassword"
-                />
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                >
+
+                <TextView
+                    style="@style/labelText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/password" />
+
+                <EditText
+                    android:id="@+id/enterPassword"
+                    style="@style/inputField"
+                    android:layout_width="match_parent"
+                    android:autofillHints=""
+                    android:hint="@string/enterPasswordHint"
+                    android:inputType="textPassword"
+                    />
+            </LinearLayout>
+
+
+
+
+
+
 
             <Button
                 android:id="@+id/loginButton"
+                style="@style/button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:background="@color/secondaryColor"
                 android:text="@string/signInLabel"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/enterPassword" />
+                android:layout_marginTop="16dp"
+                 />
 
             <Button
                 android:id="@+id/signUpButton"
+                style="@style/button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:background="@color/secondaryColor"
                 android:onClick="navSignUp"
                 android:text="@string/signUp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/loginButton" />
+               />
 
         </LinearLayout>
     </ScrollView>
