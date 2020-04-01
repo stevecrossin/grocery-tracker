@@ -33,42 +33,28 @@
 
             <TextView
                 android:id="@+id/loginTitle"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="24dp"
-                android:gravity="center_horizontal"
+                style="@style/header"
                 android:text="@string/login_title"
-                android:textAlignment="center"
-                android:textSize="24sp" />
+                />
 
             <AutoCompleteTextView
                 android:id="@+id/enterUsername"
+                style="@style/inputField"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:layout_marginBottom="16dp"
-                android:ems="10"
                 android:hint="@string/emailAddressHint"
                 android:inputType="textEmailAddress"
-                android:background="@color/primaryLightColor"
-                app:layout_constraintBottom_toTopOf="@+id/enterPassword"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/loginTitle" />
+                 />
 
             <EditText
                 android:id="@+id/enterPassword"
+                style="@style/inputField"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:layout_marginBottom="16dp"
                 android:autofillHints=""
-                android:ems="10"
                 android:hint="@string/enterPasswordHint"
                 android:inputType="textPassword"
-                android:background="@color/primaryLightColor"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/enterUsername" />
+                />
 
             <Button
                 android:id="@+id/loginButton"
