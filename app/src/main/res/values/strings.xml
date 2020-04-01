@@ -5,7 +5,13 @@
     <string name="enterPasswordHint">Enter a password</string>
     <string name="emailAddressHint">Enter email address</string>
     <string name="sign_up_detail_label">Sign UP</string>
+    <string name="personalInfo">Personal Information</string>
+    <string name="accountInfo">Accout Information</string>
+    <string name="householdInfo">Household Information</string>
+    <string name="shoppingInfo">Shopping Information</string>
     <string name="name">Name</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
     <string name="age">Age</string>
     <string name="Height">Height</string>
     <string name="weight">Weight</string>
@@ -13,7 +19,7 @@
     <string name="postcode">Postcode</string>
     <string name="household">Number in household</string>
     <string name="makeup">Make-up in house</string>
-    <string name="btnSubmit">Submit</string>
+    <string name="btnSubmit">Create Account</string>
     <string name="lblCancel">Cancel</string>
     <string name="lblWelcome">This is where welcome goes</string>
     <string name="signUp">No Account? Sign Up</string>
@@ -38,6 +44,7 @@
     <string name="lblNumberHouse">Number of people in your household</string>
     <string name="lblNumberAdults">Number of adults in your household</string>
     <string name="lblNumberChild">Number of children in your household</string>
+    <string name="lblShoppingFrequency">How often do you go to the shop?</string>
     <string name="lblPassword">Enter your preferred password</string>
     <string name="receiptLabelName">Enter a name for your receipt</string>
     <string name="lblNoFile">No file selected</string>
@@ -55,6 +62,8 @@
         <item>Select Gender</item>
         <item>Male</item>
         <item>Female</item>
+        <item>Prefer Not To Say</item>
+        <item>Other</item>
     </string-array>
     <string-array name="shopnumber">
         <item>Select how often you shop</item>
