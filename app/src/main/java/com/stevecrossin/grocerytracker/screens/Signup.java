@@ -10,11 +10,16 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.stevecrossin.grocerytracker.R;
 import com.stevecrossin.grocerytracker.database.AppDataRepo;
 import com.stevecrossin.grocerytracker.entities.User;
+import com.stevecrossin.grocerytracker.helper.InputValidator;
+import com.stevecrossin.grocerytracker.helper.TextValidator;
 import com.stevecrossin.grocerytracker.other.PasswordScrambler;
+
+import javax.xml.validation.Validator;
 
 public class Signup extends AppCompatActivity {
     Button Bsubmit, Bcancel;
@@ -23,16 +28,13 @@ public class Signup extends AppCompatActivity {
     private Login.LoginTask authenticationTask = null;
     private Spinner cbGender;
     private Spinner cbShopNumber;
-
+    private InputValidator validator;
     private int selectedGenderPosition=0;
     private int selectedShopNumber=0;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_signup);
-        repository = new AppDataRepo(this);
 
+    private void InitializeView()
+    {
         etName = findViewById(R.id.etName);
         etAge = findViewById(R.id.etAge);
         etHeight = findViewById(R.id.etHeight);
@@ -75,6 +77,173 @@ public class Signup extends AppCompatActivity {
             }
         });
 
+
+    }
+
+    private void ValidateOnTheFly()
+    {
+        etName.setOnFocusChangeListener(new View.OnFocusChangeListener(){
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    String text = etName.getText().toString();
+                    String error = validator.isNameValid(text);
+                    if (error!=null)
+                        etName.setError(error);
+
+                }
+            }
+        });
+
+        etAge.setOnFocusChangeListener(new View.OnFocusChangeListener(){
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    String text = etAge.getText().toString();
+                    String error = validator.isAgeValid(text);
+                    if (error!=null)
+                        etAge.setError(error);
+                }
+            }
+        });
+
+        etHeight.setOnFocusChangeListener(new View.OnFocusChangeListener(){
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    String text = etHeight.getText().toString();
+                    String error = validator.isHeightValid(text);
+                    if (error!=null)
+                        etHeight.setError(error);
+                }
+            }
+        });
+
+        etWeight.setOnFocusChangeListener(new View.OnFocusChangeListener(){
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    String text = etWeight.getText().toString();
+                    String error = validator.isWeightValid(text);
+                    if (error!=null)
+                        etWeight.setError(error);
+                }
+            }
+        });
+
+        etEmail.setOnFocusChangeListener(new View.OnFocusChangeListener(){
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    String text = etEmail.getText().toString();
+                    String error = validator.isEmailValid(text);
+                    if (error!=null)
+                        etEmail.setError(error);
+                }
+            }
+        });
+
+
+        etPassword.setOnFocusChangeListener(new View.OnFocusChangeListener(){
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    String text = etPassword.getText().toString();
+                    String error = validator.isPasswordValid(text);
+                    if (error!=null)
+                        etPassword.setError(error);
+
+                }
+            }
+        });
+
+        //Gender
+//        etAge.setOnFocusChangeListener(new View.OnFocusChangeListener(){
+//            @Override
+//            public void onFocusChange(View v, boolean hasFocus) {
+//                if (!hasFocus) {
+//                    String text = etAge.getText().toString();
+//                    String error = validator.isAgeValid(text);
+//                    if (error!=null)
+//                        etAge.setError(error);
+//                }
+//            }
+//        });
+
+        etPostcode.setOnFocusChangeListener(new View.OnFocusChangeListener(){
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    String text = etPostcode.getText().toString();
+                    String error = validator.isPostcodeValid(text);
+                    if (error!=null)
+                        etPostcode.setError(error);
+                }
+            }
+        });
+
+        etNumberOfHouseHoldMember.setOnFocusChangeListener(new View.OnFocusChangeListener(){
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    String text = etNumberOfHouseHoldMember.getText().toString();
+                    String error = validator.isFamilyNumberValid(text);
+                    if (error!=null)
+                        etNumberOfHouseHoldMember.setError(error);
+                }
+            }
+        });
+
+        etHouseholdAdults.setOnFocusChangeListener(new View.OnFocusChangeListener(){
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    String text = etHouseholdAdults.getText().toString();
+                    String error = validator.isAdultNumberValid(text);
+                    if (error!=null)
+                        etHouseholdAdults.setError(error);
+                }
+            }
+        });
+
+        etHouseholdChildren.setOnFocusChangeListener(new View.OnFocusChangeListener(){
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    String text = etHouseholdChildren.getText().toString();
+                    String error = validator.isChildNumberValid(text);
+                    if (error!=null)
+                        etHouseholdChildren.setError(error);
+                }
+            }
+        });
+
+        //Frequency
+//        etHouseholdAdults.setOnFocusChangeListener(new View.OnFocusChangeListener(){
+//            @Override
+//            public void onFocusChange(View v, boolean hasFocus) {
+//                if (!hasFocus) {
+//                    String text = etHouseholdAdults.getText().toString();
+//                    String error = validator.isAdultNumberValid(text);
+//                    if (error!=null)
+//                        etHouseholdAdults.setError(error);
+//                }
+//            }
+//        });
+
+
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_signup);
+        repository = new AppDataRepo(this);
+        InitializeView();
+        ValidateOnTheFly();
+
+
+
     }
 
     /*
@@ -106,41 +275,41 @@ public class Signup extends AppCompatActivity {
             shopNumberValue = getResources().getStringArray(R.array.shopnumber)[selectedShopNumber];
 
 
-        String sTotalHouseholdMember = etNumberOfHouseHoldMember.getText().toString();
-        int totalHouseholdMember = Integer.parseInt(sTotalHouseholdMember);
-
-        String sHouseholdAdults = etHouseholdAdults.getText().toString();
-        int householdAdults = Integer.parseInt(sHouseholdAdults);
-
-        String sHouseholdChildren = etHouseholdChildren.getText().toString();
-        int householdChildren = Integer.parseInt(sHouseholdChildren);
-
-        if (totalHouseholdMember != (householdAdults + householdChildren)) {
-            etNumberOfHouseHoldMember.setError("Household members don't match");
-            focusView = etNumberOfHouseHoldMember;
-            focusView.requestFocus();
-            return;
-
-            }
-
-
-
-        String sAge = etAge.getText().toString();
-        int age = Integer.parseInt(sAge);
-
-        if (age < 16 || age > 100 )
-        {
-            etAge.setError("You are not eligible to sign up");
-            focusView = etAge;
-            focusView.requestFocus();
-            //Toast.makeText(Signup.this, "You are not eligible to sign up", Toast.LENGTH_LONG).show();
-            return;
-        }
-        //else if (age > 100)
-        //{
-         //   Toast.makeText(Signup.this, "Please enter a valid age", Toast.LENGTH_LONG).show();
-           // return;
-        //}
+//        String sTotalHouseholdMember = etNumberOfHouseHoldMember.getText().toString();
+//        int totalHouseholdMember = Integer.parseInt(sTotalHouseholdMember);
+//
+//        String sHouseholdAdults = etHouseholdAdults.getText().toString();
+//        int householdAdults = Integer.parseInt(sHouseholdAdults);
+//
+//        String sHouseholdChildren = etHouseholdChildren.getText().toString();
+//        int householdChildren = Integer.parseInt(sHouseholdChildren);
+//
+//        if (totalHouseholdMember != (householdAdults + householdChildren)) {
+//            etNumberOfHouseHoldMember.setError("Household members don't match");
+//            focusView = etNumberOfHouseHoldMember;
+//            focusView.requestFocus();
+//            return;
+//
+//            }
+//
+//
+//
+//        String sAge = etAge.getText().toString();
+//        int age = Integer.parseInt(sAge);
+//
+//        if (age < 16 || age > 100 )
+//        {
+//            etAge.setError("You are not eligible to sign up");
+//            focusView = etAge;
+//            focusView.requestFocus();
+//            //Toast.makeText(Signup.this, "You are not eligible to sign up", Toast.LENGTH_LONG).show();
+//            return;
+//        }
+//        //else if (age > 100)
+//        //{
+//         //   Toast.makeText(Signup.this, "Please enter a valid age", Toast.LENGTH_LONG).show();
+//           // return;
+//        //}
 
 
         final User newUser;
@@ -181,4 +350,6 @@ public class Signup extends AppCompatActivity {
         Intent intent = new Intent (this, Login.class);
         startActivity(intent);
     }
+
+
 }
