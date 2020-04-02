@@ -4,7 +4,9 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -19,6 +21,8 @@ import com.stevecrossin.grocerytracker.helper.InputValidator;
 import com.stevecrossin.grocerytracker.helper.TextValidator;
 import com.stevecrossin.grocerytracker.other.PasswordScrambler;
 
+import java.util.ArrayList;
+
 import javax.xml.validation.Validator;
 
 public class Signup extends AppCompatActivity {
@@ -29,8 +33,10 @@ public class Signup extends AppCompatActivity {
     private Spinner cbGender;
     private Spinner cbShopNumber;
     private InputValidator validator;
+    private TextValidator textValidator;
     private int selectedGenderPosition=0;
     private int selectedShopNumber=0;
+    ArrayAdapter<CharSequence> adapter;
 
 
     private void InitializeView()
@@ -51,7 +57,7 @@ public class Signup extends AppCompatActivity {
         Bsubmit = findViewById(R.id.Bsubmit);
         Bcancel = findViewById(R.id.Bcancel);
 
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.gender, android.R.layout.simple_spinner_dropdown_item);
+        adapter = ArrayAdapter.createFromResource(this, R.array.gender, android.R.layout.simple_spinner_dropdown_item);
 
         cbGender.setAdapter(adapter);
         cbGender.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -80,158 +86,173 @@ public class Signup extends AppCompatActivity {
 
     }
 
+    private void ValidateName()
+    {
+        textValidator = new TextValidator(etName);
+        textValidator.validateName(etName.getText().toString());
+    };
+
+    private void ValidateAge()
+    {
+        textValidator = new TextValidator(etAge);
+        textValidator.validateAge(etAge.getText().toString());
+    }
+
+    private void ValidateHeight()
+    {
+        textValidator = new TextValidator(etHeight);
+        textValidator.validateHeight(etHeight.getText().toString());
+    }
+
+    private void ValidateWeight()
+    {
+        textValidator = new TextValidator(etWeight);
+        textValidator.validateWeight(etWeight.getText().toString());
+    }
+
+    private void ValidateEmail()
+    {
+        textValidator = new TextValidator(etEmail);
+        textValidator.validateEmail(etEmail.getText().toString());
+    }
+
+    private void ValidatePassword()
+    {
+        textValidator = new TextValidator(etPassword);
+        textValidator.validatePassword(etPassword.getText().toString());
+    }
+
+    private void ValidatePostcode()
+    {
+        textValidator = new TextValidator(etPostcode);
+        textValidator.validatePostcode(etPostcode.getText().toString());
+    }
+
+    private void ValidateHouseholdNumber()
+    {
+        textValidator = new TextValidator(etNumberOfHouseHoldMember);
+        textValidator.validateHouseholdNumber(etNumberOfHouseHoldMember.getText().toString());
+    }
+
+    private void ValidateAdultNumber()
+    {
+        textValidator = new TextValidator(etHouseholdAdults);
+        textValidator.validateAdultNumber(etHouseholdAdults.getText().toString());
+    }
+
+    private void ValidateChildNumber()
+    {
+        textValidator = new TextValidator(etHouseholdChildren);
+        textValidator.validateChildNumber(etHouseholdChildren.getText().toString());
+    }
+
+
+    // Missing Gender and shopping Frequency
+
+
+
     private void ValidateOnTheFly()
     {
+        // Missing Gender and shopping Frequency
+
         etName.setOnFocusChangeListener(new View.OnFocusChangeListener(){
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    String text = etName.getText().toString();
-                    String error = validator.isNameValid(text);
-                    if (error!=null)
-                        etName.setError(error);
-
-                }
+                if (!hasFocus) ValidateName();
             }
         });
 
         etAge.setOnFocusChangeListener(new View.OnFocusChangeListener(){
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    String text = etAge.getText().toString();
-                    String error = validator.isAgeValid(text);
-                    if (error!=null)
-                        etAge.setError(error);
-                }
+                if (!hasFocus) ValidateAge();
             }
         });
 
         etHeight.setOnFocusChangeListener(new View.OnFocusChangeListener(){
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    String text = etHeight.getText().toString();
-                    String error = validator.isHeightValid(text);
-                    if (error!=null)
-                        etHeight.setError(error);
-                }
+                if (!hasFocus) ValidateHeight();
             }
         });
 
         etWeight.setOnFocusChangeListener(new View.OnFocusChangeListener(){
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    String text = etWeight.getText().toString();
-                    String error = validator.isWeightValid(text);
-                    if (error!=null)
-                        etWeight.setError(error);
-                }
+                if (!hasFocus) ValidateWeight();
             }
         });
 
         etEmail.setOnFocusChangeListener(new View.OnFocusChangeListener(){
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    String text = etEmail.getText().toString();
-                    String error = validator.isEmailValid(text);
-                    if (error!=null)
-                        etEmail.setError(error);
-                }
+                if (!hasFocus) ValidateEmail();
             }
         });
-
 
         etPassword.setOnFocusChangeListener(new View.OnFocusChangeListener(){
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    String text = etPassword.getText().toString();
-                    String error = validator.isPasswordValid(text);
-                    if (error!=null)
-                        etPassword.setError(error);
-
-                }
+                if (!hasFocus) ValidatePassword();
             }
         });
 
         //Gender
-//        etAge.setOnFocusChangeListener(new View.OnFocusChangeListener(){
-//            @Override
-//            public void onFocusChange(View v, boolean hasFocus) {
-//                if (!hasFocus) {
-//                    String text = etAge.getText().toString();
-//                    String error = validator.isAgeValid(text);
-//                    if (error!=null)
-//                        etAge.setError(error);
-//                }
-//            }
-//        });
+
 
         etPostcode.setOnFocusChangeListener(new View.OnFocusChangeListener(){
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    String text = etPostcode.getText().toString();
-                    String error = validator.isPostcodeValid(text);
-                    if (error!=null)
-                        etPostcode.setError(error);
-                }
+                if (!hasFocus) ValidatePostcode();
             }
         });
 
         etNumberOfHouseHoldMember.setOnFocusChangeListener(new View.OnFocusChangeListener(){
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    String text = etNumberOfHouseHoldMember.getText().toString();
-                    String error = validator.isFamilyNumberValid(text);
-                    if (error!=null)
-                        etNumberOfHouseHoldMember.setError(error);
-                }
+                if (!hasFocus) ValidateHouseholdNumber();
             }
         });
 
         etHouseholdAdults.setOnFocusChangeListener(new View.OnFocusChangeListener(){
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    String text = etHouseholdAdults.getText().toString();
-                    String error = validator.isAdultNumberValid(text);
-                    if (error!=null)
-                        etHouseholdAdults.setError(error);
-                }
+                if (!hasFocus) ValidateAdultNumber();
             }
         });
 
         etHouseholdChildren.setOnFocusChangeListener(new View.OnFocusChangeListener(){
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    String text = etHouseholdChildren.getText().toString();
-                    String error = validator.isChildNumberValid(text);
-                    if (error!=null)
-                        etHouseholdChildren.setError(error);
-                }
+                if (!hasFocus) ValidateChildNumber();
             }
         });
 
         //Frequency
-//        etHouseholdAdults.setOnFocusChangeListener(new View.OnFocusChangeListener(){
-//            @Override
-//            public void onFocusChange(View v, boolean hasFocus) {
-//                if (!hasFocus) {
-//                    String text = etHouseholdAdults.getText().toString();
-//                    String error = validator.isAdultNumberValid(text);
-//                    if (error!=null)
-//                        etHouseholdAdults.setError(error);
-//                }
-//            }
-//        });
 
 
+    }
+
+    private boolean isFormValid()
+    {
+        ValidateName();
+        ValidateAge();
+        ValidateEmail();
+        ValidatePassword();
+        ValidateHeight();
+        ValidateWeight();
+        ValidatePostcode();
+        ValidateHouseholdNumber();
+        ValidateAdultNumber();
+        ValidateChildNumber();
+
+
+
+        // Missing Gender and shopping Frequency
+        return (etName.getError()==null) && (etAge.getError()==null) && (etHeight.getError()==null)
+                && (etWeight.getError()==null) && (etEmail.getError()==null) && (etPassword.getError()==null)
+                && (etPostcode.getError()==null)
+                && (etNumberOfHouseHoldMember.getError()==null) && (etHouseholdAdults.getError()==null) && (etHouseholdChildren.getError()==null);
     }
 
     @Override
@@ -241,9 +262,6 @@ public class Signup extends AppCompatActivity {
         repository = new AppDataRepo(this);
         InitializeView();
         ValidateOnTheFly();
-
-
-
     }
 
     /*
@@ -269,28 +287,34 @@ public class Signup extends AppCompatActivity {
 
         String shopNumberValue = "";
         if (selectedShopNumber == 0) {
+
             Toast.makeText(Signup.this, "Please select how often you shop", Toast.LENGTH_LONG).show();
             return;
         } else
             shopNumberValue = getResources().getStringArray(R.array.shopnumber)[selectedShopNumber];
 
+        if (!isFormValid())
+        {
+            Toast.makeText(Signup.this, "Form is invalid", Toast.LENGTH_LONG).show();
+            return;
+        }
 
-//        String sTotalHouseholdMember = etNumberOfHouseHoldMember.getText().toString();
-//        int totalHouseholdMember = Integer.parseInt(sTotalHouseholdMember);
-//
-//        String sHouseholdAdults = etHouseholdAdults.getText().toString();
-//        int householdAdults = Integer.parseInt(sHouseholdAdults);
-//
-//        String sHouseholdChildren = etHouseholdChildren.getText().toString();
-//        int householdChildren = Integer.parseInt(sHouseholdChildren);
-//
-//        if (totalHouseholdMember != (householdAdults + householdChildren)) {
-//            etNumberOfHouseHoldMember.setError("Household members don't match");
-//            focusView = etNumberOfHouseHoldMember;
-//            focusView.requestFocus();
-//            return;
-//
-//            }
+        String sTotalHouseholdMember = etNumberOfHouseHoldMember.getText().toString();
+        int totalHouseholdMember = Integer.parseInt(sTotalHouseholdMember);
+
+        String sHouseholdAdults = etHouseholdAdults.getText().toString();
+        int householdAdults = Integer.parseInt(sHouseholdAdults);
+
+        String sHouseholdChildren = etHouseholdChildren.getText().toString();
+        int householdChildren = Integer.parseInt(sHouseholdChildren);
+
+        if (totalHouseholdMember != (householdAdults + householdChildren)) {
+            etNumberOfHouseHoldMember.setError("Household members don't match");
+            focusView = etNumberOfHouseHoldMember;
+            focusView.requestFocus();
+            return;
+
+            }
 //
 //
 //
