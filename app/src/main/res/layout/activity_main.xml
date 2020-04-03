@@ -66,7 +66,21 @@
         app:layout_constraintTop_toBottomOf="@+id/SurveyBtn"
         app:srcCompat="@drawable/aboutglobe" />
 
-      <Button
+    <Button
+        android:id="@+id/receipts"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="@color/secondaryColor"
+        android:onClick="receipts"
+        android:text="@string/receipts"
+        app:layout_constraintBottom_toTopOf="@id/logout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
         android:id="@+id/logout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

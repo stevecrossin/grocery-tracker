@@ -58,6 +58,8 @@
     <string name="AboutText"><![CDATA[<b>Thank you for agreeing to join our \'Grocery Tracker\' research study.</b><br> What we eat and how much we eat has substantial health, social and economic implications for individuals, families, and societies. We wish to track household purchases over time so that we can use this data to inform policy and practice to ensure healthy foods and beverage are affordable for everyone. With the simple click of a button your anonymized purchase record will be sent to our database where it will be then stored in our cloud for further analysis. You have the option to opt out of the study at any time.]]></string>
     <string name="uploadReceiptTitle">Share your receipts</string>
     <string name="globe_logo_desc">GLOBE logo</string>
+    <string name="no_receipts_added_msg">No receipts added</string>
+    <string name="receipts">Receipts</string>
     <string-array name="gender">
         <item>Select Gender</item>
         <item>Male</item>

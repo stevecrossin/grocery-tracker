@@ -22,7 +22,7 @@
         <activity android:name=".screens.MainActivity" />
         <activity android:name=".screens.Signup" />
         <activity android:name=".screens.Welcome"/>
-        <activity android:name=".screens.Receipts"/>
+        <activity android:name=".screens.AddReceipt" />
         <activity android:name=".screens.FaqscreenActivity" />
         <activity android:name=".screens.About"/>
     </application>

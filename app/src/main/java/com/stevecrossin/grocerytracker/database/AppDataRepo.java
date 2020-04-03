@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteConstraintException;
 
 
+import com.stevecrossin.grocerytracker.entities.Receipt;
 import com.stevecrossin.grocerytracker.entities.ReceiptsDao;
 import com.stevecrossin.grocerytracker.entities.User;
 import com.stevecrossin.grocerytracker.entities.UserDao;
@@ -17,6 +18,7 @@ public class AppDataRepo {
 
     public AppDataRepo(Context context) {
         userDao = AppDb.getDatabase(context).userDao();
+        receiptsDao = AppDb.getDatabase(context).itemsDao();
     }
 
     /**
@@ -24,11 +26,10 @@ public class AppDataRepo {
      */
     public boolean insertUser(User user) {
         try {
-        userDao.insertUser(user);
-        }
-        catch (SQLiteConstraintException exc){
+            userDao.insertUser(user);
+        } catch (SQLiteConstraintException exc){
             return false;
-            }
+        }
         return true;
     }
 
@@ -40,7 +41,8 @@ public class AppDataRepo {
     }
 
     /**
-     * Perform operation to update the login status for the user. If the login status is not true
+     * Perform operation to update the login status for the user. If the login status is not true, it will also perform the deleteAllIngredient, deleteAllIntolerance
+     * and then pantry.deleteAll operations
      */
     public void updateLoginStatus(int userId, boolean isLogin) {
         userDao.updateLoginStatus(userId, isLogin);
@@ -55,5 +57,13 @@ public class AppDataRepo {
 
     public List<User> getAllUsers() {
         return userDao.getAllUsers();
+    }
+
+    public void insertReceipt(Receipt receipt) {
+        receiptsDao.insertReceipt(receipt);
+    }
+
+    public List<Receipt> getReceiptsForUser(String email) {
+        return receiptsDao.getReceiptsForUser(email);
     }
 }
