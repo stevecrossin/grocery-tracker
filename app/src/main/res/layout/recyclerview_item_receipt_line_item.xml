@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_height="wrap_content">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:cardCornerRadius="4dp"
+        app:layout_constraintStart_toStartOf="parent"
         android:layout_margin="10dp"
         android:padding="10dp"
-        app:cardCornerRadius="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -25,9 +25,10 @@
                 android:layout_height="wrap_content"
                 android:paddingStart="20dp"
                 android:paddingLeft="20dp"
+                android:paddingEnd="20dp"
+                android:paddingRight="20dp"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
-                android:text="Boiled sausage in hot sauce"
                 android:textColor="@color/primaryTextColor"
                 android:textSize="20sp"
                 android:textStyle="bold"
@@ -43,8 +44,8 @@
                 android:layout_marginStart="5dp"
                 android:layout_marginEnd="5dp"
                 android:background="@android:color/darker_gray"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/TextView_Item_Description" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -62,23 +63,22 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingBottom="10dp"
-                    android:text="Unit Price"
-                    android:textColor="@android:color/tertiary_text_dark"
-                    android:textSize="16sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
+                    android:text="Unit Price"
+                    android:textColor="@android:color/tertiary_text_dark"
+                    android:textSize="16sp"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/TextView_UnitPrice_Value"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="$54.32"
                     android:textColor="@color/primaryTextColor"
+                    app:layout_constraintStart_toStartOf="parent"
                     android:textSize="16sp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/TextView_UnitPrice_Label" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -97,23 +97,22 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingBottom="10dp"
-                    android:text="Quantity"
-                    android:textColor="@android:color/tertiary_text_dark"
-                    android:textSize="16sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
+                    android:text="Quantity"
+                    android:textColor="@android:color/tertiary_text_dark"
+                    android:textSize="16sp"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/TextView_Quantity_Value"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="10"
                     android:textColor="@color/primaryTextColor"
+                    app:layout_constraintStart_toStartOf="parent"
                     android:textSize="16sp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/TextView_Quantity_Label" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -132,23 +131,22 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingBottom="10dp"
-                    android:text="Price"
-                    android:textColor="@android:color/tertiary_text_dark"
-                    android:textSize="16sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
+                    android:text="Price"
+                    android:textColor="@android:color/tertiary_text_dark"
+                    android:textSize="16sp"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/TextView_Price_Value"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="$543.20"
                     android:textColor="@color/primaryTextColor"
+                    app:layout_constraintStart_toStartOf="parent"
                     android:textSize="16sp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/TextView_Price_Label" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>

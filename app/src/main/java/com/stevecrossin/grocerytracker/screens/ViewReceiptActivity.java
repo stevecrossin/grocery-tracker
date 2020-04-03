@@ -1,6 +1,7 @@
 package com.stevecrossin.grocerytracker.screens;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -12,6 +13,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.stevecrossin.grocerytracker.R;
@@ -47,10 +49,16 @@ public class ViewReceiptActivity extends AppCompatActivity {
             return;
         }
 
+        final ConstraintLayout container = findViewById(R.id.ConstraintLayout_Container);
+        final TextView receiptNameTextView = findViewById(R.id.TextView_Receipt_Name);
+        receiptNameTextView.setText(receipt.getReceiptItemName());
+        final TextView receiptTimeTextView = findViewById(R.id.TextView_Receipt_Time);
+        receiptTimeTextView.setText(receipt.getReceiptTime());
         final RecyclerView receiptItemsRecyclerView = findViewById(R.id.RecyclerView_Receipt_Items);
         receiptItemsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         final ProgressBar progressBar = findViewById(R.id.progressBar);
-        receiptItemsRecyclerView.setVisibility(View.GONE);
+
+        container.setVisibility(View.GONE);
         progressBar.setVisibility(View.VISIBLE);
         AsyncTask.execute(new Runnable() {
             @Override
@@ -75,7 +83,7 @@ public class ViewReceiptActivity extends AppCompatActivity {
                         public void run() {
                             ReceiptItemsAdapter receiptItemsAdapter = new ReceiptItemsAdapter(headerFinal, receiptLineItems);
                             receiptItemsRecyclerView.setAdapter(receiptItemsAdapter);
-                            receiptItemsRecyclerView.setVisibility(View.VISIBLE);
+                            container.setVisibility(View.VISIBLE);
                             progressBar.setVisibility(View.GONE);
                         }
                     });
