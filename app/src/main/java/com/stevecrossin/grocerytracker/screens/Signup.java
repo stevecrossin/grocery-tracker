@@ -143,8 +143,6 @@ public class Signup extends AppCompatActivity {
 
     // Missing Gender and shopping Frequency
 
-
-
     private void ValidateOnTheFly()
     {
         // Missing Gender and shopping Frequency
@@ -193,7 +191,6 @@ public class Signup extends AppCompatActivity {
 
         //Gender
 
-
         etPostcode.setOnFocusChangeListener(new View.OnFocusChangeListener(){
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -224,9 +221,7 @@ public class Signup extends AppCompatActivity {
 
         //Frequency
 
-
     }
-
     private boolean isFormValid()
     {
         ValidateName();
@@ -239,8 +234,6 @@ public class Signup extends AppCompatActivity {
         ValidateHouseholdNumber();
         ValidateAdultNumber();
         ValidateChildNumber();
-
-
 
         // Missing Gender and shopping Frequency
         return (etName.getError()==null) && (etAge.getError()==null) && (etHeight.getError()==null)
@@ -258,10 +251,6 @@ public class Signup extends AppCompatActivity {
         ValidateOnTheFly();
     }
 
-    /*
-    RG - Made some changes to add the data into a new User object, and then place into AppDB.
-    NOTE: Not sure if it is storing properly.
-     */
     /**
      * Submits sign up. Checks if gender was selected, if not, shows toast and returns to the task
      * After this validation check passes. it will run the insertUser method from AppDataRepo. This method has an exception check -
@@ -336,16 +325,14 @@ public class Signup extends AppCompatActivity {
                     PasswordScrambler.scramblePassword(etPassword.getText().toString()), etAge.getText().toString(), etHeight.getText().toString(), etWeight.getText().toString(),
                     genderValue, etPostcode.getText().toString(),
                     etNumberOfHouseHoldMember.getText().toString(), etHouseholdAdults.getText().toString(), etHouseholdChildren.getText().toString(), shopNumberValue);
+            newUser.setLoggedIn(true);
             new AsyncTask<Void, Void, Void>() {
                 @Override
                 protected Void doInBackground(Void... voids) {
-                    if(repository.insertUser(newUser))
-                    {
-                        Intent intent = new Intent (Signup.this, Welcome.class);
+                    if (repository.insertUser(newUser)) {
+                        Intent intent = new Intent(Signup.this, Welcome.class);
                         startActivity(intent);
-                    }
-                    else
-                    {
+                    } else {
                         runOnUiThread(
                                 new Runnable() {
                                     @Override
