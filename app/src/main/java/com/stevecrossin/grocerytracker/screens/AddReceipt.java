@@ -30,6 +30,7 @@ import com.stevecrossin.grocerytracker.R;
 import com.stevecrossin.grocerytracker.database.AppDataRepo;
 import com.stevecrossin.grocerytracker.entities.Receipt;
 import com.stevecrossin.grocerytracker.entities.User;
+import com.stevecrossin.grocerytracker.models.ReceiptLineItem;
 import com.stevecrossin.grocerytracker.utils.Constants;
 
 import java.io.BufferedWriter;
@@ -49,7 +50,7 @@ public class AddReceipt extends AppCompatActivity implements View.OnClickListene
 
     /* Picture code for PDF files */
     final static int PICK_PDF_CODE = 2342;
-    private static final String CSV_SEPARATOR = ",";
+
     /**
      * Initialisation of all the elements
      **/
@@ -59,39 +60,6 @@ public class AddReceipt extends AppCompatActivity implements View.OnClickListene
     StorageReference mStorageReference;
     DatabaseReference mDatabaseReference;
     Handler mHandler = new Handler(Looper.getMainLooper());
-
-    private static void writeToCSV(String[] columnHeader, List<ReceiptLineItem> receiptLineItems, String fileName) {
-        try {
-            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fileName), "UTF-8"));
-            StringBuffer headerLine = new StringBuffer();
-            headerLine.append(columnHeader[0]);
-            headerLine.append(CSV_SEPARATOR);
-            headerLine.append(columnHeader[1]);
-            headerLine.append(CSV_SEPARATOR);
-            headerLine.append(columnHeader[2]);
-            headerLine.append(CSV_SEPARATOR);
-            headerLine.append(columnHeader[3]);
-            bw.write(headerLine.toString());
-            bw.newLine();
-            for (ReceiptLineItem receiptLineItem : receiptLineItems) {
-                StringBuffer oneLine = new StringBuffer();
-                oneLine.append(receiptLineItem.itemDescription);
-                oneLine.append(CSV_SEPARATOR);
-                oneLine.append(receiptLineItem.unitPrice);
-                oneLine.append(CSV_SEPARATOR);
-                oneLine.append(receiptLineItem.quantity);
-                oneLine.append(CSV_SEPARATOR);
-                oneLine.append(receiptLineItem.price);
-                bw.write(oneLine.toString());
-                bw.newLine();
-            }
-            bw.flush();
-            bw.close();
-        } catch (UnsupportedEncodingException e) {
-        } catch (FileNotFoundException e) {
-        } catch (IOException e) {
-        }
-    }
 
     /**
      * OnCreate method, set the view as per XML file, get firebase objects and draw all the elements on the screen,
@@ -120,6 +88,7 @@ public class AddReceipt extends AppCompatActivity implements View.OnClickListene
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         startActivityForResult(Intent.createChooser(intent, "Select a file"), PICK_PDF_CODE);
     }
+
 
     /**
      * Actions to perform after user picks a file. If user selected a file, the parseAndUploadPDF method will be called.
@@ -274,43 +243,39 @@ public class AddReceipt extends AppCompatActivity implements View.OnClickListene
         }
     }
 
-    private boolean parseAndUploadPDF(final String pdfUriPath, final String fileAlias) {
+    private static final String CSV_SEPARATOR = ",";
+
+    private static void writeToCSV(String[] columnHeader, List<ReceiptLineItem> receiptLineItems, String fileName) {
         try {
-            String parsedText = "";
-            PdfReader reader = new PdfReader(pdfUriPath);
-            int n = reader.getNumberOfPages();
-            for (int i = 0; i < n; i++) {
-                parsedText = parsedText + PdfTextExtractor.getTextFromPage(reader, i + 1).trim() + "\n"; //Extracting the content from the different pages
+            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fileName), "UTF-8"));
+            StringBuffer headerLine = new StringBuffer();
+            headerLine.append(columnHeader[0]);
+            headerLine.append(CSV_SEPARATOR);
+            headerLine.append(columnHeader[1]);
+            headerLine.append(CSV_SEPARATOR);
+            headerLine.append(columnHeader[2]);
+            headerLine.append(CSV_SEPARATOR);
+            headerLine.append(columnHeader[3]);
+            bw.write(headerLine.toString());
+            bw.newLine();
+            for (ReceiptLineItem receiptLineItem : receiptLineItems) {
+                StringBuffer oneLine = new StringBuffer();
+                oneLine.append(receiptLineItem.itemDescription);
+                oneLine.append(CSV_SEPARATOR);
+                oneLine.append(receiptLineItem.unitPrice);
+                oneLine.append(CSV_SEPARATOR);
+                oneLine.append(receiptLineItem.quantity);
+                oneLine.append(CSV_SEPARATOR);
+                oneLine.append(receiptLineItem.price);
+                bw.write(oneLine.toString());
+                bw.newLine();
             }
-            boolean result = parseReceiptPdf(parsedText, fileAlias);
-            reader.close();
-            return result;
-        } catch (Exception e) {
-            return false;
+            bw.flush();
+            bw.close();
+        } catch (UnsupportedEncodingException e) {
+        } catch (FileNotFoundException e) {
+        } catch (IOException e) {
         }
-    }
-
-    private boolean parseReceiptPdf(String parsedText, String fileAlias) {
-        String headerText = parsedText.substring(0, parsedText.lastIndexOf(": \n"));
-        headerText = headerText.substring(headerText.lastIndexOf("\n") + 1);
-        String tableText = parsedText.substring(parsedText.lastIndexOf(": \n") + 3, parsedText.indexOf("Subtotal")).trim();
-        List<ReceiptLineItem> receiptLineItems = parseReceipt(tableText);
-        if (receiptLineItems == null || receiptLineItems.size() == 0) {
-            return false;
-        }
-
-        String filePath = getExternalFilesDir(null).getAbsolutePath()
-                + "/Receipt";
-        File receiptCSVFilepath = new File(filePath);
-        if (!receiptCSVFilepath.exists()) {
-            if (!receiptCSVFilepath.mkdirs()) {
-                return false;
-            }
-        }
-        String receiptCSVFilename = filePath + "/receipt_" + System.currentTimeMillis() + ".csv";
-        writeToCSV(headerText.split(": "), receiptLineItems, receiptCSVFilename);
-        uploadCSVFileToRoomDB(receiptCSVFilename, fileAlias);
-        return true;
     }
 
     private List<ReceiptLineItem> parseReceipt(String receipt) {
@@ -424,6 +389,45 @@ public class AddReceipt extends AppCompatActivity implements View.OnClickListene
         return prunedLines;
     }
 
+    private boolean parseAndUploadPDF(final String pdfUriPath, final String fileAlias) {
+        try {
+            String parsedText = "";
+            PdfReader reader = new PdfReader(pdfUriPath);
+            int n = reader.getNumberOfPages();
+            for (int i = 0; i < n; i++) {
+                parsedText = parsedText + PdfTextExtractor.getTextFromPage(reader, i + 1).trim() + "\n"; //Extracting the content from the different pages
+            }
+            boolean result = parseReceiptPdf(parsedText, fileAlias);
+            reader.close();
+            return result;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    private boolean parseReceiptPdf(String parsedText, String fileAlias) {
+        String headerText = parsedText.substring(0, parsedText.lastIndexOf(": \n"));
+        headerText = headerText.substring(headerText.lastIndexOf("\n") + 1);
+        String tableText = parsedText.substring(parsedText.lastIndexOf(": \n") + 3, parsedText.indexOf("Subtotal")).trim();
+        List<ReceiptLineItem> receiptLineItems = parseReceipt(tableText);
+        if (receiptLineItems == null || receiptLineItems.size() == 0) {
+            return false;
+        }
+
+        String filePath = getExternalFilesDir(null).getAbsolutePath()
+                + "/Receipt";
+        File receiptCSVFilepath = new File(filePath);
+        if (!receiptCSVFilepath.exists()) {
+            if (!receiptCSVFilepath.mkdirs()) {
+                return false;
+            }
+        }
+        String receiptCSVFilename = filePath + "/receipt_" + System.currentTimeMillis() + ".csv";
+        writeToCSV(headerText.split(": "), receiptLineItems, receiptCSVFilename);
+        uploadCSVFileToRoomDB(receiptCSVFilename, fileAlias);
+        return true;
+    }
+
     private void uploadCSVFileToRoomDB(final String csvFilename, final String fileAlias) {
         // TODO: Upload to Room DB.
         AppDataRepo dataRepo = new AppDataRepo(this);
@@ -447,12 +451,5 @@ public class AddReceipt extends AppCompatActivity implements View.OnClickListene
         if (view.getId() == R.id.buttonUploadFile) {
             getPDF();
         }
-    }
-
-    private class ReceiptLineItem {
-        String itemDescription;
-        float unitPrice;
-        int quantity;
-        float price;
     }
 }
