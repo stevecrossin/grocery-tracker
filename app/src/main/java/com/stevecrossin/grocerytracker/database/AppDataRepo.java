@@ -49,8 +49,8 @@ public class AppDataRepo {
     /**
      * Perform dao operation to get users from Users db.
      */
-    public User getUserName(String userName) {
-        return userDao.getUser(userName);
+    public User getUserByEmail(String email) {
+        return userDao.getUser(email);
     }
 
     public List<User> getAllUsers() {
