@@ -26,15 +26,15 @@ import com.google.firebase.storage.StorageReference;
 import com.stevecrossin.grocerytracker.R;
 import com.stevecrossin.grocerytracker.database.AppDataRepo;
 import com.stevecrossin.grocerytracker.entities.User;
-import com.stevecrossin.grocerytracker.other.AppLoginState;
-import com.stevecrossin.grocerytracker.other.PasswordScrambler;
+import com.stevecrossin.grocerytracker.utils.AppLoginState;
+import com.stevecrossin.grocerytracker.utils.PasswordScrambler;
 
 import java.util.List;
 
-import static com.stevecrossin.grocerytracker.other.AppLoginState.EXISTING_ACCOUNT;
-import static com.stevecrossin.grocerytracker.other.AppLoginState.HASH_ERROR;
-import static com.stevecrossin.grocerytracker.other.AppLoginState.INVALID_PASS;
-import static com.stevecrossin.grocerytracker.other.AppLoginState.INVALID_USER;
+import static com.stevecrossin.grocerytracker.utils.AppLoginState.EXISTING_ACCOUNT;
+import static com.stevecrossin.grocerytracker.utils.AppLoginState.HASH_ERROR;
+import static com.stevecrossin.grocerytracker.utils.AppLoginState.INVALID_PASS;
+import static com.stevecrossin.grocerytracker.utils.AppLoginState.INVALID_USER;
 
 public class Login extends AppCompatActivity {
 

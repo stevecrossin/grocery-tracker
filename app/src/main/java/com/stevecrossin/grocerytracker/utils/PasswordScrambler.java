@@ -1,4 +1,4 @@
-package com.stevecrossin.grocerytracker.other;
+package com.stevecrossin.grocerytracker.utils;
 
 import java.security.MessageDigest;
 

@@ -52,3 +52,6 @@ information in the PDF table. Writes this to a timestamped CSV file. Still worki
 - Renamed Items tables to Receipts, created table structure & getter/setter methods and constructors.
 - Updated bugs.txt with resolved issues, and this changelog.txt with changes made.
 - Updated todo file.
+
+3 April - Steve 
+Code maintenance - merged work completed by Amie and Ben in /UnitTesting and /dynamicNotifications branch.

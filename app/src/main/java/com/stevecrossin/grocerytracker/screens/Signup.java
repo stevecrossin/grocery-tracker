@@ -11,10 +11,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
+
 import com.stevecrossin.grocerytracker.R;
 import com.stevecrossin.grocerytracker.database.AppDataRepo;
 import com.stevecrossin.grocerytracker.entities.User;
-import com.stevecrossin.grocerytracker.other.PasswordScrambler;
+import com.stevecrossin.grocerytracker.utils.InputValidator;
+import com.stevecrossin.grocerytracker.utils.TextValidator;
+import com.stevecrossin.grocerytracker.utils.PasswordScrambler;
 
 public class Signup extends AppCompatActivity {
     Button Bsubmit, Bcancel;
@@ -23,16 +26,15 @@ public class Signup extends AppCompatActivity {
     private Login.LoginTask authenticationTask = null;
     private Spinner cbGender;
     private Spinner cbShopNumber;
-
+    private InputValidator validator;
+    private TextValidator textValidator;
     private int selectedGenderPosition=0;
     private int selectedShopNumber=0;
+    ArrayAdapter<CharSequence> adapter;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_signup);
-        repository = new AppDataRepo(this);
 
+    private void InitializeView()
+    {
         etName = findViewById(R.id.etName);
         etAge = findViewById(R.id.etAge);
         etHeight = findViewById(R.id.etHeight);
@@ -49,7 +51,7 @@ public class Signup extends AppCompatActivity {
         Bsubmit = findViewById(R.id.Bsubmit);
         Bcancel = findViewById(R.id.Bcancel);
 
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.gender, android.R.layout.simple_spinner_dropdown_item);
+        adapter = ArrayAdapter.createFromResource(this, R.array.gender, android.R.layout.simple_spinner_dropdown_item);
 
         cbGender.setAdapter(adapter);
         cbGender.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -75,6 +77,185 @@ public class Signup extends AppCompatActivity {
             }
         });
 
+
+    }
+
+    private void ValidateName()
+    {
+        textValidator = new TextValidator(etName);
+        textValidator.validateName(etName.getText().toString());
+    };
+
+    private void ValidateAge()
+    {
+        textValidator = new TextValidator(etAge);
+        textValidator.validateAge(etAge.getText().toString());
+    }
+
+    private void ValidateHeight()
+    {
+        textValidator = new TextValidator(etHeight);
+        textValidator.validateHeight(etHeight.getText().toString());
+    }
+
+    private void ValidateWeight()
+    {
+        textValidator = new TextValidator(etWeight);
+        textValidator.validateWeight(etWeight.getText().toString());
+    }
+
+    private void ValidateEmail()
+    {
+        textValidator = new TextValidator(etEmail);
+        textValidator.validateEmail(etEmail.getText().toString());
+    }
+
+    private void ValidatePassword()
+    {
+        textValidator = new TextValidator(etPassword);
+        textValidator.validatePassword(etPassword.getText().toString());
+    }
+
+    private void ValidatePostcode()
+    {
+        textValidator = new TextValidator(etPostcode);
+        textValidator.validatePostcode(etPostcode.getText().toString());
+    }
+
+    private void ValidateHouseholdNumber()
+    {
+        textValidator = new TextValidator(etNumberOfHouseHoldMember);
+        textValidator.validateHouseholdNumber(etNumberOfHouseHoldMember.getText().toString());
+    }
+
+    private void ValidateAdultNumber()
+    {
+        textValidator = new TextValidator(etHouseholdAdults);
+        textValidator.validateAdultNumber(etHouseholdAdults.getText().toString());
+    }
+
+    private void ValidateChildNumber()
+    {
+        textValidator = new TextValidator(etHouseholdChildren);
+        textValidator.validateChildNumber(etHouseholdChildren.getText().toString());
+    }
+
+
+    // Missing Gender and shopping Frequency
+
+
+
+    private void ValidateOnTheFly()
+    {
+        // Missing Gender and shopping Frequency
+
+        etName.setOnFocusChangeListener(new View.OnFocusChangeListener(){
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) ValidateName();
+            }
+        });
+
+        etAge.setOnFocusChangeListener(new View.OnFocusChangeListener(){
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) ValidateAge();
+            }
+        });
+
+        etHeight.setOnFocusChangeListener(new View.OnFocusChangeListener(){
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) ValidateHeight();
+            }
+        });
+
+        etWeight.setOnFocusChangeListener(new View.OnFocusChangeListener(){
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) ValidateWeight();
+            }
+        });
+
+        etEmail.setOnFocusChangeListener(new View.OnFocusChangeListener(){
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) ValidateEmail();
+            }
+        });
+
+        etPassword.setOnFocusChangeListener(new View.OnFocusChangeListener(){
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) ValidatePassword();
+            }
+        });
+
+        //Gender
+
+
+        etPostcode.setOnFocusChangeListener(new View.OnFocusChangeListener(){
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) ValidatePostcode();
+            }
+        });
+
+        etNumberOfHouseHoldMember.setOnFocusChangeListener(new View.OnFocusChangeListener(){
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) ValidateHouseholdNumber();
+            }
+        });
+
+        etHouseholdAdults.setOnFocusChangeListener(new View.OnFocusChangeListener(){
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) ValidateAdultNumber();
+            }
+        });
+
+        etHouseholdChildren.setOnFocusChangeListener(new View.OnFocusChangeListener(){
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) ValidateChildNumber();
+            }
+        });
+
+        //Frequency
+
+
+    }
+
+    private boolean isFormValid()
+    {
+        ValidateName();
+        ValidateAge();
+        ValidateEmail();
+        ValidatePassword();
+        ValidateHeight();
+        ValidateWeight();
+        ValidatePostcode();
+        ValidateHouseholdNumber();
+        ValidateAdultNumber();
+        ValidateChildNumber();
+
+
+
+        // Missing Gender and shopping Frequency
+        return (etName.getError()==null) && (etAge.getError()==null) && (etHeight.getError()==null)
+                && (etWeight.getError()==null) && (etEmail.getError()==null) && (etPassword.getError()==null)
+                && (etPostcode.getError()==null)
+                && (etNumberOfHouseHoldMember.getError()==null) && (etHouseholdAdults.getError()==null) && (etHouseholdChildren.getError()==null);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_signup);
+        repository = new AppDataRepo(this);
+        InitializeView();
+        ValidateOnTheFly();
     }
 
     /*
@@ -100,11 +281,17 @@ public class Signup extends AppCompatActivity {
 
         String shopNumberValue = "";
         if (selectedShopNumber == 0) {
+
             Toast.makeText(Signup.this, "Please select how often you shop", Toast.LENGTH_LONG).show();
             return;
         } else
             shopNumberValue = getResources().getStringArray(R.array.shopnumber)[selectedShopNumber];
 
+        if (!isFormValid())
+        {
+            Toast.makeText(Signup.this, "Form is invalid", Toast.LENGTH_LONG).show();
+            return;
+        }
 
         String sTotalHouseholdMember = etNumberOfHouseHoldMember.getText().toString();
         int totalHouseholdMember = Integer.parseInt(sTotalHouseholdMember);
@@ -122,25 +309,25 @@ public class Signup extends AppCompatActivity {
             return;
 
             }
-
-
-
-        String sAge = etAge.getText().toString();
-        int age = Integer.parseInt(sAge);
-
-        if (age < 16 || age > 100 )
-        {
-            etAge.setError("You are not eligible to sign up");
-            focusView = etAge;
-            focusView.requestFocus();
-            //Toast.makeText(Signup.this, "You are not eligible to sign up", Toast.LENGTH_LONG).show();
-            return;
-        }
-        //else if (age > 100)
-        //{
-         //   Toast.makeText(Signup.this, "Please enter a valid age", Toast.LENGTH_LONG).show();
-           // return;
-        //}
+//
+//
+//
+//        String sAge = etAge.getText().toString();
+//        int age = Integer.parseInt(sAge);
+//
+//        if (age < 16 || age > 100 )
+//        {
+//            etAge.setError("You are not eligible to sign up");
+//            focusView = etAge;
+//            focusView.requestFocus();
+//            //Toast.makeText(Signup.this, "You are not eligible to sign up", Toast.LENGTH_LONG).show();
+//            return;
+//        }
+//        //else if (age > 100)
+//        //{
+//         //   Toast.makeText(Signup.this, "Please enter a valid age", Toast.LENGTH_LONG).show();
+//           // return;
+//        //}
 
 
         final User newUser;
@@ -181,4 +368,6 @@ public class Signup extends AppCompatActivity {
         Intent intent = new Intent (this, Login.class);
         startActivity(intent);
     }
+
+
 }
