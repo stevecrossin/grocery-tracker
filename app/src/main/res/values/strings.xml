@@ -5,7 +5,13 @@
     <string name="enterPasswordHint">Enter a password</string>
     <string name="emailAddressHint">Enter email address</string>
     <string name="sign_up_detail_label">Sign UP</string>
+    <string name="personalInfo">Personal Information</string>
+    <string name="accountInfo">Accout Information</string>
+    <string name="householdInfo">Household Information</string>
+    <string name="shoppingInfo">Shopping Information</string>
     <string name="name">Name</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
     <string name="age">Age</string>
     <string name="Height">Height</string>
     <string name="weight">Weight</string>
@@ -13,7 +19,7 @@
     <string name="postcode">Postcode</string>
     <string name="household">Number in household</string>
     <string name="makeup">Make-up in house</string>
-    <string name="btnSubmit">Submit</string>
+    <string name="btnSubmit">Create Account</string>
     <string name="lblCancel">Cancel</string>
     <string name="lblWelcome">This is where welcome goes</string>
     <string name="signUp">No Account? Sign Up</string>
@@ -38,6 +44,7 @@
     <string name="lblNumberHouse">Number of people in your household</string>
     <string name="lblNumberAdults">Number of adults in your household</string>
     <string name="lblNumberChild">Number of children in your household</string>
+    <string name="lblShoppingFrequency">How often do you go to the shop?</string>
     <string name="lblPassword">Enter your preferred password</string>
     <string name="receiptLabelName">Enter a name for your receipt</string>
     <string name="lblNoFile">No file selected</string>
@@ -51,10 +58,14 @@
     <string name="AboutText"><![CDATA[<b>Thank you for agreeing to join our \'Grocery Tracker\' research study.</b><br> What we eat and how much we eat has substantial health, social and economic implications for individuals, families, and societies. We wish to track household purchases over time so that we can use this data to inform policy and practice to ensure healthy foods and beverage are affordable for everyone. With the simple click of a button your anonymized purchase record will be sent to our database where it will be then stored in our cloud for further analysis. You have the option to opt out of the study at any time.]]></string>
     <string name="uploadReceiptTitle">Share your receipts</string>
     <string name="globe_logo_desc">GLOBE logo</string>
+    <string name="no_receipts_added_msg">No receipts added</string>
+    <string name="receipts">Receipts</string>
     <string-array name="gender">
         <item>Select Gender</item>
         <item>Male</item>
         <item>Female</item>
+        <item>Prefer Not To Say</item>
+        <item>Other</item>
     </string-array>
     <string-array name="shopnumber">
         <item>Select how often you shop</item>
