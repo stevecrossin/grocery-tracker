@@ -1,8 +1,5 @@
-package com.stevecrossin.grocerytracker.helper;
+package com.stevecrossin.grocerytracker.utils;
 
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.view.View;
 import android.widget.TextView;
 
 public class TextValidator{

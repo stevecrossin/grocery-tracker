@@ -1,12 +1,7 @@
-package com.stevecrossin.grocerytracker.helper;
-
-import android.provider.FontRequest;
-import android.text.TextUtils;
-import android.util.Patterns;
+package com.stevecrossin.grocerytracker.utils;
 
 import com.google.android.gms.common.util.Strings;
 
-import java.util.List;
 import java.util.regex.Pattern;
 
 public class InputValidator {

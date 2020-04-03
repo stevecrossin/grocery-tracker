@@ -75,8 +75,7 @@
                         style="@style/inputField"
                         android:layout_width="match_parent"
                         android:hint="@string/lblName"
-                        android:inputType="text"
-                        />
+                        android:inputType="text" />
 
                 </LinearLayout>
 
@@ -99,8 +98,7 @@
                         style="@style/inputField"
                         android:layout_width="match_parent"
                         android:hint="@string/emailAddressHint"
-                        android:inputType="text"
-                        />
+                        android:inputType="text" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -122,8 +120,7 @@
                         style="@style/inputField"
                         android:layout_width="match_parent"
                         android:hint="@string/lblPassword"
-                        android:inputType="textPassword"
-                        />
+                        android:inputType="textPassword" />
                 </LinearLayout>
 
             </LinearLayout>

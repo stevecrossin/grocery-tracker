@@ -12,23 +12,16 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.parser.PdfTextExtractor;
 import com.stevecrossin.grocerytracker.R;
-import com.stevecrossin.grocerytracker.other.Constants;
-import com.stevecrossin.grocerytracker.other.FileUtil;
+import com.stevecrossin.grocerytracker.utils.Constants;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -39,7 +32,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 

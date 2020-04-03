@@ -4,26 +4,20 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
+
 import com.stevecrossin.grocerytracker.R;
 import com.stevecrossin.grocerytracker.database.AppDataRepo;
 import com.stevecrossin.grocerytracker.entities.User;
-import com.stevecrossin.grocerytracker.helper.InputValidator;
-import com.stevecrossin.grocerytracker.helper.TextValidator;
-import com.stevecrossin.grocerytracker.other.PasswordScrambler;
-
-import java.util.ArrayList;
-
-import javax.xml.validation.Validator;
+import com.stevecrossin.grocerytracker.utils.InputValidator;
+import com.stevecrossin.grocerytracker.utils.TextValidator;
+import com.stevecrossin.grocerytracker.utils.PasswordScrambler;
 
 public class Signup extends AppCompatActivity {
     Button Bsubmit, Bcancel;

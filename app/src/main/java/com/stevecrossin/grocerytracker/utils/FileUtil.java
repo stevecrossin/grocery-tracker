@@ -1,4 +1,4 @@
-package com.stevecrossin.grocerytracker.other;
+package com.stevecrossin.grocerytracker.utils;
 
 import android.annotation.TargetApi;
 import android.content.Context;
