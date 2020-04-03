@@ -23,6 +23,7 @@ import com.stevecrossin.grocerytracker.models.ReceiptLineItem;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -56,6 +57,7 @@ public class ViewReceiptActivity extends AppCompatActivity {
         receiptTimeTextView.setText(receipt.getReceiptTime());
         final RecyclerView receiptItemsRecyclerView = findViewById(R.id.RecyclerView_Receipt_Items);
         receiptItemsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        final TextView receiptTotalTextView = findViewById(R.id.TextView_Receipt_Total_Value);
         final ProgressBar progressBar = findViewById(R.id.progressBar);
 
         container.setVisibility(View.GONE);
@@ -72,17 +74,25 @@ public class ViewReceiptActivity extends AppCompatActivity {
                         header = new ReceiptLineItem.Header(scanner.nextLine());
                     }
 
+                    float total = 0.0f;
                     final List<ReceiptLineItem> receiptLineItems = new ArrayList<>();
                     while (scanner.hasNextLine()) {
-                        receiptLineItems.add(new ReceiptLineItem(scanner.nextLine()));
+                        ReceiptLineItem receiptLineItem = new ReceiptLineItem(scanner.nextLine());
+                        receiptLineItems.add(receiptLineItem);
+                        total += receiptLineItem.price;
                     }
 
                     final ReceiptLineItem.Header headerFinal = header;
+                    DecimalFormat decimalFormat = new DecimalFormat();
+                    decimalFormat.setMaximumFractionDigits(2);
+                    decimalFormat.setMinimumFractionDigits(2);
+                    final String totalFinal = "$" + decimalFormat.format(total);
                     mHandler.post(new Runnable() {
                         @Override
                         public void run() {
                             ReceiptItemsAdapter receiptItemsAdapter = new ReceiptItemsAdapter(headerFinal, receiptLineItems);
                             receiptItemsRecyclerView.setAdapter(receiptItemsAdapter);
+                            receiptTotalTextView.setText(totalFinal);
                             container.setVisibility(View.VISIBLE);
                             progressBar.setVisibility(View.GONE);
                         }
