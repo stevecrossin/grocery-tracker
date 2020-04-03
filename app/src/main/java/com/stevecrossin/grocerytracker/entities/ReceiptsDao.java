@@ -1,8 +1,11 @@
 package com.stevecrossin.grocerytracker.entities;
+
 import androidx.room.Dao;
 import androidx.room.Insert;
-import androidx.room.OnConflictStrategy;
+
 import androidx.room.Query;
+
+import java.util.List;
 
 //** Definition of database operations will take place in this file.//
 
@@ -13,5 +16,11 @@ public interface ReceiptsDao {
      * Inserts new receipt record into the database.
      **/
     @Insert()
-    void insertReceipt(Receipts receipts);
+    void insertReceipt(Receipt receipts);
+
+    /**
+     * Gets all the receipt records for a given user using their email.
+     **/
+    @Query("SELECT * FROM receipts WHERE email = :email")
+    List<Receipt> getReceiptsForUser(String email);
 }

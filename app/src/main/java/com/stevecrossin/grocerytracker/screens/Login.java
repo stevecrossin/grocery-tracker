@@ -63,6 +63,7 @@ public class Login extends AppCompatActivity {
          * Checks if password or email entered is valid. If password is less than or equal to 5 characters, invalid password will be thrown.
          */
     }
+
     public static boolean isEmaiValid(CharSequence target) {
         return (!TextUtils.isEmpty(target) && Patterns.EMAIL_ADDRESS.matcher(target).matches());
     }
@@ -71,30 +72,30 @@ public class Login extends AppCompatActivity {
         return password.length() > 5;
     }
 
-/**
- * OnCreate method to go here, that sets current view as login activity XML file, sets elements to display based on their ID, sets a listener for the views, and will add a textwatcher to username field to ensure details are valid.
- */
-@Override
-protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_login);
-    mStorageRef = FirebaseStorage.getInstance().getReference();
-    loginUIView = findViewById(R.id.signInForm);
-    loginProg = findViewById(R.id.loginprog);
-    usernameView = findViewById(R.id.enterUsername);
-    passwordView = findViewById(R.id.enterPassword);
-    loginButton = findViewById(R.id.loginButton);
-    passwordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-        @Override
-        public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-            if (id == EditorInfo.IME_ACTION_DONE || id == EditorInfo.IME_NULL) {
-                tryLogin();
-                return true;
+    /**
+     * OnCreate method to go here, that sets current view as login activity XML file, sets elements to display based on their ID, sets a listener for the views, and will add a textwatcher to username field to ensure details are valid.
+     */
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_login);
+        mStorageRef = FirebaseStorage.getInstance().getReference();
+        loginUIView = findViewById(R.id.signInForm);
+        loginProg = findViewById(R.id.loginprog);
+        usernameView = findViewById(R.id.enterUsername);
+        passwordView = findViewById(R.id.enterPassword);
+        loginButton = findViewById(R.id.loginButton);
+        passwordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
+                if (id == EditorInfo.IME_ACTION_DONE || id == EditorInfo.IME_NULL) {
+                    tryLogin();
+                    return true;
+                }
+                return false;
             }
-            return false;
-        }
-    });
-}
+        });
+    }
 
     @SuppressLint("StaticFieldLeak")
     private void isSignedIn() {
@@ -184,7 +185,7 @@ protected void onCreate(Bundle savedInstanceState) {
             authTask.execute((Void) null);
         }
 
-}
+    }
 
     /**
      * Shows the progress UI and hides the login form.
@@ -218,11 +219,11 @@ protected void onCreate(Bundle savedInstanceState) {
     @SuppressLint("StaticFieldLeak")
     public class LoginTask extends AsyncTask<Void, Void, AppLoginState> {
 
-        private final String userName;
+        private final String email;
         private final String passKey;
 
         LoginTask(String email, String password) {
-            userName = email;
+            this.email = email;
             passKey = password;
         }
 
@@ -236,30 +237,38 @@ protected void onCreate(Bundle savedInstanceState) {
          */
         @Override
         protected AppLoginState doInBackground(Void... params) {
-                try {
-                    String hashPass = PasswordScrambler.scramblePassword(passKey);
-                    List<User> users = new AppDataRepo(Login.this).getAllUsers();
+            try {
+                String hashPass = PasswordScrambler.scramblePassword(passKey);
+              /*  List<User> users = new AppDataRepo(Login.this).getAllUsers();
 
-                    int i;
-                    for (i = 0; i < users.size(); i++) {
-                     if(users.get(i).getEmail().equalsIgnoreCase(userName)){
-                         if (users.get(i).getPassKey().equals(hashPass)) {
-                             onLoginSuccess(users.get(i).getUserID());
-                             return EXISTING_ACCOUNT;
-                         }else {
-                             return INVALID_PASS;
-                         }
-                     }
-
-                    }
-
-                    if(i == users.size())
-                        return INVALID_USER;
+                int i;
+                for (i = 0; i < users.size(); i++) {
+                    if(users.get(i).getEmail().equalsIgnoreCase(userName)){
+                        if (users.get(i).getPassKey().equals(hashPass)) {
+                            onLoginSuccess(users.get(i).getUserID());
+                            return EXISTING_ACCOUNT;
+                        }else {
+                            return INVALID_PASS;
+                        }
+                    }*/
+                User user = new AppDataRepo(Login.this).getUserByEmail(email);
+                if (user == null) {
+                    return INVALID_USER;
                 }
-                catch (Exception e) {
-                    return HASH_ERROR;
+
+                if (!user.getPassKey().equals(hashPass)) {
+                    return INVALID_PASS;
                 }
-                return INVALID_PASS;
+
+                /*if(i == users.size())
+                    return INVALID_USER;*/
+
+                onLoginSuccess(user.getUserID());
+                return EXISTING_ACCOUNT;
+            } catch (Exception e) {
+                return HASH_ERROR;
+            }
+            /*return INVALID_PASS;*/
         }
 
         /**

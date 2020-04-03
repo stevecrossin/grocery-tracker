@@ -35,9 +35,9 @@ public interface UserDao {
     void updateLoginStatus(int userId, boolean isLogin);
 
     /**
-     * Selects users from database where username entered matches one in db
+     * Selects users from database where email entered matches one in db
      */
-    @Query("SELECT * from user WHERE user_name=:userName")
-    User getUser(String userName);
+    @Query("SELECT * from user WHERE email=:email")
+    User getUser(String email);
 
 }
