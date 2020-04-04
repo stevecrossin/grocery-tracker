@@ -84,7 +84,7 @@ public class Signup extends AppCompatActivity {
     {
         textValidator = new TextValidator(etName);
         textValidator.validateName(etName.getText().toString());
-    };
+    }
 
     private void ValidateAge()
     {

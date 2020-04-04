@@ -1,11 +1,12 @@
 package com.stevecrossin.grocerytracker.helper;
 
+import com.stevecrossin.grocerytracker.utils.InputValidator;
+
 import org.junit.Test;
 
 import static org.junit.Assert.*;
 
 public class PasswordValidatorTest {
-    InputValidator validator;
 
     /** test for the Password field
      * Requirement: Required and More Than 5 characters
@@ -13,17 +14,17 @@ public class PasswordValidatorTest {
     @Test
     public void IsPasswordValid_Correct(){
 
-        assertTrue(validator.isPasswordValid("1234567")==null);
+        assertNull(InputValidator.isPasswordValid("1234567"));
     }
 
     @Test
     public void IsPasswordValid_TooShort_False(){
-        assertFalse(validator.isPasswordValid("12345")==null);
+        assertNotNull(InputValidator.isPasswordValid("12345"));
     }
 
     @Test
     public void IsPasswordValid_IsEmpty_False(){
 
-        assertFalse(validator.isPasswordValid("")==null);
+        assertNotNull(InputValidator.isPasswordValid(""));
     }
 }
