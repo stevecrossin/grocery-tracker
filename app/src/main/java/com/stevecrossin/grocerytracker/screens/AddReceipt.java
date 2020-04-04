@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -59,6 +60,9 @@ public class AddReceipt extends AppCompatActivity implements View.OnClickListene
     ProgressBar progressBar;
     StorageReference mStorageReference;
     DatabaseReference mDatabaseReference;
+    // RG: Adding another database reference for test purposes.
+    DatabaseReference databaseReference;
+
     Handler mHandler = new Handler(Looper.getMainLooper());
 
     /**
@@ -71,6 +75,9 @@ public class AddReceipt extends AppCompatActivity implements View.OnClickListene
         setContentView(R.layout.activity_add_receipt);
         mStorageReference = FirebaseStorage.getInstance().getReference();
         mDatabaseReference = FirebaseDatabase.getInstance().getReference(Constants.DATABASE_PATH_UPLOADS);
+        // RG: Adding another database reference for test purposes.
+        databaseReference = FirebaseDatabase.getInstance().getReference("Receipts");
+
         textViewStatus = findViewById(R.id.textViewStatus);
         editTextFilename = findViewById(R.id.editTextFileName);
         progressBar = findViewById(R.id.progressbar);
@@ -425,7 +432,35 @@ public class AddReceipt extends AppCompatActivity implements View.OnClickListene
         String receiptCSVFilename = filePath + "/receipt_" + System.currentTimeMillis() + ".csv";
         writeToCSV(headerText.split(": "), receiptLineItems, receiptCSVFilename);
         uploadCSVFileToRoomDB(receiptCSVFilename, fileAlias);
+
+        // push to firebase when you push to RoomDB
+        writeCSVFiletoFirebase(receiptCSVFilename, fileAlias, receiptLineItems);
         return true;
+    }
+
+    /**
+     // RG TBA - need to get the actual items - not just the filename, email of user etc.
+
+    **/
+    private void writeCSVFiletoFirebase(String receiptCSVFilename, String fileAlias, List receiptLineItems) {
+        String csvFilename = receiptCSVFilename;
+        String fileAlias1 = fileAlias;
+        String testText = "Test Text";
+        List receiptItems = receiptLineItems;
+
+        if(!TextUtils.isEmpty(csvFilename) && !TextUtils.isEmpty(fileAlias1)){
+
+            AppDataRepo dataRepo = new AppDataRepo(this);
+            User currentUser = dataRepo.getSignedUser();
+
+            String id = databaseReference.push().getKey();
+            Receipt receipt = new Receipt(currentUser.getEmail(), fileAlias1, csvFilename);
+            databaseReference.child(id).setValue(receipt);
+
+        }
+        else {
+            // TBA
+        }
     }
 
     private void uploadCSVFileToRoomDB(final String csvFilename, final String fileAlias) {
