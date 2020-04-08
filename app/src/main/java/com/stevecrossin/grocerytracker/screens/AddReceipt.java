@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -30,6 +31,7 @@ import com.stevecrossin.grocerytracker.R;
 import com.stevecrossin.grocerytracker.database.AppDataRepo;
 import com.stevecrossin.grocerytracker.entities.Receipt;
 import com.stevecrossin.grocerytracker.entities.User;
+import com.stevecrossin.grocerytracker.models.ColesReceipt;
 import com.stevecrossin.grocerytracker.models.ReceiptLineItem;
 import com.stevecrossin.grocerytracker.utils.Constants;
 
@@ -406,10 +408,23 @@ public class AddReceipt extends AppCompatActivity implements View.OnClickListene
     }
 
     private boolean parseReceiptPdf(String parsedText, String fileAlias) {
-        String headerText = parsedText.substring(0, parsedText.lastIndexOf(": \n"));
-        headerText = headerText.substring(headerText.lastIndexOf("\n") + 1);
-        String tableText = parsedText.substring(parsedText.lastIndexOf(": \n") + 3, parsedText.indexOf("Subtotal")).trim();
-        List<ReceiptLineItem> receiptLineItems = parseReceipt(tableText);
+        List<ReceiptLineItem> receiptLineItems;
+        String headerText;
+
+        // If contains Woolworths -> do Woolworths or do Coles
+        if (!parsedText.contains("Woolworths")) {
+            ColesReceipt colesReceipt = new ColesReceipt(parsedText);
+            receiptLineItems = colesReceipt.Parse();
+            headerText = "Item Description: Unit Price: Quantity: Price";
+        }
+        else {
+            headerText = parsedText.substring(0, parsedText.lastIndexOf(": \n"));
+            headerText = headerText.substring(headerText.lastIndexOf("\n") + 1);
+            String tableText = parsedText.substring(parsedText.lastIndexOf(": \n") + 3, parsedText.indexOf("Subtotal")).trim();
+            Log.i("info",headerText);
+            receiptLineItems = parseReceipt(tableText);
+        }
+
         if (receiptLineItems == null || receiptLineItems.size() == 0) {
             return false;
         }
