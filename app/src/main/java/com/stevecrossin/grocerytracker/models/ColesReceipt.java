@@ -66,7 +66,7 @@ public class ColesReceipt {
         {
             int startLine = categoryPositions.get(categoryIndex);
             int endLine = categoryPositions.get(categoryIndex+1);
-            if ((endLine - startLine-2) % 5 != 0) {
+            if ((endLine - startLine-2) % ColesReceiptItem.EXPECTED_ITEM__SECTION_LINE != 0) {
                 ResolveTheItemSection(order_content, startLine + 1, endLine - 1);
             }
         }
