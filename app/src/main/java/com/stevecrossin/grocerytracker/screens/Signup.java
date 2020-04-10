@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.stevecrossin.grocerytracker.R;
@@ -26,7 +27,6 @@ public class Signup extends AppCompatActivity {
     private Login.LoginTask authenticationTask = null;
     private Spinner cbGender;
     private Spinner cbShopNumber;
-    private InputValidator validator;
     private TextValidator textValidator;
     private int selectedGenderPosition=0;
     private int selectedShopNumber=0;
@@ -104,6 +104,11 @@ public class Signup extends AppCompatActivity {
         textValidator.validateWeight(etWeight.getText().toString());
     }
 
+    private void ValidateGender()
+    {
+        textValidator = new TextValidator((TextView) cbGender.getSelectedView());
+        textValidator.validateGender(Integer.toString(selectedGenderPosition));
+    }
     private void ValidateEmail()
     {
         textValidator = new TextValidator(etEmail);
@@ -134,19 +139,28 @@ public class Signup extends AppCompatActivity {
         textValidator.validateAdultNumber(etHouseholdAdults.getText().toString());
     }
 
+
     private void ValidateChildNumber()
     {
         textValidator = new TextValidator(etHouseholdChildren);
         textValidator.validateChildNumber(etHouseholdChildren.getText().toString());
     }
 
+    private void ValidateShoppingFrequency()
+    {
+        textValidator = new TextValidator((TextView) cbShopNumber.getSelectedView());
+        textValidator.validateShoppingFrequency(Integer.toString(selectedShopNumber));
+    }
 
-    // Missing Gender and shopping Frequency
+    private boolean ValidateSumOfAdultAndChildrenNumber()
+    {
+        textValidator = new TextValidator(etNumberOfHouseHoldMember);
+        textValidator.validateSumOfAdultAndChildrenNumber(etNumberOfHouseHoldMember.getText().toString(),etHouseholdAdults.getText().toString(),etHouseholdChildren.getText().toString());
+        return (etNumberOfHouseHoldMember.getError()== null);
+    }
 
     private void ValidateOnTheFly()
     {
-        // Missing Gender and shopping Frequency
-
         etName.setOnFocusChangeListener(new View.OnFocusChangeListener(){
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -189,7 +203,12 @@ public class Signup extends AppCompatActivity {
             }
         });
 
-        //Gender
+        cbGender.setOnFocusChangeListener(new View.OnFocusChangeListener(){
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) ValidateGender();
+            }
+        });
 
         etPostcode.setOnFocusChangeListener(new View.OnFocusChangeListener(){
             @Override
@@ -219,7 +238,12 @@ public class Signup extends AppCompatActivity {
             }
         });
 
-        //Frequency
+        cbShopNumber.setOnFocusChangeListener(new View.OnFocusChangeListener(){
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) ValidateShoppingFrequency();
+            }
+        });
 
     }
     private boolean isFormValid()
@@ -234,11 +258,13 @@ public class Signup extends AppCompatActivity {
         ValidateHouseholdNumber();
         ValidateAdultNumber();
         ValidateChildNumber();
+        ValidateGender();
+        ValidateShoppingFrequency();
 
-        // Missing Gender and shopping Frequency
         return (etName.getError()==null) && (etAge.getError()==null) && (etHeight.getError()==null)
                 && (etWeight.getError()==null) && (etEmail.getError()==null) && (etPassword.getError()==null)
                 && (etPostcode.getError()==null)
+                && (cbGender.getSelectedItemPosition()!=0) && (cbShopNumber.getSelectedItemPosition()!=0)
                 && (etNumberOfHouseHoldMember.getError()==null) && (etHouseholdAdults.getError()==null) && (etHouseholdChildren.getError()==null);
     }
 
@@ -259,72 +285,21 @@ public class Signup extends AppCompatActivity {
      * and they will be navigated to the welcome screen */
     @SuppressLint("StaticFieldLeak")
     public void submitSignUp(View view) {
-        String genderValue = "";
-        boolean cancel = false;
-        View focusView = null;
-        if (selectedGenderPosition == 0) {
-            Toast.makeText(Signup.this, "Please select gender", Toast.LENGTH_LONG).show();
-            return;
-        } else
-            genderValue = getResources().getStringArray(R.array.gender)[selectedGenderPosition];
-
-        String shopNumberValue = "";
-        if (selectedShopNumber == 0) {
-
-            Toast.makeText(Signup.this, "Please select how often you shop", Toast.LENGTH_LONG).show();
-            return;
-        } else
-            shopNumberValue = getResources().getStringArray(R.array.shopnumber)[selectedShopNumber];
-
-        if (!isFormValid())
+        if (!isFormValid() || !ValidateSumOfAdultAndChildrenNumber())
         {
             Toast.makeText(Signup.this, "Form is invalid", Toast.LENGTH_LONG).show();
             return;
         }
 
-        String sTotalHouseholdMember = etNumberOfHouseHoldMember.getText().toString();
-        int totalHouseholdMember = Integer.parseInt(sTotalHouseholdMember);
-
-        String sHouseholdAdults = etHouseholdAdults.getText().toString();
-        int householdAdults = Integer.parseInt(sHouseholdAdults);
-
-        String sHouseholdChildren = etHouseholdChildren.getText().toString();
-        int householdChildren = Integer.parseInt(sHouseholdChildren);
-
-        if (totalHouseholdMember != (householdAdults + householdChildren)) {
-            etNumberOfHouseHoldMember.setError("Household members don't match");
-            focusView = etNumberOfHouseHoldMember;
-            focusView.requestFocus();
-            return;
-
-            }
-//
-//
-//
-//        String sAge = etAge.getText().toString();
-//        int age = Integer.parseInt(sAge);
-//
-//        if (age < 16 || age > 100 )
-//        {
-//            etAge.setError("You are not eligible to sign up");
-//            focusView = etAge;
-//            focusView.requestFocus();
-//            //Toast.makeText(Signup.this, "You are not eligible to sign up", Toast.LENGTH_LONG).show();
-//            return;
-//        }
-//        //else if (age > 100)
-//        //{
-//         //   Toast.makeText(Signup.this, "Please enter a valid age", Toast.LENGTH_LONG).show();
-//           // return;
-//        //}
-
-
+       // String genderValue = getResources().getStringArray(R.array.gender)[selectedGenderPosition];
         final User newUser;
         try {
             newUser = new User(etName.getText().toString(), etEmail.getText().toString(),
-                    PasswordScrambler.scramblePassword(etPassword.getText().toString()), etAge.getText().toString(), etHeight.getText().toString(), etWeight.getText().toString(),
-                    genderValue, etPostcode.getText().toString(),
-                    etNumberOfHouseHoldMember.getText().toString(), etHouseholdAdults.getText().toString(), etHouseholdChildren.getText().toString(), shopNumberValue);
+                    PasswordScrambler.scramblePassword(etPassword.getText().toString()), etAge.getText().toString(),
+                    etHeight.getText().toString(), etWeight.getText().toString(),
+                    getResources().getStringArray(R.array.gender)[selectedGenderPosition], etPostcode.getText().toString(),
+                    etNumberOfHouseHoldMember.getText().toString(), etHouseholdAdults.getText().toString(), etHouseholdChildren.getText().toString(),
+                    getResources().getStringArray(R.array.shopnumber)[selectedShopNumber]);
             newUser.setLoggedIn(true);
             new AsyncTask<Void, Void, Void>() {
                 @Override

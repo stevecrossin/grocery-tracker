@@ -13,6 +13,11 @@ public class PostcodeValidatorTest {
      * Requirement: Exactly 4 number digits
      */
     @Test
+    public void IsPostcodeValid_Empty_False(){
+        assertNotNull(InputValidator.isPostcodeValid(""));
+    }
+
+    @Test
     public void IsPostcodeValid_Correct(){
         assertNull(InputValidator.isPostcodeValid("1234"));
     }
@@ -36,6 +41,5 @@ public class PostcodeValidatorTest {
     public void IsPostcodeValid_MoreThanFour_WithCharacters_False() {
         assertNotNull((InputValidator.isPostcodeValid("123avb")));
     }
-
 
 }
