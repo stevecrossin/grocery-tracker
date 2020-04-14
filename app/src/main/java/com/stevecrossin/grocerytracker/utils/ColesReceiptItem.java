@@ -56,6 +56,11 @@ public class ColesReceiptItem {
         return line.startsWith(PRICE_UNIT_KEYWORD);
     }
 
+    public static boolean Contain_Price(String line)
+    {
+        return line.contains((PRICE_UNIT_KEYWORD));
+    }
+
     public static boolean Is_Quantity(String line)
     {
         for (int i=0; i<line.length();i++) {

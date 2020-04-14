@@ -52,14 +52,32 @@ public class ColesReceipt {
         return categoryPositions;
     }
 
+    // Resolve The Content when multiple information stay in the same line (quantity, price)
+    private void resolveInlined(ArrayList<String> order_content)
+    {
+        for (int i =0; i<order_content.size();i++)
+        {
+            String line = order_content.get(i);
+            if (ColesReceiptItem.Contain_Price(line))
+            {
+                if (!ColesReceiptItem.Is_Per_Unit_Price_Line(line) && (!ColesReceiptItem.Is_Price(line))) {
+                    String[] items = line.split(" ");
+                    order_content.remove(i);
+                    for (int j = 0; j< items.length;j++)
+                        order_content.add(i+j,items[j]);
+                }
+            }
+        }
+    }
 
     public List<ReceiptLineItem> Parse()
     {
         List<ReceiptLineItem> receiptLineItems = new ArrayList<>();
 
         ArrayList<String> order_content= GetOrderContent();
+        resolveInlined(order_content);
         ArrayList<Integer> categoryPositions = FindEachCategoryPosition(order_content);
-        
+
         //Resolve the item sections for each category
         // startLine, endLine: start and end of each category
         for (int categoryIndex = 0; categoryIndex<categoryPositions.size()-1;categoryIndex++)
