@@ -96,3 +96,7 @@ Still needs to be done:
 - Radika to redo UAT
 - Ben to investigate and explore notifications more fully to explore alternate ways this can be used
 - Rest to do testing/documentation of solution
+
+Friday 17 April - Joel
+*changelog.txt
+- Test text to confirm Update and Commit connections work after BitBucket setup with Android Studio
