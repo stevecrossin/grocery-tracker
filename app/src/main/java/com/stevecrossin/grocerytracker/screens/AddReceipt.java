@@ -158,13 +158,14 @@ public class AddReceipt extends AppCompatActivity implements View.OnClickListene
         });
     }
 
-    /**
+    /***
+     NOTE! This code is depreceated.
      * Method that performs the uploading of the file to Firebase.
      * The progress bar that says "Uploading" will appear, and it wil perform the operation to put the file into Firebase, and append with the PDF extension.
      * After the upload is successfully completed, the status textview will be updated with a success message, the filename box will be cleared, and the uploading bar will disappear.
      * <p>
      * Similar operations will happen if file upload fails, but the message to the end user will differ.
-     */
+     *//*
     private void uploadFile(Uri data) {
         progressBar.setVisibility(View.VISIBLE);
         StorageReference sRef = mStorageReference.child(Constants.STORAGE_PATH_UPLOADS + System.currentTimeMillis() + ".pdf");
@@ -196,7 +197,7 @@ public class AddReceipt extends AppCompatActivity implements View.OnClickListene
                     }
                 });
 
-    }
+    }*/
 
     private void purgeTempStorage() {
         String dirPath = getExternalFilesDir(null).getAbsolutePath()
@@ -449,13 +450,6 @@ public class AddReceipt extends AppCompatActivity implements View.OnClickListene
         User currentUser = dataRepo.getSignedUser();
         Receipt receipt = new Receipt(currentUser.getEmail(), fileAlias, csvFilename);
         dataRepo.insertReceipt(receipt);
-    }
-
-    /**
-     * Gets the progress of the upload task to the Firebase data storage.
-     */
-    private double getProgress(UploadTask.TaskSnapshot taskSnapshot) {
-        return (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
     }
 
     /**
