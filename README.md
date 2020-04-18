@@ -48,5 +48,4 @@ If you want to switch your local branch
 
 You can use #git checkout branchname
 
-**Example only: git checkout working-files
-
+**Example only: git checkout working-files 
