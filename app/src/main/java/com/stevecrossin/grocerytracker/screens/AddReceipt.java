@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -30,6 +31,7 @@ import com.stevecrossin.grocerytracker.R;
 import com.stevecrossin.grocerytracker.database.AppDataRepo;
 import com.stevecrossin.grocerytracker.entities.Receipt;
 import com.stevecrossin.grocerytracker.entities.User;
+import com.stevecrossin.grocerytracker.models.ColesReceipt;
 import com.stevecrossin.grocerytracker.models.ReceiptLineItem;
 import com.stevecrossin.grocerytracker.utils.Constants;
 
@@ -156,13 +158,14 @@ public class AddReceipt extends AppCompatActivity implements View.OnClickListene
         });
     }
 
-    /**
+    /***
+     NOTE! This code is depreceated.
      * Method that performs the uploading of the file to Firebase.
      * The progress bar that says "Uploading" will appear, and it wil perform the operation to put the file into Firebase, and append with the PDF extension.
      * After the upload is successfully completed, the status textview will be updated with a success message, the filename box will be cleared, and the uploading bar will disappear.
      * <p>
      * Similar operations will happen if file upload fails, but the message to the end user will differ.
-     */
+     *//*
     private void uploadFile(Uri data) {
         progressBar.setVisibility(View.VISIBLE);
         StorageReference sRef = mStorageReference.child(Constants.STORAGE_PATH_UPLOADS + System.currentTimeMillis() + ".pdf");
@@ -194,7 +197,7 @@ public class AddReceipt extends AppCompatActivity implements View.OnClickListene
                     }
                 });
 
-    }
+    }*/
 
     private void purgeTempStorage() {
         String dirPath = getExternalFilesDir(null).getAbsolutePath()
@@ -406,10 +409,25 @@ public class AddReceipt extends AppCompatActivity implements View.OnClickListene
     }
 
     private boolean parseReceiptPdf(String parsedText, String fileAlias) {
-        String headerText = parsedText.substring(0, parsedText.lastIndexOf(": \n"));
-        headerText = headerText.substring(headerText.lastIndexOf("\n") + 1);
-        String tableText = parsedText.substring(parsedText.lastIndexOf(": \n") + 3, parsedText.indexOf("Subtotal")).trim();
-        List<ReceiptLineItem> receiptLineItems = parseReceipt(tableText);
+        List<ReceiptLineItem> receiptLineItems;
+        String headerText;
+
+        // If contains Woolworths -> do Woolworths or do Coles - first case will handle Coles receipts, other returns Woolworths
+
+        if (!parsedText.contains("Woolworths")) {
+            ColesReceipt colesReceipt = new ColesReceipt(parsedText);
+            receiptLineItems = colesReceipt.Parse();
+            headerText = "Item Description: Unit Price: Quantity: Price";
+        }
+        //Do Woolworths
+        else {
+            headerText = parsedText.substring(0, parsedText.lastIndexOf(": \n"));
+            headerText = headerText.substring(headerText.lastIndexOf("\n") + 1);
+            String tableText = parsedText.substring(parsedText.lastIndexOf(": \n") + 3, parsedText.indexOf("Subtotal")).trim();
+            Log.i("info",headerText);
+            receiptLineItems = parseReceipt(tableText);
+        }
+
         if (receiptLineItems == null || receiptLineItems.size() == 0) {
             return false;
         }
@@ -434,13 +452,6 @@ public class AddReceipt extends AppCompatActivity implements View.OnClickListene
         User currentUser = dataRepo.getSignedUser();
         Receipt receipt = new Receipt(currentUser.getEmail(), fileAlias, csvFilename);
         dataRepo.insertReceipt(receipt);
-    }
-
-    /**
-     * Gets the progress of the upload task to the Firebase data storage.
-     */
-    private double getProgress(UploadTask.TaskSnapshot taskSnapshot) {
-        return (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
     }
 
     /**

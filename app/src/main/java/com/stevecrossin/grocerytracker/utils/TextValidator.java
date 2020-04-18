@@ -4,7 +4,6 @@ import android.widget.TextView;
 
 public class TextValidator{
     private TextView textView;
-    protected InputValidator validator;
 
     public TextValidator(TextView textView)
     {
@@ -13,52 +12,67 @@ public class TextValidator{
 
     public void validateName(String text)
     {
-        textView.setError(validator.isNameValid(text));
+        textView.setError(InputValidator.isNameValid(text));
     }
 
     public void validateAge(String text)
     {
-        textView.setError(validator.isAgeValid(text));
+        textView.setError(InputValidator.isAgeValid(text));
     }
 
     public void validateHeight(String text)
     {
-        textView.setError(validator.isHeightValid(text));
+        textView.setError(InputValidator.isHeightValid(text));
     }
 
     public void validateWeight(String text)
     {
-        textView.setError(validator.isWeightValid(text));
+        textView.setError(InputValidator.isWeightValid(text));
     }
 
     public void validateEmail(String text)
     {
-        textView.setError(validator.isEmailValid(text));
+        textView.setError(InputValidator.isEmailValid(text));
     }
 
     public void validatePassword(String text)
     {
-        textView.setError(validator.isPasswordValid(text));
+        textView.setError(InputValidator.isPasswordValid(text));
+    }
+
+    public void validateGender(String text)
+    {
+        textView.setError(InputValidator.isGenderValid(text.equals("0") ? "" : text));
     }
 
     public void validatePostcode(String text)
     {
-        textView.setError(validator.isPostcodeValid(text));
+        textView.setError(InputValidator.isPostcodeValid(text));
     }
 
     public void validateHouseholdNumber(String text)
     {
-        textView.setError(validator.isFamilyNumberValid(text));
+        textView.setError(InputValidator.isFamilyNumberValid(text));
     }
 
     public void validateAdultNumber(String text)
     {
-        textView.setError(validator.isAdultNumberValid(text));
+        textView.setError(InputValidator.isAdultNumberValid(text));
     }
 
     public void validateChildNumber(String text)
     {
-        textView.setError(validator.isChildNumberValid(text));
+        textView.setError(InputValidator.isChildNumberValid(text));
+    }
+
+    public void validateSumOfAdultAndChildrenNumber(String total, String adult, String children)
+    {
+        textView.setError(InputValidator.isTotalFamilyNumberValid(total,adult,children));
+    }
+
+    public void validateShoppingFrequency(String text)
+    {
+        textView.setError(InputValidator.isShopFrequencyValid(text.equals("0") ? "" : text));
     }
 }
 
