@@ -239,18 +239,6 @@ public class Login extends AppCompatActivity {
         protected AppLoginState doInBackground(Void... params) {
             try {
                 String hashPass = PasswordScrambler.scramblePassword(passKey);
-              /*  List<User> users = new AppDataRepo(Login.this).getAllUsers();
-
-                int i;
-                for (i = 0; i < users.size(); i++) {
-                    if(users.get(i).getEmail().equalsIgnoreCase(userName)){
-                        if (users.get(i).getPassKey().equals(hashPass)) {
-                            onLoginSuccess(users.get(i).getUserID());
-                            return EXISTING_ACCOUNT;
-                        }else {
-                            return INVALID_PASS;
-                        }
-                    }*/
                 User user = new AppDataRepo(Login.this).getUserByEmail(email);
                 if (user == null) {
                     return INVALID_USER;
@@ -260,15 +248,11 @@ public class Login extends AppCompatActivity {
                     return INVALID_PASS;
                 }
 
-                /*if(i == users.size())
-                    return INVALID_USER;*/
-
                 onLoginSuccess(user.getUserID());
                 return EXISTING_ACCOUNT;
             } catch (Exception e) {
                 return HASH_ERROR;
             }
-            /*return INVALID_PASS;*/
         }
 
         /**

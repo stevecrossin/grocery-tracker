@@ -7,11 +7,10 @@ import java.util.regex.Pattern;
 public class InputValidator {
 
     private static final String POSTCODE_NUMBER = "\\d{4}";
-    private static final int MIN_PASSWORD_LENGTH = 5;
     public static final String EMAIL_ADDRESS
             =
-            "[a-zA-Z0-9\\+\\.\\_\\%\\-\\+]{1,256}" +
-                    "\\@" +
+            "[a-zA-Z0-9+._%\\-]{1,256}" +
+                    "@" +
                     "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,64}" +
                     "(" +
                     "\\." +
@@ -37,33 +36,33 @@ public class InputValidator {
     private static final String TOTAL_FAMILY_NUMBER_ERROR = "The family number does not matches with the adult and children number";
 
 
-    public static final boolean IsNotEmpty(String field)
+    public static boolean IsNotEmpty(String field)
     {
         return (!Strings.isEmptyOrWhitespace(field));
     }
 
-    public static final boolean IsLengthGreaterThan(String field, int targetLength)
+    public static boolean IsLengthGreaterThan(String field, int targetLength)
     {
         return (field.length()>targetLength);
     }
 
-    public static final boolean IsMatchedEmailPattern(String field)
+    public static boolean IsMatchedEmailPattern(String field)
     {
         return  Pattern.compile(EMAIL_ADDRESS).matcher(field).matches();
     }
 
-    public static final boolean IsInRange(String field, int start, int end)
+    public static boolean IsInRange(String field, int start, int end)
     {
         int target = Integer.parseInt(field);
         return  (target>=start && target <= end);
     }
 
-    public static final boolean IsExactlyFourNumberDigit(String field)
+    public static boolean IsExactlyFourNumberDigit(String field)
     {
         return Pattern.compile(POSTCODE_NUMBER).matcher(field).matches();
     }
 
-    public static final String isPostcodeValid(String field)
+    public static String isPostcodeValid(String field)
     {
         if  (!IsNotEmpty(field))
             return EMPTY_POSTCODE_ERROR;
@@ -72,14 +71,14 @@ public class InputValidator {
         return null;
     }
 
-    public static final String isNameValid(String field)
+    public static String isNameValid(String field)
     {
         if  (!IsNotEmpty(field))
             return EMPTY_NAME_ERROR;
         return null;
     }
 
-    public static final String isAgeValid(String field)
+    public static String isAgeValid(String field)
     {
         if  (!IsNotEmpty(field))
             return EMPTY_AGE_ERROR;
@@ -88,63 +87,63 @@ public class InputValidator {
         return null;
     }
 
-    public static final String isWeightValid(String field)
+    public static String isWeightValid(String field)
     {
         if  (!IsNotEmpty(field))
             return EMPTY_WEIGHT_ERROR;
         return null;
     }
 
-    public static final String isHeightValid(String field)
+    public static String isHeightValid(String field)
     {
         if  (!IsNotEmpty(field))
             return EMPTY_HEIGHT_ERROR;
         return null;
     }
 
-    public static final String isGenderValid(String field)
+    public static String isGenderValid(String field)
     {
         if  (!IsNotEmpty(field))
             return EMPTY_GENDER_ERROR;
         return null;
     }
 
-    public static final String isShopFrequencyValid(String field)
+    public static String isShopFrequencyValid(String field)
     {
         if  (!IsNotEmpty(field))
             return EMPTY_SHOP_FREQUENCY_ERROR;
         return null;
     }
 
-    public static final String isFamilyNumberValid(String field)
+    public static String isFamilyNumberValid(String field)
     {
         if  (!IsNotEmpty(field))
             return EMPTY_FAMILY_NUMBER_ERROR;
         return null;
     }
 
-    public static final String isAdultNumberValid(String field)
+    public static String isAdultNumberValid(String field)
     {
         if  (!IsNotEmpty(field))
             return EMPTY_ADULT_NUMBER_ERROR;
         return null;
     }
 
-    public static final String isChildNumberValid(String field)
+    public static String isChildNumberValid(String field)
     {
         if  (!IsNotEmpty(field))
             return EMPTY_CHILD_NUMBER_ERROR;
         return null;
     }
 
-    public static final String isTotalFamilyNumberValid(String total, String adult, String children)
+    public static String isTotalFamilyNumberValid(String total, String adult, String children)
     {
         if (Integer.parseInt(total) != Integer.parseInt(adult) +Integer.parseInt(children))
             return TOTAL_FAMILY_NUMBER_ERROR;
         return null;
     }
 
-    public static final String isEmailValid(String field)
+    public static String isEmailValid(String field)
     {
         if  (!IsNotEmpty(field))
             return EMPTY_EMAIL_ERROR;
@@ -153,7 +152,7 @@ public class InputValidator {
         return null;
     }
 
-    public static final String isPasswordValid(String field)
+    public static String isPasswordValid(String field)
     {
         if  (!IsNotEmpty(field))
             return EMPTY_PASSWORD_ERROR;
