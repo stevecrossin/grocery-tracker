@@ -1,7 +1,5 @@
 package com.stevecrossin.grocerytracker.screens;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -12,31 +10,29 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.stevecrossin.grocerytracker.R;
 import com.stevecrossin.grocerytracker.database.AppDataRepo;
 import com.stevecrossin.grocerytracker.entities.User;
-import com.stevecrossin.grocerytracker.other.PasswordScrambler;
+import com.stevecrossin.grocerytracker.utils.InputValidator;
+import com.stevecrossin.grocerytracker.utils.TextValidator;
+import com.stevecrossin.grocerytracker.utils.PasswordScrambler;
 
 public class Signup extends AppCompatActivity {
-
     Button Bsubmit, Bcancel;
-    EditText etName, etAge, etHeight, etWeight,  etPostcode, etNumberOfHouseHoldMember, etHouseholdAdults, etHouseholdChildren, etEmail, etPassword;
+    EditText etName, etAge, etHeight, etWeight, etPostcode, etNumberOfHouseHoldMember, etHouseholdAdults, etHouseholdChildren, etEmail, etPassword;
     private AppDataRepo repository;
     private Login.LoginTask authenticationTask = null;
     private Spinner cbGender;
     private Spinner cbShopNumber;
+    ArrayAdapter<CharSequence> adapter;
+    private int selectedGenderPosition = 0;
+    private int selectedShopNumber = 0;
+    private TextValidator textValidator;
 
-    private int selectedGenderPosition=0;
-    private int selectedShopNumber=0;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_signup);
-        repository = new AppDataRepo(this);
-
+    private void InitializeView() {
         etName = findViewById(R.id.etName);
         etAge = findViewById(R.id.etAge);
         etHeight = findViewById(R.id.etHeight);
@@ -53,7 +49,7 @@ public class Signup extends AppCompatActivity {
         Bsubmit = findViewById(R.id.Bsubmit);
         Bcancel = findViewById(R.id.Bcancel);
 
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.gender, android.R.layout.simple_spinner_dropdown_item);
+        adapter = ArrayAdapter.createFromResource(this, R.array.gender, android.R.layout.simple_spinner_dropdown_item);
 
         cbGender.setAdapter(adapter);
         cbGender.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -61,6 +57,7 @@ public class Signup extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 selectedGenderPosition = position;
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
@@ -74,64 +71,236 @@ public class Signup extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 selectedShopNumber = position;
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
 
+
     }
 
-    /*
-    RG - Made some changes to add the data into a new User object, and then place into AppDB.
-    NOTE: Not sure if it is storing properly.
-     */
+    private void ValidateName() {
+        textValidator = new TextValidator(etName);
+        textValidator.validateName(etName.getText().toString());
+    }
+
+    private void ValidateAge() {
+        textValidator = new TextValidator(etAge);
+        textValidator.validateAge(etAge.getText().toString());
+    }
+
+    private void ValidateHeight() {
+        textValidator = new TextValidator(etHeight);
+        textValidator.validateHeight(etHeight.getText().toString());
+    }
+
+    private void ValidateWeight() {
+        textValidator = new TextValidator(etWeight);
+        textValidator.validateWeight(etWeight.getText().toString());
+    }
+
+    private void ValidateGender() {
+        textValidator = new TextValidator((TextView) cbGender.getSelectedView());
+        textValidator.validateGender(Integer.toString(selectedGenderPosition));
+    }
+
+    private void ValidateEmail() {
+        textValidator = new TextValidator(etEmail);
+        textValidator.validateEmail(etEmail.getText().toString());
+    }
+
+    private void ValidatePassword() {
+        textValidator = new TextValidator(etPassword);
+        textValidator.validatePassword(etPassword.getText().toString());
+    }
+
+    private void ValidatePostcode() {
+        textValidator = new TextValidator(etPostcode);
+        textValidator.validatePostcode(etPostcode.getText().toString());
+    }
+
+    private void ValidateHouseholdNumber() {
+        textValidator = new TextValidator(etNumberOfHouseHoldMember);
+        textValidator.validateHouseholdNumber(etNumberOfHouseHoldMember.getText().toString());
+    }
+
+    private void ValidateAdultNumber() {
+        textValidator = new TextValidator(etHouseholdAdults);
+        textValidator.validateAdultNumber(etHouseholdAdults.getText().toString());
+    }
+
+
+    private void ValidateChildNumber() {
+        textValidator = new TextValidator(etHouseholdChildren);
+        textValidator.validateChildNumber(etHouseholdChildren.getText().toString());
+    }
+
+    private void ValidateShoppingFrequency() {
+        textValidator = new TextValidator((TextView) cbShopNumber.getSelectedView());
+        textValidator.validateShoppingFrequency(Integer.toString(selectedShopNumber));
+    }
+
+    private boolean ValidateSumOfAdultAndChildrenNumber() {
+        textValidator = new TextValidator(etNumberOfHouseHoldMember);
+        textValidator.validateSumOfAdultAndChildrenNumber(etNumberOfHouseHoldMember.getText().toString(), etHouseholdAdults.getText().toString(), etHouseholdChildren.getText().toString());
+        return (etNumberOfHouseHoldMember.getError() == null);
+    }
+
+    private void ValidateOnTheFly() {
+        etName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) ValidateName();
+            }
+        });
+
+        etAge.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) ValidateAge();
+            }
+        });
+
+        etHeight.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) ValidateHeight();
+            }
+        });
+
+        etWeight.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) ValidateWeight();
+            }
+        });
+
+        etEmail.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) ValidateEmail();
+            }
+        });
+
+        etPassword.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) ValidatePassword();
+            }
+        });
+
+        cbGender.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) ValidateGender();
+            }
+        });
+
+        etPostcode.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) ValidatePostcode();
+            }
+        });
+
+        etNumberOfHouseHoldMember.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) ValidateHouseholdNumber();
+            }
+        });
+
+        etHouseholdAdults.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) ValidateAdultNumber();
+            }
+        });
+
+        etHouseholdChildren.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) ValidateChildNumber();
+            }
+        });
+
+        cbShopNumber.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) ValidateShoppingFrequency();
+            }
+        });
+
+    }
+
+    private boolean isFormValid() {
+        ValidateName();
+        ValidateAge();
+        ValidateEmail();
+        ValidatePassword();
+        ValidateHeight();
+        ValidateWeight();
+        ValidatePostcode();
+        ValidateHouseholdNumber();
+        ValidateAdultNumber();
+        ValidateChildNumber();
+        ValidateGender();
+        ValidateShoppingFrequency();
+
+        return (etName.getError() == null) && (etAge.getError() == null) && (etHeight.getError() == null)
+                && (etWeight.getError() == null) && (etEmail.getError() == null) && (etPassword.getError() == null)
+                && (etPostcode.getError() == null)
+                && (cbGender.getSelectedItemPosition() != 0) && (cbShopNumber.getSelectedItemPosition() != 0)
+                && (etNumberOfHouseHoldMember.getError() == null) && (etHouseholdAdults.getError() == null) && (etHouseholdChildren.getError() == null);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_signup);
+        repository = new AppDataRepo(this);
+        InitializeView();
+        ValidateOnTheFly();
+    }
 
     /**
      * Submits sign up. Checks if gender was selected, if not, shows toast and returns to the task
      * After this validation check passes. it will run the insertUser method from AppDataRepo. This method has an exception check -
      * as the email needs to be a unique field, if the end user tries to sign up with an account that already exists, the operation will fail,
      * a Toast will be shown advising email already exists and to login, and then will navigate them to that activity. Otherwise, the insert will be successful
-     * and they will be navigated to the welcome screen.
+     * and they will be navigated to the welcome screen
      */
     @SuppressLint("StaticFieldLeak")
     public void submitSignUp(View view) {
-        String genderValue = "";
-        if (selectedGenderPosition == 0) {
-            Toast.makeText(Signup.this, "Please select gender", Toast.LENGTH_LONG).show();
+        if (!isFormValid() || !ValidateSumOfAdultAndChildrenNumber()) {
+            Toast.makeText(Signup.this, "Form is invalid", Toast.LENGTH_LONG).show();
             return;
-        } else
-            genderValue = getResources().getStringArray(R.array.gender)[selectedGenderPosition];
+        }
 
-        String shopNumberValue = "";
-        if (selectedShopNumber == 0) {
-            Toast.makeText(Signup.this, "Please select how often you shop", Toast.LENGTH_LONG).show();
-            return;
-        } else
-            shopNumberValue = getResources().getStringArray(R.array.shopnumber)[selectedShopNumber];
-
-
+        // String genderValue = getResources().getStringArray(R.array.gender)[selectedGenderPosition];
         final User newUser;
         try {
             newUser = new User(etName.getText().toString(), etEmail.getText().toString(),
-                    PasswordScrambler.scramblePassword(etPassword.getText().toString()), etAge.getText().toString(), etHeight.getText().toString(), etWeight.getText().toString(),
-                    genderValue, etPostcode.getText().toString(),
-                    etNumberOfHouseHoldMember.getText().toString(), etHouseholdAdults.getText().toString(), etHouseholdChildren.getText().toString(), shopNumberValue);
+                    PasswordScrambler.scramblePassword(etPassword.getText().toString()), etAge.getText().toString(),
+                    etHeight.getText().toString(), etWeight.getText().toString(),
+                    getResources().getStringArray(R.array.gender)[selectedGenderPosition], etPostcode.getText().toString(),
+                    etNumberOfHouseHoldMember.getText().toString(), etHouseholdAdults.getText().toString(), etHouseholdChildren.getText().toString(),
+                    getResources().getStringArray(R.array.shopnumber)[selectedShopNumber]);
+            newUser.setLoggedIn(true);
             new AsyncTask<Void, Void, Void>() {
                 @Override
                 protected Void doInBackground(Void... voids) {
-                    if(repository.insertUser(newUser))
-                    {
-                        Intent intent = new Intent (Signup.this, Welcome.class);
+                    if (repository.insertUser(newUser)) {
+                        Intent intent = new Intent(Signup.this, Welcome.class);
                         startActivity(intent);
-                    }
-                    else
-                    {
+                    } else {
                         runOnUiThread(
                                 new Runnable() {
                                     @Override
                                     public void run() {
                                         Toast.makeText(Signup.this, "An account with this email address already exists, please login", Toast.LENGTH_LONG).show();
-                                        Intent intent = new Intent (Signup.this, Login.class);
+                                        Intent intent = new Intent(Signup.this, Login.class);
                                         startActivity(intent);
                                         finish();
                                     }
@@ -148,7 +317,6 @@ public class Signup extends AppCompatActivity {
         Intent intent = new Intent (this, Login.class);
         startActivity(intent);
     }
+
+
 }
-
-
-

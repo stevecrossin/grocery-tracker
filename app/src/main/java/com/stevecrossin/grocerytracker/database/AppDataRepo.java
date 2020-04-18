@@ -4,7 +4,8 @@ import android.content.Context;
 import android.database.sqlite.SQLiteConstraintException;
 
 
-import com.stevecrossin.grocerytracker.entities.ItemsDao;
+import com.stevecrossin.grocerytracker.entities.Receipt;
+import com.stevecrossin.grocerytracker.entities.ReceiptsDao;
 import com.stevecrossin.grocerytracker.entities.User;
 import com.stevecrossin.grocerytracker.entities.UserDao;
 
@@ -13,10 +14,11 @@ import java.util.List;
 
 public class AppDataRepo {
     private UserDao userDao;
-    private ItemsDao itemsDao;
+    private ReceiptsDao receiptsDao;
 
     public AppDataRepo(Context context) {
         userDao = AppDb.getDatabase(context).userDao();
+        receiptsDao = AppDb.getDatabase(context).itemsDao();
     }
 
     /**
@@ -24,11 +26,10 @@ public class AppDataRepo {
      */
     public boolean insertUser(User user) {
         try {
-        userDao.insertUser(user);
-        }
-        catch (SQLiteConstraintException exc){
+            userDao.insertUser(user);
+        } catch (SQLiteConstraintException exc) {
             return false;
-            }
+        }
         return true;
     }
 
@@ -50,11 +51,19 @@ public class AppDataRepo {
     /**
      * Perform dao operation to get users from Users db.
      */
-    public User getUserName(String userName) {
-        return userDao.getUser(userName);
+    public User getUserByEmail(String email) {
+        return userDao.getUser(email);
     }
 
     public List<User> getAllUsers() {
         return userDao.getAllUsers();
+    }
+
+    public void insertReceipt(Receipt receipt) {
+        receiptsDao.insertReceipt(receipt);
+    }
+
+    public List<Receipt> getReceiptsForUser(String email) {
+        return receiptsDao.getReceiptsForUser(email);
     }
 }

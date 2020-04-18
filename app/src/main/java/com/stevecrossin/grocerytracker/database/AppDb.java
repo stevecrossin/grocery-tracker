@@ -6,8 +6,8 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-import com.stevecrossin.grocerytracker.entities.Items;
-import com.stevecrossin.grocerytracker.entities.ItemsDao;
+import com.stevecrossin.grocerytracker.entities.Receipt;
+import com.stevecrossin.grocerytracker.entities.ReceiptsDao;
 import com.stevecrossin.grocerytracker.entities.User;
 import com.stevecrossin.grocerytracker.entities.UserDao;
 
@@ -17,12 +17,12 @@ import com.stevecrossin.grocerytracker.entities.UserDao;
  * time the underlying code for database entities is modified, or the application
  * may crash
  */
-@Database(entities = {Items.class, User.class}, version = 7, exportSchema = false)
+@Database(entities = {Receipt.class, User.class}, version = 9, exportSchema = false)
 public abstract class AppDb extends RoomDatabase {
 
     public abstract UserDao userDao();
 
-    public abstract ItemsDao itemsDao();
+    public abstract ReceiptsDao itemsDao();
 
     private static AppDb INSTANCE;
 

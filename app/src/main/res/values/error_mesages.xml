@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="EmptyName">Name is required</string>
+    <string name="EmptyWeight">Weight is required</string>
+    <string name="EmptyHeight">Height is required</string>
+    <string name="EmptyAge">Age is required</string>
+    <string name="EmptyPostcode">Postcode is required</string>
+    <string name="EmptyAdultNumber">Adult number is required</string>
+    <string name="EmptyChildNumber">Children number is required</string>
+    <string name="EmptyEmail">Email is required</string>
+    <string name="EmptyPassword">Password is required</string>
+    <string name="emptyGender">Please select your gender</string>
+    <string name="emptyShopFrequency">Please select the frequency of shopping</string>
+</resources>

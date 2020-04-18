@@ -29,8 +29,8 @@ public class MainActivity extends AppCompatActivity {
      * This is Share Receipts Button function to connect to ShareReceipts interface.
      */
 
-    public void GotoReceipts(View view)
-    { Intent intent = new Intent(this, Receipts.class);
+    public void GotoReceipts(View view) {
+        Intent intent = new Intent(this, AddReceipt.class);
         startActivity(intent);
     }
 
@@ -87,6 +87,11 @@ public class MainActivity extends AppCompatActivity {
 
             }
         }.execute();
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    public void receipts(View view) {
+        startActivity(new Intent(this, Receipts.class));
     }
 
     public void sendFeedbackMail(View view) {

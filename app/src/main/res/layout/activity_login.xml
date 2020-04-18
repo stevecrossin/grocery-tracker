@@ -23,8 +23,8 @@
 
     <ScrollView
         android:id="@+id/signInForm"
-        android:layout_width="373dp"
-        android:layout_height="391dp">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -33,66 +33,68 @@
 
             <TextView
                 android:id="@+id/loginTitle"
+                style="@style/header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/login_title" />
+
+            <LinearLayout
+                style="@style/fieldGroup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="24dp"
-                android:gravity="center_horizontal"
-                android:text="@string/login_title"
-                android:textAlignment="center"
-                android:textSize="24sp" />
+                android:orientation="vertical">
 
-            <AutoCompleteTextView
-                android:id="@+id/enterUsername"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:layout_marginBottom="16dp"
-                android:ems="10"
-                android:hint="@string/emailAddressHint"
-                android:inputType="textEmailAddress"
-                android:background="@color/primaryLightColor"
-                app:layout_constraintBottom_toTopOf="@+id/enterPassword"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/loginTitle" />
+                <TextView
+                    style="@style/labelText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/email" />
 
-            <EditText
-                android:id="@+id/enterPassword"
+                <AutoCompleteTextView
+                    android:id="@+id/enterUsername"
+                    style="@style/inputField"
+                    android:layout_width="match_parent"
+                    android:hint="@string/emailAddressHint"
+                    android:inputType="textEmailAddress" />
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/fieldGroup"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:layout_marginBottom="16dp"
-                android:autofillHints=""
-                android:ems="10"
-                android:hint="@string/enterPasswordHint"
-                android:inputType="textPassword"
-                android:background="@color/primaryLightColor"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/enterUsername" />
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                >
+
+                <TextView
+                    style="@style/labelText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/password" />
+
+                <EditText
+                    android:id="@+id/enterPassword"
+                    style="@style/inputField"
+                    android:layout_width="match_parent"
+                    android:autofillHints=""
+                    android:hint="@string/enterPasswordHint"
+                    android:inputType="textPassword" />
+            </LinearLayout>
 
             <Button
                 android:id="@+id/loginButton"
+                style="@style/button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:background="@color/secondaryColor"
                 android:text="@string/signInLabel"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/enterPassword" />
+                android:layout_marginTop="16dp" />
 
             <Button
                 android:id="@+id/signUpButton"
+                style="@style/button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:background="@color/secondaryColor"
                 android:onClick="navSignUp"
-                android:text="@string/signUp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/loginButton" />
+                android:text="@string/signUp" />
 
         </LinearLayout>
     </ScrollView>

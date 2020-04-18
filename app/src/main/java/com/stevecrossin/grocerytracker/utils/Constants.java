@@ -1,4 +1,4 @@
-package com.stevecrossin.grocerytracker.other;
+package com.stevecrossin.grocerytracker.utils;
 
 public class Constants {
     public static final String STORAGE_PATH_UPLOADS = "uploads/";
