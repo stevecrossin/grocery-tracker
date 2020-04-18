@@ -412,12 +412,14 @@ public class AddReceipt extends AppCompatActivity implements View.OnClickListene
         List<ReceiptLineItem> receiptLineItems;
         String headerText;
 
-        // If contains Woolworths -> do Woolworths or do Coles
+        // If contains Woolworths -> do Woolworths or do Coles - first case will handle Coles receipts, other returns Woolworths
+
         if (!parsedText.contains("Woolworths")) {
             ColesReceipt colesReceipt = new ColesReceipt(parsedText);
             receiptLineItems = colesReceipt.Parse();
             headerText = "Item Description: Unit Price: Quantity: Price";
         }
+        //Do Woolworths
         else {
             headerText = parsedText.substring(0, parsedText.lastIndexOf(": \n"));
             headerText = headerText.substring(headerText.lastIndexOf("\n") + 1);
