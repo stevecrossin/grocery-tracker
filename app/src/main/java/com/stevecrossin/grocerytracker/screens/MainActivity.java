@@ -9,11 +9,16 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.inappmessaging.FirebaseInAppMessaging;
 import com.stevecrossin.grocerytracker.R;
 import com.stevecrossin.grocerytracker.database.AppDataRepo;
 import com.stevecrossin.grocerytracker.entities.User;
 
 public class MainActivity extends AppCompatActivity {
+
+    private FirebaseAnalytics mFirebaseAnalytics;
+    private FirebaseInAppMessaging mInAppMessaging;
 
     /**
      * Sets the content view to the activity_main layout.
@@ -23,6 +28,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        mInAppMessaging = FirebaseInAppMessaging.getInstance();
+        mInAppMessaging.setAutomaticDataCollectionEnabled(true);
+        mInAppMessaging.setMessagesSuppressed(false);
     }
 
     /**
@@ -31,6 +40,12 @@ public class MainActivity extends AppCompatActivity {
 
     public void GotoReceipts(View view)
     {
+        mFirebaseAnalytics.logEvent("engagement_party", new Bundle());
+/*
+        Snackbar.make(view, "'engagement_party' event triggered!", Snackbar.LENGTH_LONG)
+                .setAction("Action", null)
+                .show();
+*/
         Intent intent = new Intent(this, AddReceipt.class);
         startActivity(intent);
     }
