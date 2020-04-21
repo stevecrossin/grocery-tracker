@@ -79,7 +79,6 @@ public class AddReceipt extends AppCompatActivity implements View.OnClickListene
         mDatabaseReference = FirebaseDatabase.getInstance().getReference(Constants.DATABASE_PATH_UPLOADS);
         // RG: Adding another database reference for test purposes.
         databaseReference = FirebaseDatabase.getInstance().getReference("Receipts");
-
         textViewStatus = findViewById(R.id.textViewStatus);
         editTextFilename = findViewById(R.id.editTextFileName);
         progressBar = findViewById(R.id.progressbar);
@@ -108,22 +107,33 @@ public class AddReceipt extends AppCompatActivity implements View.OnClickListene
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICK_PDF_CODE && resultCode == RESULT_OK) {
             if (data != null && data.getData() != null) {
+                // If the user has successfully picked a pdf...
                 EditText ediTextFileName = findViewById(R.id.editTextFileName);
                 final String fileAlias = ediTextFileName.getText().toString();
+                // Process the picked pdf in a background thread.
                 AsyncTask.execute(new Runnable() {
                     @Override
                     public void run() {
+                        // Provide indication to the user that the pdf file is being processed.
                         setInProgress();
+                        // First, write the pdf file to a local temp storage. This is done because, iTextPdf library takes
+                        // a file path as input and not a Uri and the result of the pick operation has a Uri which has to
+                        // be read through a ContentResolver first so that it goes through proper permissions first.
                         String pdfFilePath = writePDFToTempStorage(data.getData());
                         if (pdfFilePath == null) {
+                            // If something went wrong with writing a copy of the pdf to local storage,
+                            // indicate that to the user.
                             setFailure();
                             return;
                         }
                         if (!parseAndUploadPDF(pdfFilePath, fileAlias)) {
+                            // If something went wrong with parsing the pdf, indicate that to the user.
                             setFailure();
                             return;
                         }
+                        // Clear the temp storage which will have copy of the picked pdf.
                         purgeTempStorage();
+                        // Indicate to the user that the pdf file they picked was processed successfully.
                         setSuccess();
                     }
                 });
@@ -134,6 +144,7 @@ public class AddReceipt extends AppCompatActivity implements View.OnClickListene
     }
 
     private void setInProgress() {
+        // Indicate progress to the user in foreground thread.
         mHandler.post(new Runnable() {
             @Override
             public void run() {
@@ -144,6 +155,7 @@ public class AddReceipt extends AppCompatActivity implements View.OnClickListene
     }
 
     private void setSuccess() {
+        // Indicate success to the user in foreground thread.
         mHandler.post(new Runnable() {
             @Override
             public void run() {
@@ -155,6 +167,7 @@ public class AddReceipt extends AppCompatActivity implements View.OnClickListene
     }
 
     private void setFailure() {
+        // Indicate failure to the user in foreground thread.
         mHandler.post(new Runnable() {
             @Override
             public void run() {
@@ -206,6 +219,10 @@ public class AddReceipt extends AppCompatActivity implements View.OnClickListene
 
     }*/
 
+    /**
+     * Deletes all files in externalFilesDir/Temp directory which is used to write a copy of the
+     * picked pdf for processing it into csv.
+     */
     private void purgeTempStorage() {
         String dirPath = getExternalFilesDir(null).getAbsolutePath()
                 + "/Temp";
@@ -221,6 +238,14 @@ public class AddReceipt extends AppCompatActivity implements View.OnClickListene
         }
     }
 
+
+    /**
+     * Creates a copy of the pdf file picked by the user in local storage for further processing it
+     * into csv.
+     *
+     * @param pdfUri Uri of the pdf file provided by the pick pdf user operation.
+     * @return the file path of the copy of pdf
+     */
     private String writePDFToTempStorage(Uri pdfUri) {
         if (pdfUri == null) {
             // Throw exception/Error Log
@@ -253,7 +278,247 @@ public class AddReceipt extends AppCompatActivity implements View.OnClickListene
         }
     }
 
+    /**
+     * Reads the receipt pdf and parses it to csv, writes to local storage and creates an entry for it
+     * in Room DB associating it to the current user.
+     *
+     * @param pdfFilePath Path to the copy of pdf file in local storage.
+     * @param fileAlias   The name of the receipt specified by the user when adding a receipt.
+     * @return
+     */
+    private boolean parseAndUploadPDF(final String pdfFilePath, final String fileAlias) {
+        try {
+            String parsedText = "";
+            PdfReader reader = new PdfReader(pdfFilePath);
+            int n = reader.getNumberOfPages();
+            // Read all pages in the receipt pdf and collect them into a single string.
+            for (int i = 0; i < n; i++) {
+                parsedText = parsedText + PdfTextExtractor.getTextFromPage(reader, i + 1).trim() + "\n"; //Extracting the content from the different pages
+            }
+            boolean result = parseReceiptPdf(parsedText, fileAlias);
+            reader.close();
+            return result;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    /**
+     * Parses the text read from the receipt pdf, writes csv and creates receipt db entry.
+     *
+     * @param parsedText String containing the text of the entire receipt pdf.
+     * @param fileAlias  The name of the receipt specified by the user when adding a receipt.
+     * @return
+     */
+    private boolean parseReceiptPdf(String parsedText, String fileAlias) {
+        List<ReceiptLineItem> receiptLineItems;
+        String headerText;
+
+        // If contains Woolworths -> do Woolworths or do Coles - first case will handle Coles receipts, other returns Woolworths
+
+        if (!parsedText.contains("Woolworths")) {
+            ColesReceipt colesReceipt = new ColesReceipt(parsedText);
+            receiptLineItems = colesReceipt.Parse();
+            headerText = "Item Description: Unit Price: Quantity: Price";
+        }
+        //Do Woolworths
+        else {
+            headerText = parsedText.substring(0, parsedText.lastIndexOf(": \n"));
+            headerText = headerText.substring(headerText.lastIndexOf("\n") + 1);
+            String tableText = parsedText.substring(parsedText.lastIndexOf(": \n") + 3, parsedText.indexOf("Subtotal")).trim();
+            Log.i("info", headerText);
+            receiptLineItems = parseReceipt(tableText);
+        }
+
+        if (receiptLineItems == null || receiptLineItems.size() == 0) {
+            return false;
+        }
+
+        String filePath = getExternalFilesDir(null).getAbsolutePath()
+                + "/Receipt";
+        File receiptCSVFilepath = new File(filePath);
+        if (!receiptCSVFilepath.exists()) {
+            if (!receiptCSVFilepath.mkdirs()) {
+                return false;
+            }
+        }
+        String receiptCSVFilename = filePath + "/receipt_" + System.currentTimeMillis() + ".csv";
+        writeToCSV(headerText.split(": "), receiptLineItems, receiptCSVFilename);
+        uploadCSVFileToRoomDB(receiptCSVFilename, fileAlias);
+
+        // push to firebase when you push to RoomDB
+        writeCSVFiletoFirebase(receiptCSVFilename, fileAlias, receiptLineItems);
+        return true;
+    }
+
+    /**
+     * Parses items in a receipt.
+     *
+     * @param receipt String containing the receipt items.
+     * @return
+     */
+    private List<ReceiptLineItem> parseReceipt(String receipt) {
+        String[] lines = receipt.split("\n");
+        List<String> prunedLines = pruneLines(lines);
+        int i = 0;
+        List<String> receiptLines = new ArrayList<>();
+        while (i < prunedLines.size()) {
+            String prunedLine = prunedLines.get(i).trim();
+            // If a line ends with a float, that means it is a single line item and so can be processed.
+            if (endsWithFloat(prunedLine)) {
+                receiptLines.add(prunedLine);
+                i++;
+            } else {
+                // If the next line contains only integers then it is part of a 2 line item. The next to
+                // next line should be appended to the current one as they form the item name. The next
+                // should then be appended to the end of the item name as that will contain unit price,
+                // quantity and price information. This will make it like the single line item.
+                if (isOnlyIntegers(prunedLines.get(i + 1))) {
+                    receiptLines.add(prunedLine + " " + prunedLines.get(i + 2).trim() + " " + prunedLines.get(i + 1).trim());
+                    i += 3;
+                } else {
+                    // If the next line is not all integers, then it is a 3 or more lines item. In this case
+                    // we collect consecutive lines till we hit a line that does not end with a space character.
+                    List<String> itemLines = new ArrayList<>();
+                    int j = i;
+                    while (j < prunedLines.size()) {
+                        itemLines.add(prunedLines.get(j).trim());
+                        if (!prunedLines.get(j).endsWith(" ")) {
+                            break;
+                        }
+                        j++;
+                    }
+                    // Then we process the collected lines of a 3 or more lines item into a single line item.
+                    receiptLines.add(processItemLines(itemLines));
+                    i = j + 1;
+                }
+            }
+        }
+
+        return processReceiptLines(receiptLines);
+    }
+
+    /**
+     * Collects the segmented item name in multiple lines into a single line and apeends the unit price, quantity and
+     * price details at the end, creating a single line item.
+     *
+     * @param itemLines Lines to be processed.
+     * @return Single line receipt item.
+     */
+    private String processItemLines(List<String> itemLines) {
+        String numerics = "";
+        StringBuilder builder = new StringBuilder();
+        for (String itemLine : itemLines) {
+            if (endsWithFloat(itemLine)) {
+                ReceiptLineItem item = parseLineItem(itemLine);
+                builder.append(item.itemDescription);
+                numerics = item.unitPrice + " " + item.quantity + " " + item.price;
+            } else {
+                builder.append(itemLine);
+            }
+            builder.append(" ");
+        }
+        builder.append(numerics);
+        return builder.toString().trim();
+    }
+
+    /**
+     * Returns true if the String ends with a period character followed by 2 integers.
+     *
+     * @param line The receipt line.
+     * @return true if ends with float. false otherwise.
+     */
+    private boolean endsWithFloat(String line) {
+        char lastChar = line.charAt(line.length() - 1);
+        char lastBeforeChar = line.charAt(line.length() - 2);
+        char periodCharacter = line.charAt(line.length() - 3);
+
+        if (lastChar >= '0' && lastChar <= '9' && lastBeforeChar >= '0' && lastBeforeChar <= '9'
+                && periodCharacter == '.') {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Checks if the String consists only integers ignoring space and period character.
+     *
+     * @param text The receipt line.
+     * @return true if all are integers. false otherwise.
+     */
+    private boolean isOnlyIntegers(String text) {
+        char[] characters = text.toCharArray();
+        for (char c : characters) {
+            if (c == '.' || c == ' ') {
+                continue;
+            }
+
+            if (c < '0' || c > '9') {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Parses a single line receipt item String into ReceiptLineItem
+     *
+     * @param lineItem Single line receipt item String.
+     * @return Processed ReceiptLineItem object.
+     */
+    private ReceiptLineItem parseLineItem(String lineItem) {
+        // Split by space character.
+        String[] columns = lineItem.split(" ");
+        ReceiptLineItem receiptLineItem = new ReceiptLineItem();
+        // The last three entries will be unit price, quantity and price.
+        receiptLineItem.price = Float.parseFloat(columns[columns.length - 1]);
+        receiptLineItem.quantity = Integer.parseInt(columns[columns.length - 2]);
+        receiptLineItem.unitPrice = Float.parseFloat(columns[columns.length - 3]);
+
+        // The rest of the bits will form the item name, so piece them all together before
+        // putting them in ReceiptLineItem.
+        receiptLineItem.itemDescription = "";
+        for (int i = 0; i < columns.length - 3; i++) {
+            receiptLineItem.itemDescription = receiptLineItem.itemDescription + " ";
+            receiptLineItem.itemDescription = receiptLineItem.itemDescription + columns[i];
+        }
+        receiptLineItem.itemDescription = receiptLineItem.itemDescription.trim();
+        return receiptLineItem;
+    }
+
+    /**
+     * Process a list of single line receipt item Strings.
+     *
+     * @param receiptLines List of single line receipt item Strings.
+     * @return List of ReceiptLineItems
+     */
+    private List<ReceiptLineItem> processReceiptLines(List<String> receiptLines) {
+        List<ReceiptLineItem> receiptLineItems = new ArrayList<>();
+        for (String receiptLine : receiptLines) {
+            receiptLineItems.add(parseLineItem(receiptLine));
+        }
+
+        return receiptLineItems;
+    }
+
+    /**
+     * Discards empty lines in a set of lines.
+     *
+     * @param lines A set of lines
+     * @return List of lines containing no empty lines.
+     */
+    private List<String> pruneLines(String[] lines) {
+        List<String> prunedLines = new ArrayList<>();
+        for (String line : lines) {
+            if (!line.startsWith(" ")) {
+                prunedLines.add(line);
+            }
+        }
+        return prunedLines;
+    }
+
     private static final String CSV_SEPARATOR = ",";
+
 
     private static void writeToCSV(String[] columnHeader, List<ReceiptLineItem> receiptLineItems, String fileName) {
         try {
@@ -288,173 +553,6 @@ public class AddReceipt extends AppCompatActivity implements View.OnClickListene
         }
     }
 
-    private List<ReceiptLineItem> parseReceipt(String receipt) {
-        String[] lines = receipt.split("\n");
-        List<String> prunedLines = pruneLines(lines);
-        int i = 0;
-        List<String> receiptLines = new ArrayList<>();
-        while (i < prunedLines.size()) {
-            String prunedLine = prunedLines.get(i).trim();
-            if (endsWithFloat(prunedLine)) {
-                receiptLines.add(prunedLine);
-                i++;
-            } else {
-                if (isOnlyIntegers(prunedLines.get(i + 1))) {
-                    receiptLines.add(prunedLine + " " + prunedLines.get(i + 2).trim() + " " + prunedLines.get(i + 1).trim());
-                    i += 3;
-                } else {
-                    List<String> itemLines = new ArrayList<>();
-                    int j = i;
-                    while (j < prunedLines.size()) {
-                        itemLines.add(prunedLines.get(j).trim());
-                        if (!prunedLines.get(j).endsWith(" ")) {
-                            break;
-                        }
-                        j++;
-                    }
-                    receiptLines.add(processItemLines(itemLines));
-                    i = j + 1;
-                }
-            }
-        }
-
-        return processReceiptLines(receiptLines);
-    }
-
-    private String processItemLines(List<String> itemLines) {
-        String numerics = "";
-        StringBuilder builder = new StringBuilder();
-        for (String itemLine : itemLines) {
-            if (endsWithFloat(itemLine)) {
-                ReceiptLineItem item = parseLineItem(itemLine);
-                builder.append(item.itemDescription);
-                numerics = item.unitPrice + " " + item.quantity + " " + item.price;
-            } else {
-                builder.append(itemLine);
-            }
-            builder.append(" ");
-        }
-        builder.append(numerics);
-        return builder.toString().trim();
-    }
-
-    private boolean endsWithFloat(String line) {
-        char lastChar = line.charAt(line.length() - 1);
-        char lastBeforeChar = line.charAt(line.length() - 2);
-        char periodCharacter = line.charAt(line.length() - 3);
-
-        if (lastChar >= '0' && lastChar <= '9' && lastBeforeChar >= '0' && lastBeforeChar <= '9'
-                && periodCharacter == '.') {
-            return true;
-        }
-        return false;
-    }
-
-    private boolean isOnlyIntegers(String text) {
-        char[] characters = text.toCharArray();
-        for (char c : characters) {
-            if (c == '.' || c == ' ') {
-                continue;
-            }
-
-            if (c < '0' || c > '9') {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    private ReceiptLineItem parseLineItem(String lineItem) {
-        String[] columns = lineItem.split(" ");
-        ReceiptLineItem receiptLineItem = new ReceiptLineItem();
-        receiptLineItem.price = Float.parseFloat(columns[columns.length - 1]);
-        receiptLineItem.quantity = Integer.parseInt(columns[columns.length - 2]);
-        receiptLineItem.unitPrice = Float.parseFloat(columns[columns.length - 3]);
-
-        receiptLineItem.itemDescription = "";
-        for (int i = 0; i < columns.length - 3; i++) {
-            receiptLineItem.itemDescription = receiptLineItem.itemDescription + " ";
-            receiptLineItem.itemDescription = receiptLineItem.itemDescription + columns[i];
-        }
-        receiptLineItem.itemDescription = receiptLineItem.itemDescription.trim();
-        return receiptLineItem;
-    }
-
-    private List<ReceiptLineItem> processReceiptLines(List<String> receiptLines) {
-        List<ReceiptLineItem> receiptLineItems = new ArrayList<>();
-        for (String receiptLine : receiptLines) {
-            receiptLineItems.add(parseLineItem(receiptLine));
-        }
-
-        return receiptLineItems;
-    }
-
-    private List<String> pruneLines(String[] lines) {
-        List<String> prunedLines = new ArrayList<>();
-        for (String line : lines) {
-            if (!line.startsWith(" ")) {
-                prunedLines.add(line);
-            }
-        }
-        return prunedLines;
-    }
-
-    private boolean parseAndUploadPDF(final String pdfUriPath, final String fileAlias) {
-        try {
-            String parsedText = "";
-            PdfReader reader = new PdfReader(pdfUriPath);
-            int n = reader.getNumberOfPages();
-            for (int i = 0; i < n; i++) {
-                parsedText = parsedText + PdfTextExtractor.getTextFromPage(reader, i + 1).trim() + "\n"; //Extracting the content from the different pages
-            }
-            boolean result = parseReceiptPdf(parsedText, fileAlias);
-            reader.close();
-            return result;
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
-    private boolean parseReceiptPdf(String parsedText, String fileAlias) {
-        List<ReceiptLineItem> receiptLineItems;
-        String headerText;
-
-        // If contains Woolworths -> do Woolworths or do Coles - first case will handle Coles receipts, other returns Woolworths
-
-        if (!parsedText.contains("Woolworths")) {
-            ColesReceipt colesReceipt = new ColesReceipt(parsedText);
-            receiptLineItems = colesReceipt.Parse();
-            headerText = "Item Description: Unit Price: Quantity: Price";
-        }
-        //Do Woolworths
-        else {
-            headerText = parsedText.substring(0, parsedText.lastIndexOf(": \n"));
-            headerText = headerText.substring(headerText.lastIndexOf("\n") + 1);
-            String tableText = parsedText.substring(parsedText.lastIndexOf(": \n") + 3, parsedText.indexOf("Subtotal")).trim();
-            Log.i("info",headerText);
-            receiptLineItems = parseReceipt(tableText);
-        }
-
-        if (receiptLineItems == null || receiptLineItems.size() == 0) {
-            return false;
-        }
-
-        String filePath = getExternalFilesDir(null).getAbsolutePath()
-                + "/Receipt";
-        File receiptCSVFilepath = new File(filePath);
-        if (!receiptCSVFilepath.exists()) {
-            if (!receiptCSVFilepath.mkdirs()) {
-                return false;
-            }
-        }
-        String receiptCSVFilename = filePath + "/receipt_" + System.currentTimeMillis() + ".csv";
-        writeToCSV(headerText.split(": "), receiptLineItems, receiptCSVFilename);
-        uploadCSVFileToRoomDB(receiptCSVFilename, fileAlias);
-
-        // push to firebase when you push to RoomDB
-        writeCSVFiletoFirebase(receiptCSVFilename, fileAlias, receiptLineItems);
-        return true;
-    }
 
     /**
      * // RG TBA - need to get the actual items - not just the filename, email of user etc.
