@@ -184,20 +184,20 @@ public class User {
     }
 
     /**
-     * Separate constructor otherUser
+     * Separate constructor to store in Firebase DB
      **/
-    public User(User otherUser) {
-        this.userName = otherUser.userName;
-        this.email = otherUser.email;
-        this.userAge = otherUser.userAge;
-        this.userHeight = otherUser.userHeight;
-        this.userWeight = otherUser.userWeight;
-        this.userGender = otherUser.userGender;
-        this.postCode = otherUser.postCode;
-        this.householdMembers = otherUser.householdMembers;
-        this.houseHoldAdults = otherUser.houseHoldAdults;
-        this.houseHoldChildren = otherUser.houseHoldChildren;
-        this.shopNumber = otherUser.shopNumber;
+    public User(User user) {
+        this.userName = user.userName;
+        this.email = user.email;
+        this.userAge = user.userAge;
+        this.userHeight = user.userHeight;
+        this.userWeight = user.userWeight;
+        this.userGender = user.userGender;
+        this.postCode = user.postCode;
+        this.householdMembers = user.householdMembers;
+        this.houseHoldAdults = user.houseHoldAdults;
+        this.houseHoldChildren = user.houseHoldChildren;
+        this.shopNumber = user.shopNumber;
     }
 
 }

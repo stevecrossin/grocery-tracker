@@ -7,25 +7,18 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.parser.PdfTextExtractor;
 import com.stevecrossin.grocerytracker.R;
@@ -46,7 +39,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -200,7 +192,6 @@ public class AddReceipt extends AppCompatActivity implements View.OnClickListene
                         textViewStatus.setText(R.string.msgUploadSuccess);
                         editTextFilename.setText("");
                         progressBar.setVisibility(View.GONE);
-
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -217,7 +208,6 @@ public class AddReceipt extends AppCompatActivity implements View.OnClickListene
                         textViewStatus.setText(MessageFormat.format("Uploading...", (int) getProgress(taskSnapshot)));
                     }
                 });
-
     }*/
 
     /**
@@ -305,52 +295,9 @@ public class AddReceipt extends AppCompatActivity implements View.OnClickListene
     }
 
     /**
-     * Parses the text read from the receipt pdf, writes csv and creates receipt db entry.
-     *
-     * @param parsedText String containing the text of the entire receipt pdf.
-     * @param fileAlias  The name of the receipt specified by the user when adding a receipt.
-     * @return
+     * Writes PDF to CSV - separates columns with comma, lines with a semicolon.
      */
-    private boolean parseReceiptPdf(String parsedText, String fileAlias) {
-        List<ReceiptLineItem> receiptLineItems;
-        String headerText;
-
-        // If contains Woolworths -> do Woolworths or do Coles - first case will handle Coles receipts, other returns Woolworths
-
-        if (!parsedText.contains("Woolworths")) {
-            ColesReceipt colesReceipt = new ColesReceipt(parsedText);
-            receiptLineItems = colesReceipt.Parse();
-            headerText = "Item Description: Unit Price: Quantity: Price";
-        }
-        //Do Woolworths
-        else {
-            headerText = parsedText.substring(0, parsedText.lastIndexOf(": \n"));
-            headerText = headerText.substring(headerText.lastIndexOf("\n") + 1);
-            String tableText = parsedText.substring(parsedText.lastIndexOf(": \n") + 3, parsedText.indexOf("Subtotal")).trim();
-            Log.i("info", headerText);
-            receiptLineItems = parseReceipt(tableText);
-        }
-
-        if (receiptLineItems == null || receiptLineItems.size() == 0) {
-            return false;
-        }
-
-        String filePath = getExternalFilesDir(null).getAbsolutePath()
-                + "/Receipt";
-        File receiptCSVFilepath = new File(filePath);
-        if (!receiptCSVFilepath.exists()) {
-            if (!receiptCSVFilepath.mkdirs()) {
-                return false;
-            }
-        }
-        String receiptCSVFilename = filePath + "/receipt_" + System.currentTimeMillis() + ".csv";
-        writeToCSV(headerText.split(": "), receiptLineItems, receiptCSVFilename);
-        uploadCSVFileToRoomDB(receiptCSVFilename, fileAlias);
-
-        // push to firebase when you push to RoomDB
-        writeCSVFiletoFirebase(receiptCSVFilename, fileAlias, receiptLineItems);
-        return true;
-    }
+    private static final String CSV_COLUMN_SEPARATOR = ",";
 
     /**
      * Parses items in a receipt.
@@ -518,30 +465,29 @@ public class AddReceipt extends AppCompatActivity implements View.OnClickListene
         return prunedLines;
     }
 
-    private static final String CSV_SEPARATOR = ",";
-
+    private static final String CSV_LINE_SEPARATOR = "~";
 
     private static void writeToCSV(String[] columnHeader, List<ReceiptLineItem> receiptLineItems, String fileName) {
         try {
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fileName), "UTF-8"));
             StringBuffer headerLine = new StringBuffer();
             headerLine.append(columnHeader[0]);
-            headerLine.append(CSV_SEPARATOR);
+            headerLine.append(CSV_COLUMN_SEPARATOR);
             headerLine.append(columnHeader[1]);
-            headerLine.append(CSV_SEPARATOR);
+            headerLine.append(CSV_COLUMN_SEPARATOR);
             headerLine.append(columnHeader[2]);
-            headerLine.append(CSV_SEPARATOR);
+            headerLine.append(CSV_COLUMN_SEPARATOR);
             headerLine.append(columnHeader[3]);
             bw.write(headerLine.toString());
             bw.newLine();
             for (ReceiptLineItem receiptLineItem : receiptLineItems) {
                 StringBuffer oneLine = new StringBuffer();
                 oneLine.append(receiptLineItem.itemDescription);
-                oneLine.append(CSV_SEPARATOR);
+                oneLine.append(CSV_COLUMN_SEPARATOR);
                 oneLine.append(receiptLineItem.unitPrice);
-                oneLine.append(CSV_SEPARATOR);
+                oneLine.append(CSV_COLUMN_SEPARATOR);
                 oneLine.append(receiptLineItem.quantity);
-                oneLine.append(CSV_SEPARATOR);
+                oneLine.append(CSV_COLUMN_SEPARATOR);
                 oneLine.append(receiptLineItem.price);
                 bw.write(oneLine.toString());
                 bw.newLine();
@@ -554,42 +500,103 @@ public class AddReceipt extends AppCompatActivity implements View.OnClickListene
         }
     }
 
+    /**
+     * Parses the text read from the receipt pdf, writes csv and creates receipt db entry.
+     *
+     * @param parsedText String containing the text of the entire receipt pdf.
+     * @param fileAlias  The name of the receipt specified by the user when adding a receipt.
+     * @return
+     */
+    private boolean parseReceiptPdf(String parsedText, String fileAlias) {
+        List<ReceiptLineItem> receiptLineItems;
+        String headerText;
+
+        // If contains Woolworths -> do Woolworths or do Coles - first case will handle Coles receipts, other returns Woolworths
+
+        if (!parsedText.contains("Woolworths")) {
+            ColesReceipt colesReceipt = new ColesReceipt(parsedText);
+            receiptLineItems = colesReceipt.Parse();
+            headerText = "Item Description: Unit Price: Quantity: Price";
+        }
+        //Do Woolworths
+        else {
+            headerText = parsedText.substring(0, parsedText.lastIndexOf(": \n"));
+            headerText = headerText.substring(headerText.lastIndexOf("\n") + 1);
+            String tableText = parsedText.substring(parsedText.lastIndexOf(": \n") + 3, parsedText.indexOf("Subtotal")).trim();
+            Log.i("info", headerText);
+            receiptLineItems = parseReceipt(tableText);
+        }
+
+        if (receiptLineItems == null || receiptLineItems.size() == 0) {
+            return false;
+        }
+
+        String filePath = getExternalFilesDir(null).getAbsolutePath()
+                + "/Receipt";
+        File receiptCSVFilepath = new File(filePath);
+        if (!receiptCSVFilepath.exists()) {
+            if (!receiptCSVFilepath.mkdirs()) {
+                return false;
+            }
+        }
+        String receiptCSVFilename = filePath + "/receipt_" + System.currentTimeMillis() + ".csv";
+        writeToCSV(headerText.split(": "), receiptLineItems, receiptCSVFilename);
+        Receipt savedReceipt = uploadCSVFileToRoomDB(receiptCSVFilename, fileAlias);
+
+        // push to firebase when you push to RoomDB
+        writeCSVFileToFirebase(savedReceipt, headerText.split(": "), receiptLineItems);
+        return true;
+    }
 
     /**
      * // RG TBA - need to get the actual items - not just the filename, email of user etc.
      **/
-    private void writeCSVFiletoFirebase(String receiptCSVFilename, String fileAlias, List receiptLineItems) {
-        String csvFilename = receiptCSVFilename;
-        String fileAlias1 = fileAlias;
-        String testText = "Test Text";
-        List receiptItems = receiptLineItems;
+    private void writeCSVFileToFirebase(Receipt savedReceipt, String[] columnHeader,
+                                        List<ReceiptLineItem> receiptLineItems) {
+        UserReceipt userReceipt = new UserReceipt();
 
-        if (!TextUtils.isEmpty(csvFilename) && !TextUtils.isEmpty(fileAlias1)) {
+        AppDataRepo dataRepo = new AppDataRepo(this);
+        User currentUser = dataRepo.getSignedUser();
+        userReceipt.user = new User(currentUser);
+        savedReceipt.setReceiptContents(composeLineItemsToCSVString(columnHeader, receiptLineItems));
+        userReceipt.receipt = new Receipt(savedReceipt);
 
-            AppDataRepo dataRepo = new AppDataRepo(this);
-            User currentUser = dataRepo.getSignedUser();
-
-            String id = databaseReference.push().getKey();
-            /**
-             * changed to superclass userReceipt containing user and receipt info. Gets email of current user, file alias, file name (in prog), and then
-             * the contents of the user table for the current user
-             */
-            UserReceipt userReceipt = new UserReceipt();
-            userReceipt.receipt = new Receipt(currentUser.getEmail(), fileAlias1, csvFilename);
-            userReceipt.user = new User(currentUser);
-            databaseReference.child(id).setValue(userReceipt);
-
-        } else {
-            // TBA
-        }
+        String id = databaseReference.push().getKey();
+        databaseReference.child(id).setValue(userReceipt);
     }
 
-    private void uploadCSVFileToRoomDB(final String csvFilename, final String fileAlias) {
-        // TODO: Upload to Room DB.
+    private String composeLineItemsToCSVString(String[] columnHeader, List<ReceiptLineItem> receiptLineItems) {
+        StringBuilder builder = new StringBuilder();
+        builder.append(columnHeader[0]);
+        builder.append(CSV_COLUMN_SEPARATOR);
+        builder.append(columnHeader[1]);
+        builder.append(CSV_COLUMN_SEPARATOR);
+        builder.append(columnHeader[2]);
+        builder.append(CSV_COLUMN_SEPARATOR);
+        builder.append(columnHeader[3]);
+        builder.append(CSV_LINE_SEPARATOR);
+
+        for (ReceiptLineItem receiptLineItem : receiptLineItems) {
+            StringBuilder oneLine = new StringBuilder();
+            oneLine.append(receiptLineItem.itemDescription);
+            oneLine.append(CSV_COLUMN_SEPARATOR);
+            oneLine.append(receiptLineItem.unitPrice);
+            oneLine.append(CSV_COLUMN_SEPARATOR);
+            oneLine.append(receiptLineItem.quantity);
+            oneLine.append(CSV_COLUMN_SEPARATOR);
+            oneLine.append(receiptLineItem.price);
+            builder.append(CSV_LINE_SEPARATOR);
+        }
+
+        return builder.toString();
+    }
+
+    private Receipt uploadCSVFileToRoomDB(final String csvFilename, final String fileAlias) {
         AppDataRepo dataRepo = new AppDataRepo(this);
         User currentUser = dataRepo.getSignedUser();
         Receipt receipt = new Receipt(currentUser.getEmail(), fileAlias, csvFilename);
         dataRepo.insertReceipt(receipt);
+        return receipt;
     }
 
     /**
