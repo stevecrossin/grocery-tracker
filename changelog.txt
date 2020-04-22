@@ -96,3 +96,6 @@ Still needs to be done:
 - Radika to redo UAT
 - Ben to investigate and explore notifications more fully to explore alternate ways this can be used
 - Rest to do testing/documentation of solution
+
+22 April - Ben
+Added code to log event when Share Receipts button is pressed. Dynamic notifications only present when event is logged, allowing for notifications to be presented at certain screens
