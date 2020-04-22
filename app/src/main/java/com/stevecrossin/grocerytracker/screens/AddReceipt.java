@@ -34,6 +34,7 @@ import com.stevecrossin.grocerytracker.entities.Receipt;
 import com.stevecrossin.grocerytracker.entities.User;
 import com.stevecrossin.grocerytracker.models.ColesReceipt;
 import com.stevecrossin.grocerytracker.models.ReceiptLineItem;
+import com.stevecrossin.grocerytracker.models.UserReceipt;
 import com.stevecrossin.grocerytracker.utils.Constants;
 
 import java.io.BufferedWriter;
@@ -569,8 +570,14 @@ public class AddReceipt extends AppCompatActivity implements View.OnClickListene
             User currentUser = dataRepo.getSignedUser();
 
             String id = databaseReference.push().getKey();
-            Receipt receipt = new Receipt(currentUser.getEmail(), fileAlias1, csvFilename);
-            databaseReference.child(id).setValue(receipt);
+            /**
+             * changed to superclass userReceipt containing user and receipt info. Gets email of current user, file alias, file name (in prog), and then
+             * the contents of the user table for the current user
+             */
+            UserReceipt userReceipt = new UserReceipt();
+            userReceipt.receipt = new Receipt(currentUser.getEmail(), fileAlias1, csvFilename);
+            userReceipt.user = new User(currentUser);
+            databaseReference.child(id).setValue(userReceipt);
 
         } else {
             // TBA

@@ -183,6 +183,22 @@ public class User {
         this.shopNumber = shopNumber;
     }
 
+    /**
+     * Separate constructor otherUser
+     **/
+    public User(User otherUser) {
+        this.userName = otherUser.userName;
+        this.email = otherUser.email;
+        this.userAge = otherUser.userAge;
+        this.userHeight = otherUser.userHeight;
+        this.userWeight = otherUser.userWeight;
+        this.userGender = otherUser.userGender;
+        this.postCode = otherUser.postCode;
+        this.householdMembers = otherUser.householdMembers;
+        this.houseHoldAdults = otherUser.houseHoldAdults;
+        this.houseHoldChildren = otherUser.houseHoldChildren;
+        this.shopNumber = otherUser.shopNumber;
+    }
 
 }
 
