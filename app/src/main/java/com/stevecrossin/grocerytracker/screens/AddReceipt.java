@@ -551,16 +551,13 @@ public class AddReceipt extends AppCompatActivity implements View.OnClickListene
     /**
      * // RG TBA - need to get the actual items - not just the filename, email of user etc.
      **/
-    private void writeCSVFileToFirebase(Receipt savedReceipt, String[] columnHeader,
-                                        List<ReceiptLineItem> receiptLineItems) {
+    private void writeCSVFileToFirebase(Receipt savedReceipt, String[] columnHeader, List<ReceiptLineItem> receiptLineItems) {
         UserReceipt userReceipt = new UserReceipt();
-
         AppDataRepo dataRepo = new AppDataRepo(this);
         User currentUser = dataRepo.getSignedUser();
-        userReceipt.user = new User(currentUser);
+        //userReceipt.user = new User(currentUser.getEmail()); //depreceated, as we don't need user data here anymore.
         savedReceipt.setReceiptContents(composeLineItemsToCSVString(columnHeader, receiptLineItems));
         userReceipt.receipt = new Receipt(savedReceipt);
-
         String id = databaseReference.push().getKey();
         databaseReference.child(id).setValue(userReceipt);
     }

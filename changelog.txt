@@ -107,3 +107,8 @@ Added code to log event when Share Receipts button is pressed. Dynamic notificat
 - AddReceipt.java - updated writeCSVFiletoFirebase method to pass all data from user table for current user.
 
 Todo: still need to work on PDF extraction to string with comma and semicolon separatation, and pass that up to Firebase instead of receiptFilePath upload code
+
+23 April - Steve
+* Session 2 -
+- AddReceipt.java - receipts now correctly uploading receipt contents, removed pushing of user info into receipt upload.
+- Signup.java - wrote method to push newly created users in RoomDB to Firebase into separate User entity.
