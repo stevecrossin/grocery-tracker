@@ -577,14 +577,13 @@ public class AddReceipt extends AppCompatActivity implements View.OnClickListene
         builder.append(CSV_LINE_SEPARATOR);
 
         for (ReceiptLineItem receiptLineItem : receiptLineItems) {
-            StringBuilder oneLine = new StringBuilder();
-            oneLine.append(receiptLineItem.itemDescription);
-            oneLine.append(CSV_COLUMN_SEPARATOR);
-            oneLine.append(receiptLineItem.unitPrice);
-            oneLine.append(CSV_COLUMN_SEPARATOR);
-            oneLine.append(receiptLineItem.quantity);
-            oneLine.append(CSV_COLUMN_SEPARATOR);
-            oneLine.append(receiptLineItem.price);
+            builder.append(receiptLineItem.itemDescription);
+            builder.append(CSV_COLUMN_SEPARATOR);
+            builder.append(receiptLineItem.unitPrice);
+            builder.append(CSV_COLUMN_SEPARATOR);
+            builder.append(receiptLineItem.quantity);
+            builder.append(CSV_COLUMN_SEPARATOR);
+            builder.append(receiptLineItem.price);
             builder.append(CSV_LINE_SEPARATOR);
         }
 
