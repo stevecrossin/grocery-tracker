@@ -33,11 +33,11 @@
 
             <TextView
                 android:id="@+id/loginTitle"
+                style="@style/header"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/header"
-                android:text="@string/login_title"
-                />
+                android:text="@string/login_title" />
+
             <LinearLayout
                 style="@style/fieldGroup"
                 android:layout_width="match_parent"
@@ -55,9 +55,9 @@
                     style="@style/inputField"
                     android:layout_width="match_parent"
                     android:hint="@string/emailAddressHint"
-                    android:inputType="textEmailAddress"
-                    />
+                    android:inputType="textEmailAddress" />
             </LinearLayout>
+
             <LinearLayout
                 style="@style/fieldGroup"
                 android:layout_width="match_parent"
@@ -77,17 +77,16 @@
                     android:layout_width="match_parent"
                     android:autofillHints=""
                     android:hint="@string/enterPasswordHint"
-                    android:inputType="textPassword"
-                    />
+                    android:inputType="textPassword" />
             </LinearLayout>
+
             <Button
                 android:id="@+id/loginButton"
                 style="@style/button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/signInLabel"
-                android:layout_marginTop="16dp"
-                 />
+                android:layout_marginTop="16dp" />
 
             <Button
                 android:id="@+id/signUpButton"
@@ -95,8 +94,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:onClick="navSignUp"
-                android:text="@string/signUp"
-               />
+                android:text="@string/signUp" />
 
         </LinearLayout>
     </ScrollView>

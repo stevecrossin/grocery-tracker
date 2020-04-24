@@ -35,8 +35,7 @@
                 style="@style/header"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/lblSignUpTitle"
-                 />
+                android:text="@string/lblSignUpTitle" />
 
             <LinearLayout
                 android:id="@+id/accountInfoLayout"
@@ -161,8 +160,7 @@
                         style="@style/inputField"
                         android:layout_width="match_parent"
                         android:hint="@string/lblAge"
-                        android:inputType="number"
-                        />
+                        android:inputType="number" />
 
                 </LinearLayout>
 
@@ -178,16 +176,14 @@
                         style="@style/labelText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/Height"
-                        />
+                        android:text="@string/Height" />
 
                     <AutoCompleteTextView
                         android:id="@+id/etHeight"
                         style="@style/inputField"
                         android:layout_width="match_parent"
                         android:hint="@string/lblHeight"
-                        android:inputType="number"
-                        />
+                        android:inputType="number" />
 
                 </LinearLayout>
 
@@ -211,8 +207,7 @@
                         style="@style/inputField"
                         android:layout_width="match_parent"
                         android:hint="@string/lblWeight"
-                        android:inputType="numberDecimal"
-                     />
+                        android:inputType="numberDecimal" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -255,8 +250,7 @@
                         style="@style/inputField"
                         android:layout_width="match_parent"
                         android:hint="@string/lblPostcode"
-                        android:inputType="number"
-                         />
+                        android:inputType="number" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -297,8 +291,7 @@
                         style="@style/inputField"
                         android:layout_width="match_parent"
                         android:hint="@string/lblNumberHouse"
-                        android:inputType="number"
-                        />
+                        android:inputType="number" />
 
                 </LinearLayout>
 
@@ -321,8 +314,7 @@
                         style="@style/inputField"
                         android:layout_width="match_parent"
                         android:hint="@string/lblNumberAdults"
-                        android:inputType="number"
-                        />
+                        android:inputType="number" />
 
                 </LinearLayout>
 
@@ -347,8 +339,7 @@
                     style="@style/inputField"
                     android:layout_width="match_parent"
                     android:hint="@string/lblNumberChild"
-                    android:inputType="number"
-                 />
+                    android:inputType="number" />
             </LinearLayout>
 
             <LinearLayout
@@ -384,8 +375,7 @@
                     <Spinner
                         android:id="@+id/cbShopNumber"
                         style="@style/inputField"
-                        android:layout_width="match_parent"
-                        />
+                        android:layout_width="match_parent" />
 
                 </LinearLayout>
 
@@ -399,8 +389,7 @@
                 android:layout_height="wrap_content"
                 android:onClick="submitSignUp"
                 android:text="@string/btnSubmit"
-                tools:ignore="OnClick"
-                 />
+                tools:ignore="OnClick" />
 
             <Button
                 android:id="@+id/Bcancel"
@@ -408,8 +397,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:onClick="cancelSignUp"
-                android:text="@string/lblCancel"
-              />
+                android:text="@string/lblCancel" />
         </LinearLayout>
 
     </ScrollView>

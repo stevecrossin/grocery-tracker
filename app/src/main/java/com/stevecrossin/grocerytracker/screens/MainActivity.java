@@ -38,8 +38,7 @@ public class MainActivity extends AppCompatActivity {
      * This is Share Receipts Button function to connect to ShareReceipts interface.
      */
 
-    public void GotoReceipts(View view)
-    {
+    public void GotoReceipts(View view) {
         mFirebaseAnalytics.logEvent("engagement_party", new Bundle());
 /*
         Snackbar.make(view, "'engagement_party' event triggered!", Snackbar.LENGTH_LONG)
@@ -53,17 +52,17 @@ public class MainActivity extends AppCompatActivity {
     /**
      * This is Online Survey Button function to link to Survey website. Placeholder URL at present
      */
-     public void GoToSurvey(View view) {
-         String url = "https://globalobesity.com.au";
-         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
-     }
+    public void GoToSurvey(View view) {
+        String url = "https://globalobesity.com.au";
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+    }
 
     /**
      * This is About GLOBE button function, to link to About screen.
      */
     public void GoToAbout(View view) {
-       Intent intent = new Intent(this, About.class);
-       startActivity(intent);
+        Intent intent = new Intent(this, About.class);
+        startActivity(intent);
     }
 
     /** Navigate to FAQ screen */
