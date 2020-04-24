@@ -13,9 +13,13 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.stevecrossin.grocerytracker.R;
 import com.stevecrossin.grocerytracker.database.AppDataRepo;
+import com.stevecrossin.grocerytracker.entities.Receipt;
 import com.stevecrossin.grocerytracker.entities.User;
+import com.stevecrossin.grocerytracker.models.UserReceipt;
 import com.stevecrossin.grocerytracker.utils.InputValidator;
 import com.stevecrossin.grocerytracker.utils.TextValidator;
 import com.stevecrossin.grocerytracker.utils.PasswordScrambler;
@@ -27,10 +31,11 @@ public class Signup extends AppCompatActivity {
     private Login.LoginTask authenticationTask = null;
     private Spinner cbGender;
     private Spinner cbShopNumber;
+    DatabaseReference databaseReference;
     ArrayAdapter<CharSequence> adapter;
-    private int selectedGenderPosition = 0;
     private int selectedShopNumber = 0;
     private TextValidator textValidator;
+    private int selectedGenderPosition = 0;
 
     private void InitializeView() {
         etName = findViewById(R.id.etName);
@@ -57,7 +62,6 @@ public class Signup extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 selectedGenderPosition = position;
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
@@ -261,6 +265,7 @@ public class Signup extends AppCompatActivity {
         setContentView(R.layout.activity_signup);
         repository = new AppDataRepo(this);
         InitializeView();
+        databaseReference = FirebaseDatabase.getInstance().getReference("Users");
         ValidateOnTheFly();
     }
 
@@ -273,12 +278,11 @@ public class Signup extends AppCompatActivity {
      */
     @SuppressLint("StaticFieldLeak")
     public void submitSignUp(View view) {
+        final AppDataRepo dataRepo = new AppDataRepo(this);
         if (!isFormValid() || !ValidateSumOfAdultAndChildrenNumber()) {
             Toast.makeText(Signup.this, "Form is invalid", Toast.LENGTH_LONG).show();
             return;
         }
-
-        // String genderValue = getResources().getStringArray(R.array.gender)[selectedGenderPosition];
         final User newUser;
         try {
             newUser = new User(etName.getText().toString(), etEmail.getText().toString(),
@@ -290,8 +294,16 @@ public class Signup extends AppCompatActivity {
             newUser.setLoggedIn(true);
             new AsyncTask<Void, Void, Void>() {
                 @Override
+                /**
+                 * Creates new instance of userReceipt class, gets current user signed in, pushes current user info in DB to firebase, moves to welcome screen via intent.
+                 */
                 protected Void doInBackground(Void... voids) {
                     if (repository.insertUser(newUser)) {
+                        UserReceipt userReceipt = new UserReceipt();
+                        User currentUser = dataRepo.getSignedUser();
+                        userReceipt.user = new User(currentUser);
+                        String id = databaseReference.push().getKey();
+                        databaseReference.child(id).setValue(userReceipt);
                         Intent intent = new Intent(Signup.this, Welcome.class);
                         startActivity(intent);
                     } else {

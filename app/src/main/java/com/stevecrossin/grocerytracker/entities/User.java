@@ -183,6 +183,22 @@ public class User {
         this.shopNumber = shopNumber;
     }
 
+    /**
+     * Separate constructor to store in Firebase DB
+     **/
+    public User(User user) {
+        this.userName = user.userName;
+        this.email = user.email;
+        this.userAge = user.userAge;
+        this.userHeight = user.userHeight;
+        this.userWeight = user.userWeight;
+        this.userGender = user.userGender;
+        this.postCode = user.postCode;
+        this.householdMembers = user.householdMembers;
+        this.houseHoldAdults = user.houseHoldAdults;
+        this.houseHoldChildren = user.houseHoldChildren;
+        this.shopNumber = user.shopNumber;
+    }
 
 }
 

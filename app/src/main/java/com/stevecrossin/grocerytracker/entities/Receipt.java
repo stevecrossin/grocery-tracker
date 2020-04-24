@@ -21,6 +21,19 @@ import static androidx.room.ForeignKey.CASCADE;
                 childColumns = "email",
                 onDelete = CASCADE))
 public class Receipt implements Parcelable {
+    //** Users table structure in room database//
+    @PrimaryKey(autoGenerate = true)
+    private int receiptID;
+
+    @ColumnInfo(name = "email")
+    private String email;
+
+    @ColumnInfo(name = "receipt_name")
+    private String receiptItemName;
+
+    @ColumnInfo(name = "receipt_file_path")
+    private String receiptFilePath;
+
     public static final Creator<Receipt> CREATOR = new Creator<Receipt>() {
         @Override
         public Receipt createFromParcel(Parcel in) {
@@ -32,17 +45,11 @@ public class Receipt implements Parcelable {
             return new Receipt[size];
         }
     };
-    //** Users table structure in room database//
-    @PrimaryKey(autoGenerate = true)
-    private int receiptID;
-    @ColumnInfo(name = "email")
-    private String email;
-    @ColumnInfo(name = "receipt_name")
-    private String receiptItemName;
-    @ColumnInfo(name = "receipt_file_path")
-    private String receiptFilePath;
+
     @ColumnInfo(name = "receipt_time")
     private String receiptTime;
+    @ColumnInfo(name = "receipt_contents")
+    private String receiptContents;
 
     protected Receipt(Parcel in) {
         receiptID = in.readInt();
@@ -50,13 +57,6 @@ public class Receipt implements Parcelable {
         receiptItemName = in.readString();
         receiptFilePath = in.readString();
         receiptTime = in.readString();
-    }
-
-    public Receipt(String email, String receiptItemName, String receiptFilePath) {
-        this.email = email;
-        this.receiptItemName = receiptItemName;
-        this.receiptFilePath = receiptFilePath;
-        this.receiptTime = DateFormat.getDateTimeInstance().format(new Date(System.currentTimeMillis()));
     }
 
     public int getReceiptID() {
@@ -71,9 +71,22 @@ public class Receipt implements Parcelable {
         return email;
     }
 
-    public void setEmail(String email) {
+    public Receipt(String email, String receiptItemName, String receiptFilePath) {
         this.email = email;
+        this.receiptItemName = receiptItemName;
+        this.receiptFilePath = receiptFilePath;
+        this.receiptTime = DateFormat.getDateTimeInstance().format(new Date(System.currentTimeMillis()));
     }
+
+    // Used to store user in Firebase DB
+    public Receipt(Receipt receipt) {
+        this.receiptID = receipt.receiptID;
+        this.email = receipt.email;
+        this.receiptItemName = receipt.receiptItemName;
+        this.receiptContents = receipt.receiptContents;
+        this.receiptTime = receipt.receiptTime;
+    }
+
 
     public String getReceiptItemName() {
         return receiptItemName;
@@ -97,6 +110,18 @@ public class Receipt implements Parcelable {
 
     public void setReceiptFilePath(String receiptFilePath) {
         this.receiptFilePath = receiptFilePath;
+    }
+
+    public String getReceiptContents() {
+        return receiptContents;
+    }
+
+    public void setReceiptContents(String receiptContents) {
+        this.receiptContents = receiptContents;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     @Override

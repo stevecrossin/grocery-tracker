@@ -33,11 +33,12 @@ Other
 11 Jan
 Steve rewrote receipts function.
 
+
 22 March
 Test Commit by Radika to feature/dataValidation
 
 Saturday 28 March - Radika & Steve
-*Worked on Data Validation 
+*Worked on Data Validation
 
 Saturday 28 March - Steve
 * Receipts.java - deprecated method to upload PDF files to Firebase, started integration of tested code to convert PDF to CSV. In standalone test, was able to convert PDF to CSV, having some file permission/conversion issues that
@@ -52,7 +53,7 @@ information in the PDF table. Writes this to a timestamped CSV file. Still worki
 - Updated bugs.txt with resolved issues, and this changelog.txt with changes made.
 - Updated todo file.
 
-3 April - Steve 
+3 April - Steve
 Code maintenance - merged work completed by Amie and Ben in /UnitTesting and /dynamicNotifications branch.
 
 3-4 April - Steve
@@ -96,3 +97,21 @@ Still needs to be done:
 - Ben to investigate and explore notifications more fully to explore alternate ways this can be used
 - Rest to do testing/documentation of solution
 
+22 April - Ben
+Added code to log event when Share Receipts button is pressed. Dynamic notifications only present when event is logged, allowing for notifications to be presented at certain screens
+
+22 April - 23 April - Steve
+* Session 1 -
+- UserReceipt.java - created superclass containing Receipts and User classes, in order to pass data from user and receipts table to firebase in same method.
+- /entities/User - added otherUser constructor for purposes of passing to firebase
+- AddReceipt.java - updated writeCSVFiletoFirebase method to pass all data from user table for current user.
+
+Todo: still need to work on PDF extraction to string with comma and semicolon separatation, and pass that up to Firebase instead of receiptFilePath upload code
+
+23 April - Steve
+* Session 2 -
+- AddReceipt.java - receipts now correctly uploading receipt contents, removed pushing of user info into receipt upload.
+- Signup.java - wrote method to push newly created users in RoomDB to Firebase into separate User entity.
+
+25 April - Steve
+- activity_main.xml - created alternate landscape layout to fix UI bugs bleeding over etc.

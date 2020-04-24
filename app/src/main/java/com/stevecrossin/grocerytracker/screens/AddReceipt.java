@@ -7,25 +7,18 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.parser.PdfTextExtractor;
 import com.stevecrossin.grocerytracker.R;
@@ -34,6 +27,7 @@ import com.stevecrossin.grocerytracker.entities.Receipt;
 import com.stevecrossin.grocerytracker.entities.User;
 import com.stevecrossin.grocerytracker.models.ColesReceipt;
 import com.stevecrossin.grocerytracker.models.ReceiptLineItem;
+import com.stevecrossin.grocerytracker.models.UserReceipt;
 import com.stevecrossin.grocerytracker.utils.Constants;
 
 import java.io.BufferedWriter;
@@ -45,7 +39,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,7 +46,7 @@ public class AddReceipt extends AppCompatActivity implements View.OnClickListene
 
     /* Picture code for PDF files */
     final static int PICK_PDF_CODE = 2342;
-    private static final String CSV_SEPARATOR = ",";
+
     /**
      * Initialisation of all the elements
      **/
@@ -64,40 +57,8 @@ public class AddReceipt extends AppCompatActivity implements View.OnClickListene
     DatabaseReference mDatabaseReference;
     // RG: Adding another database reference for test purposes.
     DatabaseReference databaseReference;
-    Handler mHandler = new Handler(Looper.getMainLooper());
 
-    private static void writeToCSV(String[] columnHeader, List<ReceiptLineItem> receiptLineItems, String fileName) {
-        try {
-            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fileName), "UTF-8"));
-            StringBuffer headerLine = new StringBuffer();
-            headerLine.append(columnHeader[0]);
-            headerLine.append(CSV_SEPARATOR);
-            headerLine.append(columnHeader[1]);
-            headerLine.append(CSV_SEPARATOR);
-            headerLine.append(columnHeader[2]);
-            headerLine.append(CSV_SEPARATOR);
-            headerLine.append(columnHeader[3]);
-            bw.write(headerLine.toString());
-            bw.newLine();
-            for (ReceiptLineItem receiptLineItem : receiptLineItems) {
-                StringBuffer oneLine = new StringBuffer();
-                oneLine.append(receiptLineItem.itemDescription);
-                oneLine.append(CSV_SEPARATOR);
-                oneLine.append(receiptLineItem.unitPrice);
-                oneLine.append(CSV_SEPARATOR);
-                oneLine.append(receiptLineItem.quantity);
-                oneLine.append(CSV_SEPARATOR);
-                oneLine.append(receiptLineItem.price);
-                bw.write(oneLine.toString());
-                bw.newLine();
-            }
-            bw.flush();
-            bw.close();
-        } catch (UnsupportedEncodingException e) {
-        } catch (FileNotFoundException e) {
-        } catch (IOException e) {
-        }
-    }
+    Handler mHandler = new Handler(Looper.getMainLooper());
 
     /**
      * OnCreate method, set the view as per XML file, get firebase objects and draw all the elements on the screen,
@@ -111,7 +72,6 @@ public class AddReceipt extends AppCompatActivity implements View.OnClickListene
         mDatabaseReference = FirebaseDatabase.getInstance().getReference(Constants.DATABASE_PATH_UPLOADS);
         // RG: Adding another database reference for test purposes.
         databaseReference = FirebaseDatabase.getInstance().getReference("Receipts");
-
         textViewStatus = findViewById(R.id.textViewStatus);
         editTextFilename = findViewById(R.id.editTextFileName);
         progressBar = findViewById(R.id.progressbar);
@@ -130,6 +90,46 @@ public class AddReceipt extends AppCompatActivity implements View.OnClickListene
         startActivityForResult(Intent.createChooser(intent, "Select a file"), PICK_PDF_CODE);
     }
 
+
+    /**
+     * Writes PDF to CSV - separates columns with comma, lines with a semicolon.
+     */
+    private static final String CSV_COLUMN_SEPARATOR = ",";
+    private static final String CSV_LINE_SEPARATOR = "~";
+
+    private static void writeToCSV(String[] columnHeader, List<ReceiptLineItem> receiptLineItems, String fileName) {
+        try {
+            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fileName), "UTF-8"));
+            StringBuffer headerLine = new StringBuffer();
+            headerLine.append(columnHeader[0]);
+            headerLine.append(CSV_COLUMN_SEPARATOR);
+            headerLine.append(columnHeader[1]);
+            headerLine.append(CSV_COLUMN_SEPARATOR);
+            headerLine.append(columnHeader[2]);
+            headerLine.append(CSV_COLUMN_SEPARATOR);
+            headerLine.append(columnHeader[3]);
+            bw.write(headerLine.toString());
+            bw.newLine();
+            for (ReceiptLineItem receiptLineItem : receiptLineItems) {
+                StringBuffer oneLine = new StringBuffer();
+                oneLine.append(receiptLineItem.itemDescription);
+                oneLine.append(CSV_COLUMN_SEPARATOR);
+                oneLine.append(receiptLineItem.unitPrice);
+                oneLine.append(CSV_COLUMN_SEPARATOR);
+                oneLine.append(receiptLineItem.quantity);
+                oneLine.append(CSV_COLUMN_SEPARATOR);
+                oneLine.append(receiptLineItem.price);
+                bw.write(oneLine.toString());
+                bw.newLine();
+            }
+            bw.flush();
+            bw.close();
+        } catch (UnsupportedEncodingException e) {
+        } catch (FileNotFoundException e) {
+        } catch (IOException e) {
+        }
+    }
+
     /**
      * Actions to perform after user picks a file. If user selected a file, the parseAndUploadPDF method will be called.
      * Otherwise an error will be thrown advising the user they have not selected a file.
@@ -139,22 +139,33 @@ public class AddReceipt extends AppCompatActivity implements View.OnClickListene
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICK_PDF_CODE && resultCode == RESULT_OK) {
             if (data != null && data.getData() != null) {
+                // If the user has successfully picked a pdf...
                 EditText ediTextFileName = findViewById(R.id.editTextFileName);
                 final String fileAlias = ediTextFileName.getText().toString();
+                // Process the picked pdf in a background thread.
                 AsyncTask.execute(new Runnable() {
                     @Override
                     public void run() {
+                        // Provide indication to the user that the pdf file is being processed.
                         setInProgress();
+                        // First, write the pdf file to a local temp storage. This is done because, iTextPdf library takes
+                        // a file path as input and not a Uri and the result of the pick operation has a Uri which has to
+                        // be read through a ContentResolver first so that it goes through proper permissions first.
                         String pdfFilePath = writePDFToTempStorage(data.getData());
                         if (pdfFilePath == null) {
+                            // If something went wrong with writing a copy of the pdf to local storage,
+                            // indicate that to the user.
                             setFailure();
                             return;
                         }
                         if (!parseAndUploadPDF(pdfFilePath, fileAlias)) {
+                            // If something went wrong with parsing the pdf, indicate that to the user.
                             setFailure();
                             return;
                         }
+                        // Clear the temp storage which will have copy of the picked pdf.
                         purgeTempStorage();
+                        // Indicate to the user that the pdf file they picked was processed successfully.
                         setSuccess();
                     }
                 });
@@ -162,38 +173,6 @@ public class AddReceipt extends AppCompatActivity implements View.OnClickListene
                 Toast.makeText(this, "Invalid URI", Toast.LENGTH_SHORT).show();
             }
         }
-    }
-
-    private void setInProgress() {
-        mHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                progressBar.setVisibility(View.VISIBLE);
-                textViewStatus.setText("Converting pdf to csv...");
-            }
-        });
-    }
-
-    private void setSuccess() {
-        mHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                textViewStatus.setText(R.string.msgUploadSuccess);
-                editTextFilename.setText("");
-                progressBar.setVisibility(View.GONE);
-            }
-        });
-    }
-
-    private void setFailure() {
-        mHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                textViewStatus.setText(R.string.msgUploadFailed);
-                editTextFilename.setText("");
-                progressBar.setVisibility(View.GONE);
-            }
-        });
     }
 
     /***
@@ -217,7 +196,6 @@ public class AddReceipt extends AppCompatActivity implements View.OnClickListene
                         textViewStatus.setText(R.string.msgUploadSuccess);
                         editTextFilename.setText("");
                         progressBar.setVisibility(View.GONE);
-
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -234,8 +212,46 @@ public class AddReceipt extends AppCompatActivity implements View.OnClickListene
                         textViewStatus.setText(MessageFormat.format("Uploading...", (int) getProgress(taskSnapshot)));
                     }
                 });
-
     }*/
+    private void setInProgress() {
+        // Indicate progress to the user in foreground thread.
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                progressBar.setVisibility(View.VISIBLE);
+                textViewStatus.setText("Converting pdf to csv...");
+            }
+        });
+    }
+
+    private void setSuccess() {
+        // Indicate success to the user in foreground thread.
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                textViewStatus.setText(R.string.msgUploadSuccess);
+                editTextFilename.setText("");
+                progressBar.setVisibility(View.GONE);
+            }
+        });
+    }
+
+    private void setFailure() {
+        // Indicate failure to the user in foreground thread.
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                textViewStatus.setText(R.string.msgUploadFailed);
+                editTextFilename.setText("");
+                progressBar.setVisibility(View.GONE);
+            }
+        });
+    }
+
+    /**
+     * Deletes all files in externalFilesDir/Temp directory which is used to write a copy of the
+     * picked pdf for processing it into csv.
+     */
     private void purgeTempStorage() {
         String dirPath = getExternalFilesDir(null).getAbsolutePath()
                 + "/Temp";
@@ -251,6 +267,13 @@ public class AddReceipt extends AppCompatActivity implements View.OnClickListene
         }
     }
 
+    /**
+     * Creates a copy of the pdf file picked by the user in local storage for further processing it
+     * into csv.
+     *
+     * @param pdfUri Uri of the pdf file provided by the pick pdf user operation.
+     * @return the file path of the copy of pdf
+     */
     private String writePDFToTempStorage(Uri pdfUri) {
         if (pdfUri == null) {
             // Throw exception/Error Log
@@ -283,6 +306,37 @@ public class AddReceipt extends AppCompatActivity implements View.OnClickListene
         }
     }
 
+    /**
+     * Reads the receipt pdf and parses it to csv, writes to local storage and creates an entry for it
+     * in Room DB associating it to the current user.
+     *
+     * @param pdfFilePath Path to the copy of pdf file in local storage.
+     * @param fileAlias   The name of the receipt specified by the user when adding a receipt.
+     * @return
+     */
+    private boolean parseAndUploadPDF(final String pdfFilePath, final String fileAlias) {
+        try {
+            String parsedText = "";
+            PdfReader reader = new PdfReader(pdfFilePath);
+            int n = reader.getNumberOfPages();
+            // Read all pages in the receipt pdf and collect them into a single string.
+            for (int i = 0; i < n; i++) {
+                parsedText = parsedText + PdfTextExtractor.getTextFromPage(reader, i + 1).trim() + "\n"; //Extracting the content from the different pages
+            }
+            boolean result = parseReceiptPdf(parsedText, fileAlias);
+            reader.close();
+            return result;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    /**
+     * Parses items in a receipt.
+     *
+     * @param receipt String containing the receipt items.
+     * @return
+     */
     private List<ReceiptLineItem> parseReceipt(String receipt) {
         String[] lines = receipt.split("\n");
         List<String> prunedLines = pruneLines(lines);
@@ -290,14 +344,21 @@ public class AddReceipt extends AppCompatActivity implements View.OnClickListene
         List<String> receiptLines = new ArrayList<>();
         while (i < prunedLines.size()) {
             String prunedLine = prunedLines.get(i).trim();
+            // If a line ends with a float, that means it is a single line item and so can be processed.
             if (endsWithFloat(prunedLine)) {
                 receiptLines.add(prunedLine);
                 i++;
             } else {
+                // If the next line contains only integers then it is part of a 2 line item. The next to
+                // next line should be appended to the current one as they form the item name. The next
+                // should then be appended to the end of the item name as that will contain unit price,
+                // quantity and price information. This will make it like the single line item.
                 if (isOnlyIntegers(prunedLines.get(i + 1))) {
                     receiptLines.add(prunedLine + " " + prunedLines.get(i + 2).trim() + " " + prunedLines.get(i + 1).trim());
                     i += 3;
                 } else {
+                    // If the next line is not all integers, then it is a 3 or more lines item. In this case
+                    // we collect consecutive lines till we hit a line that does not end with a space character.
                     List<String> itemLines = new ArrayList<>();
                     int j = i;
                     while (j < prunedLines.size()) {
@@ -307,6 +368,7 @@ public class AddReceipt extends AppCompatActivity implements View.OnClickListene
                         }
                         j++;
                     }
+                    // Then we process the collected lines of a 3 or more lines item into a single line item.
                     receiptLines.add(processItemLines(itemLines));
                     i = j + 1;
                 }
@@ -316,6 +378,13 @@ public class AddReceipt extends AppCompatActivity implements View.OnClickListene
         return processReceiptLines(receiptLines);
     }
 
+    /**
+     * Collects the segmented item name in multiple lines into a single line and apeends the unit price, quantity and
+     * price details at the end, creating a single line item.
+     *
+     * @param itemLines Lines to be processed.
+     * @return Single line receipt item.
+     */
     private String processItemLines(List<String> itemLines) {
         String numerics = "";
         StringBuilder builder = new StringBuilder();
@@ -333,6 +402,12 @@ public class AddReceipt extends AppCompatActivity implements View.OnClickListene
         return builder.toString().trim();
     }
 
+    /**
+     * Returns true if the String ends with a period character followed by 2 integers.
+     *
+     * @param line The receipt line.
+     * @return true if ends with float. false otherwise.
+     */
     private boolean endsWithFloat(String line) {
         char lastChar = line.charAt(line.length() - 1);
         char lastBeforeChar = line.charAt(line.length() - 2);
@@ -345,6 +420,12 @@ public class AddReceipt extends AppCompatActivity implements View.OnClickListene
         return false;
     }
 
+    /**
+     * Checks if the String consists only integers ignoring space and period character.
+     *
+     * @param text The receipt line.
+     * @return true if all are integers. false otherwise.
+     */
     private boolean isOnlyIntegers(String text) {
         char[] characters = text.toCharArray();
         for (char c : characters) {
@@ -359,13 +440,23 @@ public class AddReceipt extends AppCompatActivity implements View.OnClickListene
         return true;
     }
 
+    /**
+     * Parses a single line receipt item String into ReceiptLineItem
+     *
+     * @param lineItem Single line receipt item String.
+     * @return Processed ReceiptLineItem object.
+     */
     private ReceiptLineItem parseLineItem(String lineItem) {
+        // Split by space character.
         String[] columns = lineItem.split(" ");
         ReceiptLineItem receiptLineItem = new ReceiptLineItem();
+        // The last three entries will be unit price, quantity and price.
         receiptLineItem.price = Float.parseFloat(columns[columns.length - 1]);
         receiptLineItem.quantity = Integer.parseInt(columns[columns.length - 2]);
         receiptLineItem.unitPrice = Float.parseFloat(columns[columns.length - 3]);
 
+        // The rest of the bits will form the item name, so piece them all together before
+        // putting them in ReceiptLineItem.
         receiptLineItem.itemDescription = "";
         for (int i = 0; i < columns.length - 3; i++) {
             receiptLineItem.itemDescription = receiptLineItem.itemDescription + " ";
@@ -375,6 +466,12 @@ public class AddReceipt extends AppCompatActivity implements View.OnClickListene
         return receiptLineItem;
     }
 
+    /**
+     * Process a list of single line receipt item Strings.
+     *
+     * @param receiptLines List of single line receipt item Strings.
+     * @return List of ReceiptLineItems
+     */
     private List<ReceiptLineItem> processReceiptLines(List<String> receiptLines) {
         List<ReceiptLineItem> receiptLineItems = new ArrayList<>();
         for (String receiptLine : receiptLines) {
@@ -384,6 +481,12 @@ public class AddReceipt extends AppCompatActivity implements View.OnClickListene
         return receiptLineItems;
     }
 
+    /**
+     * Discards empty lines in a set of lines.
+     *
+     * @param lines A set of lines
+     * @return List of lines containing no empty lines.
+     */
     private List<String> pruneLines(String[] lines) {
         List<String> prunedLines = new ArrayList<>();
         for (String line : lines) {
@@ -394,22 +497,13 @@ public class AddReceipt extends AppCompatActivity implements View.OnClickListene
         return prunedLines;
     }
 
-    private boolean parseAndUploadPDF(final String pdfUriPath, final String fileAlias) {
-        try {
-            String parsedText = "";
-            PdfReader reader = new PdfReader(pdfUriPath);
-            int n = reader.getNumberOfPages();
-            for (int i = 0; i < n; i++) {
-                parsedText = parsedText + PdfTextExtractor.getTextFromPage(reader, i + 1).trim() + "\n"; //Extracting the content from the different pages
-            }
-            boolean result = parseReceiptPdf(parsedText, fileAlias);
-            reader.close();
-            return result;
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
+    /**
+     * Parses the text read from the receipt pdf, writes csv and creates receipt db entry.
+     *
+     * @param parsedText String containing the text of the entire receipt pdf.
+     * @param fileAlias  The name of the receipt specified by the user when adding a receipt.
+     * @return
+     */
     private boolean parseReceiptPdf(String parsedText, String fileAlias) {
         List<ReceiptLineItem> receiptLineItems;
         String headerText;
@@ -444,42 +538,58 @@ public class AddReceipt extends AppCompatActivity implements View.OnClickListene
         }
         String receiptCSVFilename = filePath + "/receipt_" + System.currentTimeMillis() + ".csv";
         writeToCSV(headerText.split(": "), receiptLineItems, receiptCSVFilename);
-        uploadCSVFileToRoomDB(receiptCSVFilename, fileAlias);
+        Receipt savedReceipt = uploadCSVFileToRoomDB(receiptCSVFilename, fileAlias);
 
         // push to firebase when you push to RoomDB
-        writeCSVFiletoFirebase(receiptCSVFilename, fileAlias, receiptLineItems);
+        writeCSVFileToFirebase(savedReceipt, headerText.split(": "), receiptLineItems);
         return true;
     }
 
     /**
      * // RG TBA - need to get the actual items - not just the filename, email of user etc.
      **/
-    private void writeCSVFiletoFirebase(String receiptCSVFilename, String fileAlias, List receiptLineItems) {
-        String csvFilename = receiptCSVFilename;
-        String fileAlias1 = fileAlias;
-        String testText = "Test Text";
-        List receiptItems = receiptLineItems;
-
-        if (!TextUtils.isEmpty(csvFilename) && !TextUtils.isEmpty(fileAlias1)) {
-
-            AppDataRepo dataRepo = new AppDataRepo(this);
-            User currentUser = dataRepo.getSignedUser();
-
-            String id = databaseReference.push().getKey();
-            Receipt receipt = new Receipt(currentUser.getEmail(), fileAlias1, csvFilename);
-            databaseReference.child(id).setValue(receipt);
-
-        } else {
-            // TBA
-        }
+    private void writeCSVFileToFirebase(Receipt savedReceipt, String[] columnHeader, List<ReceiptLineItem> receiptLineItems) {
+        UserReceipt userReceipt = new UserReceipt();
+        AppDataRepo dataRepo = new AppDataRepo(this);
+        User currentUser = dataRepo.getSignedUser();
+        //userReceipt.user = new User(currentUser.getEmail()); //depreceated, as we don't need user data here anymore.
+        savedReceipt.setReceiptContents(composeLineItemsToCSVString(columnHeader, receiptLineItems));
+        userReceipt.receipt = new Receipt(savedReceipt);
+        String id = databaseReference.push().getKey();
+        databaseReference.child(id).setValue(userReceipt);
     }
 
-    private void uploadCSVFileToRoomDB(final String csvFilename, final String fileAlias) {
-        // TODO: Upload to Room DB.
+    private String composeLineItemsToCSVString(String[] columnHeader, List<ReceiptLineItem> receiptLineItems) {
+        StringBuilder builder = new StringBuilder();
+        builder.append(columnHeader[0]);
+        builder.append(CSV_COLUMN_SEPARATOR);
+        builder.append(columnHeader[1]);
+        builder.append(CSV_COLUMN_SEPARATOR);
+        builder.append(columnHeader[2]);
+        builder.append(CSV_COLUMN_SEPARATOR);
+        builder.append(columnHeader[3]);
+        builder.append(CSV_LINE_SEPARATOR);
+
+        for (ReceiptLineItem receiptLineItem : receiptLineItems) {
+            builder.append(receiptLineItem.itemDescription);
+            builder.append(CSV_COLUMN_SEPARATOR);
+            builder.append(receiptLineItem.unitPrice);
+            builder.append(CSV_COLUMN_SEPARATOR);
+            builder.append(receiptLineItem.quantity);
+            builder.append(CSV_COLUMN_SEPARATOR);
+            builder.append(receiptLineItem.price);
+            builder.append(CSV_LINE_SEPARATOR);
+        }
+
+        return builder.toString();
+    }
+
+    private Receipt uploadCSVFileToRoomDB(final String csvFilename, final String fileAlias) {
         AppDataRepo dataRepo = new AppDataRepo(this);
         User currentUser = dataRepo.getSignedUser();
         Receipt receipt = new Receipt(currentUser.getEmail(), fileAlias, csvFilename);
         dataRepo.insertReceipt(receipt);
+        return receipt;
     }
 
     /**
