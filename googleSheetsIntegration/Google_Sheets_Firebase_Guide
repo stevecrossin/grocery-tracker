@@ -1,0 +1,68 @@
+Instructions to Connect Google Sheets with Firebase Realtime Database
+
+Author: Ryan Gallagher
+GLOBE Tech Translators
+ID 2160809642
+
+Date: 23/04/2020
+=====================================================================
+
+This document outlines how the application owner can integrate Google Sheets with Firebase. 
+
+By implementing this integration, this will allow Google Sheets to act as a user friendly way of accessing user-generated data.
+
+Firebase collects the data in a no-sql format, and the code that links google sheets with Firebase restructures this as more user-friendly CSV data. 
+
+The script currently runs on the click of a button, which triggers the synchronisation of the databases. 
+
+Shortly, this will be revised to run automatically in the background. 
+
+=====================================================================
+
+Steps to Connect to Firebase:
+
+Requirements:
+* Google Account
+A google account that allows you to use google sheets. 
+
+* A Google Apps Script account, or ensure you can access Google Apps Script via your general Google account.
+Refer: https://developers.google.com/apps-script 
+
+* Firebase Account, and relevant access Credentials
+Refer: https://console.firebase.google.com/u/0/
+
+Steps:
+
+Firebase Information
+1. Go to your Firebase Console. Select the firebase project that you want to connect to google sheets
+2. On the left-hand panel, select Develop>Database
+3. Select the database you want to connect to. NOTE: At the time of writing, this method of Google Sheets / Firebase synchronisation is only supported with Firebase's "Real-Time Database" product, not Cloud Firestore. 
+4. Go to "Rules" and ensure both Read and Write are set to True. 
+5. Go back to "Settings" > "Service Accounts"
+6. From the "Legacy Credentials" section, select "Database Secrets"
+7. Copy and paste the database URL and secret key for later. We need this to plug in to Google Apps Script.
+
+Google Apps Script
+8. Go to Google Apps Script > https://script.google.com/home
+9. Create a new project
+10. *Important* You need to ensure Firebase is enabled for this project. Go to Resources>Libraries. When the modal pops up, type in "MYeP8ZEEt1ylVDxS7uyg9plDOcoke7-2l" and select Enter. (Further Reference: https://sites.google.com/site/scriptsexamples/new-connectors-to-google-services/firebase).
+11. Select the latest public release version. 
+12. Go back to the project. Create a new .gs file called "xxxx".
+13. Use the script provided with this guide and paste it into this file. 
+14. Add the secret keys and urls that you obtained in step 7. This will allow you to connect the API-enabled Google Sheet to Firebase successfully.
+15. Save the project. 
+
+Google Sheets 
+16. Go to Google Sheets. 
+17. Navigate to the existing spreadsheet. 
+18. Press the three vertical dots on the button titled "Synchronise Data" and select "Assign Script"
+19. Ensure the script assigned to the button is the same as the script you created in Steps 8-15.
+20. Press "Synchronise" and watch the data update to reflect the firebase database!
+
+
+
+
+
+
+
+

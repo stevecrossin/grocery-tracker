@@ -17,7 +17,7 @@ import com.stevecrossin.grocerytracker.entities.UserDao;
  * time the underlying code for database entities is modified, or the application
  * may crash
  */
-@Database(entities = {Receipt.class, User.class}, version = 9, exportSchema = false)
+@Database(entities = {Receipt.class, User.class}, version = 10, exportSchema = false)
 public abstract class AppDb extends RoomDatabase {
 
     public abstract UserDao userDao();
