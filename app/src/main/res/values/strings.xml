@@ -60,6 +60,9 @@
     <string name="globe_logo_desc">GLOBE logo</string>
     <string name="no_receipts_added_msg">No receipts added</string>
     <string name="receipts">Receipts</string>
+    <string name="about_globe_desc">About GLOBE</string>
+    <string name="do_online_survey_desc">Do online survey</string>
+    <string name="share_your_receipt_desc">Share your receipt</string>
     <string-array name="gender">
         <item>Select Gender</item>
         <item>Male</item>

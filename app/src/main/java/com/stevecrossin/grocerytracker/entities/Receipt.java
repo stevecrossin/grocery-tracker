@@ -34,6 +34,9 @@ public class Receipt implements Parcelable {
     @ColumnInfo(name = "receipt_file_path")
     private String receiptFilePath;
 
+    @ColumnInfo(name = "receipt_contents")
+    private String receiptContents;
+
     @ColumnInfo(name = "receipt_time")
     private String receiptTime;
 
@@ -76,6 +79,16 @@ public class Receipt implements Parcelable {
         this.receiptTime = DateFormat.getDateTimeInstance().format(new Date(System.currentTimeMillis()));
     }
 
+    // Used to store user in Firebase DB
+    public Receipt(Receipt receipt) {
+        this.receiptID = receipt.receiptID;
+        this.email = receipt.email;
+        this.receiptItemName = receipt.receiptItemName;
+        this.receiptContents = receipt.receiptContents;
+        this.receiptTime = receipt.receiptTime;
+    }
+
+
     public String getReceiptItemName() {
         return receiptItemName;
     }
@@ -98,6 +111,14 @@ public class Receipt implements Parcelable {
 
     public void setReceiptFilePath(String receiptFilePath) {
         this.receiptFilePath = receiptFilePath;
+    }
+
+    public String getReceiptContents() {
+        return receiptContents;
+    }
+
+    public void setReceiptContents(String receiptContents) {
+        this.receiptContents = receiptContents;
     }
 
     public void setEmail(String email) {
