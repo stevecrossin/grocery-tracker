@@ -112,3 +112,6 @@ Todo: still need to work on PDF extraction to string with comma and semicolon se
 * Session 2 -
 - AddReceipt.java - receipts now correctly uploading receipt contents, removed pushing of user info into receipt upload.
 - Signup.java - wrote method to push newly created users in RoomDB to Firebase into separate User entity.
+
+25 April - Steve
+- activity_main.xml - created alternate landscape layout to fix UI bugs bleeding over etc.

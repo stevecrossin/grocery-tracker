@@ -12,7 +12,9 @@ Signup.java/Login.java - due to no data validation on email address/sign up, use
 * Data validation updated - this needs to be checked by Radika
 
 
+
 /** RESOLVED BUGS **/
 Login.java - AppDb initialisation causing crash (probably DB not setup correctly, need to resolve)
 Receipts.java - While methods have been written to convert PDF to CSV, actual conversion of PDF file is not working and is not correctly accessing file. Needs further work. Resolved in commit 226e8fa79ea.
 Signup.java - newly signed up users were not being registered as logged in in the DB. Now resolved.
+Activity_main.xml - on landscape view, UI was distorted. This has been fixed.
