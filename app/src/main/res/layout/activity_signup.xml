@@ -73,6 +73,7 @@
                         android:id="@+id/etName"
                         style="@style/inputField"
                         android:layout_width="match_parent"
+                        android:imeOptions="actionNext"
                         android:hint="@string/lblName"
                         android:inputType="text" />
 
