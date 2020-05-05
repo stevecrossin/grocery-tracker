@@ -17,10 +17,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.stevecrossin.grocerytracker.R;
 import com.stevecrossin.grocerytracker.database.AppDataRepo;
-import com.stevecrossin.grocerytracker.entities.Receipt;
 import com.stevecrossin.grocerytracker.entities.User;
 import com.stevecrossin.grocerytracker.models.UserReceipt;
-import com.stevecrossin.grocerytracker.utils.InputValidator;
 import com.stevecrossin.grocerytracker.utils.TextValidator;
 import com.stevecrossin.grocerytracker.utils.PasswordScrambler;
 
@@ -55,6 +53,18 @@ public class Signup extends AppCompatActivity {
         Bcancel = findViewById(R.id.Bcancel);
 
         adapter = ArrayAdapter.createFromResource(this, R.array.gender, android.R.layout.simple_spinner_dropdown_item);
+
+
+        /*
+         * Enables the gender and shop number boxes to be focusable and request focus
+         */
+        cbGender.setFocusable(true);
+        cbGender.setFocusableInTouchMode(true);
+        cbGender.requestFocus();
+
+        cbShopNumber.setFocusable(true);
+        cbShopNumber.setFocusableInTouchMode(true);
+        cbShopNumber.requestFocus();
 
         cbGender.setAdapter(adapter);
         cbGender.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

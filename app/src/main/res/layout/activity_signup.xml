@@ -235,6 +235,7 @@
                     <Spinner
                         android:id="@+id/cbGender"
                         style="@style/inputField"
+                        android:spinnerMode="dropdown"
                         android:layout_width="match_parent" />
 
                 </LinearLayout>
