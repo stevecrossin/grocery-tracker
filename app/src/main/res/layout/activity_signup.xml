@@ -114,13 +114,22 @@
                         android:layout_height="wrap_content"
                         android:text="@string/password" />
 
-                    <AutoCompleteTextView
-                        android:id="@+id/etPassword"
-                        style="@style/inputField"
+                    <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
-                        android:hint="@string/lblPassword"
-                        android:imeOptions="actionNext"
-                        android:inputType="textPassword" />
+                        android:layout_height="match_parent"
+                        app:hintEnabled="false"
+                        app:passwordToggleEnabled="true">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etPassword"
+                            style="@style/inputField"
+                            android:layout_width="match_parent"
+                            android:hint="@string/lblPassword"
+                            android:imeOptions="actionNext"
+                            android:inputType="textPassword" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
                 </LinearLayout>
 
             </LinearLayout>
