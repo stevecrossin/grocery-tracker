@@ -61,6 +61,9 @@ public class Signup extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 selectedGenderPosition = position;
+                if (position > 0) {
+                    etPostcode.requestFocus();
+                }
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -305,6 +308,7 @@ public class Signup extends AppCompatActivity {
                         String id = databaseReference.push().getKey();
                         databaseReference.child(id).setValue(userReceipt);
                         Intent intent = new Intent(Signup.this, Welcome.class);
+                        finish();
                         startActivity(intent);
                     } else {
                         runOnUiThread(
