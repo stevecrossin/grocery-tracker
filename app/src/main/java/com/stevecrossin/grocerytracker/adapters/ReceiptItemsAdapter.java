@@ -19,27 +19,6 @@ public class ReceiptItemsAdapter extends RecyclerView.Adapter<ReceiptItemsAdapte
     ReceiptLineItem.Header mHeader;
     List<ReceiptLineItem> mReceiptLineItems;
 
-    public static class ReceiptItemsViewHolder extends RecyclerView.ViewHolder {
-        TextView mTextViewItemDescription;
-        TextView mTextViewUnitPriceLabel;
-        TextView mTextViewUnitPriceValue;
-        TextView mTextViewQuantityLabel;
-        TextView mTextViewQuantityValue;
-        TextView mTextViewPriceLabel;
-        TextView mTextViewPriceValue;
-
-        public ReceiptItemsViewHolder(@NonNull View container) {
-            super(container);
-            mTextViewItemDescription = container.findViewById(R.id.TextView_Item_Description);
-            mTextViewUnitPriceLabel = container.findViewById(R.id.TextView_UnitPrice_Label);
-            mTextViewUnitPriceValue = container.findViewById(R.id.TextView_UnitPrice_Value);
-            mTextViewQuantityLabel = container.findViewById(R.id.TextView_Quantity_Label);
-            mTextViewQuantityValue = container.findViewById(R.id.TextView_Quantity_Value);
-            mTextViewPriceLabel = container.findViewById(R.id.TextView_Price_Label);
-            mTextViewPriceValue = container.findViewById(R.id.TextView_Price_Value);
-        }
-    }
-
     public ReceiptItemsAdapter(ReceiptLineItem.Header header, List<ReceiptLineItem> receiptLineItems) {
         mHeader = header;
         mReceiptLineItems = receiptLineItems;
@@ -63,7 +42,7 @@ public class ReceiptItemsAdapter extends RecyclerView.Adapter<ReceiptItemsAdapte
         holder.mTextViewUnitPriceLabel.setText(mHeader.unitPriceHeader);
         holder.mTextViewUnitPriceValue.setText(String.format("$%s", decimalFormat.format(receiptLineItem.unitPrice)));
         holder.mTextViewQuantityLabel.setText(mHeader.quantityHeader);
-        holder.mTextViewQuantityValue.setText(String.format(Integer.toString(receiptLineItem.quantity)));
+        holder.mTextViewQuantityValue.setText(String.format(Float.toString(receiptLineItem.quantity)));
         holder.mTextViewPriceLabel.setText(mHeader.priceHeader);
         holder.mTextViewPriceValue.setText(String.format("$%s", decimalFormat.format(receiptLineItem.price)));
     }
@@ -71,5 +50,26 @@ public class ReceiptItemsAdapter extends RecyclerView.Adapter<ReceiptItemsAdapte
     @Override
     public int getItemCount() {
         return mReceiptLineItems == null ? 0 : mReceiptLineItems.size();
+    }
+
+    public static class ReceiptItemsViewHolder extends RecyclerView.ViewHolder {
+        TextView mTextViewItemDescription;
+        TextView mTextViewUnitPriceLabel;
+        TextView mTextViewUnitPriceValue;
+        TextView mTextViewQuantityLabel;
+        TextView mTextViewQuantityValue;
+        TextView mTextViewPriceLabel;
+        TextView mTextViewPriceValue;
+
+        public ReceiptItemsViewHolder(@NonNull View container) {
+            super(container);
+            mTextViewItemDescription = container.findViewById(R.id.TextView_Item_Description);
+            mTextViewUnitPriceLabel = container.findViewById(R.id.TextView_UnitPrice_Label);
+            mTextViewUnitPriceValue = container.findViewById(R.id.TextView_UnitPrice_Value);
+            mTextViewQuantityLabel = container.findViewById(R.id.TextView_Quantity_Label);
+            mTextViewQuantityValue = container.findViewById(R.id.TextView_Quantity_Value);
+            mTextViewPriceLabel = container.findViewById(R.id.TextView_Price_Label);
+            mTextViewPriceValue = container.findViewById(R.id.TextView_Price_Value);
+        }
     }
 }

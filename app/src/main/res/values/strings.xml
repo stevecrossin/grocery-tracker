@@ -38,8 +38,8 @@
     <string name="lblSignUpTitle">Sign Up</string>
     <string name="lblName">Enter your name</string>
     <string name="lblAge">Enter your age</string>
-    <string name="lblHeight">Enter your height</string>
-    <string name="lblWeight">Enter your weight</string>
+    <string name="lblHeight">Enter your height in centimetres</string>
+    <string name="lblWeight">Enter your weight in kilograms</string>
     <string name="lblPostcode">Enter your postcode</string>
     <string name="lblNumberHouse">Number of people in your household</string>
     <string name="lblNumberAdults">Number of adults in your household</string>

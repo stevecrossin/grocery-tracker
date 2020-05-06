@@ -92,6 +92,45 @@ public class AddReceipt extends AppCompatActivity implements View.OnClickListene
 
 
     /**
+     * Writes PDF to CSV - separates columns with comma, lines with a semicolon.
+     */
+    private static final String CSV_COLUMN_SEPARATOR = ",";
+    private static final String CSV_LINE_SEPARATOR = "~";
+
+    private static void writeToCSV(String[] columnHeader, List<ReceiptLineItem> receiptLineItems, String fileName) {
+        try {
+            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fileName), "UTF-8"));
+            StringBuffer headerLine = new StringBuffer();
+            headerLine.append(columnHeader[0]);
+            headerLine.append(CSV_COLUMN_SEPARATOR);
+            headerLine.append(columnHeader[1]);
+            headerLine.append(CSV_COLUMN_SEPARATOR);
+            headerLine.append(columnHeader[2]);
+            headerLine.append(CSV_COLUMN_SEPARATOR);
+            headerLine.append(columnHeader[3]);
+            bw.write(headerLine.toString());
+            bw.newLine();
+            for (ReceiptLineItem receiptLineItem : receiptLineItems) {
+                StringBuffer oneLine = new StringBuffer();
+                oneLine.append(receiptLineItem.itemDescription);
+                oneLine.append(CSV_COLUMN_SEPARATOR);
+                oneLine.append(receiptLineItem.unitPrice);
+                oneLine.append(CSV_COLUMN_SEPARATOR);
+                oneLine.append(receiptLineItem.quantity);
+                oneLine.append(CSV_COLUMN_SEPARATOR);
+                oneLine.append(receiptLineItem.price);
+                bw.write(oneLine.toString());
+                bw.newLine();
+            }
+            bw.flush();
+            bw.close();
+        } catch (UnsupportedEncodingException e) {
+        } catch (FileNotFoundException e) {
+        } catch (IOException e) {
+        }
+    }
+
+    /**
      * Actions to perform after user picks a file. If user selected a file, the parseAndUploadPDF method will be called.
      * Otherwise an error will be thrown advising the user they have not selected a file.
      */
@@ -136,41 +175,6 @@ public class AddReceipt extends AppCompatActivity implements View.OnClickListene
         }
     }
 
-    private void setInProgress() {
-        // Indicate progress to the user in foreground thread.
-        mHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                progressBar.setVisibility(View.VISIBLE);
-                textViewStatus.setText("Converting pdf to csv...");
-            }
-        });
-    }
-
-    private void setSuccess() {
-        // Indicate success to the user in foreground thread.
-        mHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                textViewStatus.setText(R.string.msgUploadSuccess);
-                editTextFilename.setText("");
-                progressBar.setVisibility(View.GONE);
-            }
-        });
-    }
-
-    private void setFailure() {
-        // Indicate failure to the user in foreground thread.
-        mHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                textViewStatus.setText(R.string.msgUploadFailed);
-                editTextFilename.setText("");
-                progressBar.setVisibility(View.GONE);
-            }
-        });
-    }
-
     /***
      NOTE! This code is depreceated.
      * Method that performs the uploading of the file to Firebase.
@@ -209,6 +213,40 @@ public class AddReceipt extends AppCompatActivity implements View.OnClickListene
                     }
                 });
     }*/
+    private void setInProgress() {
+        // Indicate progress to the user in foreground thread.
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                progressBar.setVisibility(View.VISIBLE);
+                textViewStatus.setText("Converting pdf to csv...");
+            }
+        });
+    }
+
+    private void setSuccess() {
+        // Indicate success to the user in foreground thread.
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                textViewStatus.setText(R.string.msgUploadSuccess);
+                editTextFilename.setText("");
+                progressBar.setVisibility(View.GONE);
+            }
+        });
+    }
+
+    private void setFailure() {
+        // Indicate failure to the user in foreground thread.
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                textViewStatus.setText(R.string.msgUploadFailed);
+                editTextFilename.setText("");
+                progressBar.setVisibility(View.GONE);
+            }
+        });
+    }
 
     /**
      * Deletes all files in externalFilesDir/Temp directory which is used to write a copy of the
@@ -228,7 +266,6 @@ public class AddReceipt extends AppCompatActivity implements View.OnClickListene
             }
         }
     }
-
 
     /**
      * Creates a copy of the pdf file picked by the user in local storage for further processing it
@@ -295,11 +332,6 @@ public class AddReceipt extends AppCompatActivity implements View.OnClickListene
     }
 
     /**
-     * Writes PDF to CSV - separates columns with comma, lines with a semicolon.
-     */
-    private static final String CSV_COLUMN_SEPARATOR = ",";
-
-    /**
      * Parses items in a receipt.
      *
      * @param receipt String containing the receipt items.
@@ -328,17 +360,20 @@ public class AddReceipt extends AppCompatActivity implements View.OnClickListene
                     // If the next line is not all integers, then it is a 3 or more lines item. In this case
                     // we collect consecutive lines till we hit a line that does not end with a space character.
                     List<String> itemLines = new ArrayList<>();
-                    int j = i;
+                    itemLines.add(prunedLines.get(i));
+                    itemLines.add(prunedLines.get(i + 1));
+                    itemLines.add(prunedLines.get(i + 2));
+                    /*int j = i;
                     while (j < prunedLines.size()) {
                         itemLines.add(prunedLines.get(j).trim());
                         if (!prunedLines.get(j).endsWith(" ")) {
                             break;
                         }
                         j++;
-                    }
+                    }*/
                     // Then we process the collected lines of a 3 or more lines item into a single line item.
                     receiptLines.add(processItemLines(itemLines));
-                    i = j + 1;
+                    i = i + 3;
                 }
             }
         }
@@ -420,7 +455,7 @@ public class AddReceipt extends AppCompatActivity implements View.OnClickListene
         ReceiptLineItem receiptLineItem = new ReceiptLineItem();
         // The last three entries will be unit price, quantity and price.
         receiptLineItem.price = Float.parseFloat(columns[columns.length - 1]);
-        receiptLineItem.quantity = Integer.parseInt(columns[columns.length - 2]);
+        receiptLineItem.quantity = Float.parseFloat(columns[columns.length - 2]);
         receiptLineItem.unitPrice = Float.parseFloat(columns[columns.length - 3]);
 
         // The rest of the bits will form the item name, so piece them all together before
@@ -465,41 +500,6 @@ public class AddReceipt extends AppCompatActivity implements View.OnClickListene
         return prunedLines;
     }
 
-    private static final String CSV_LINE_SEPARATOR = "~";
-
-    private static void writeToCSV(String[] columnHeader, List<ReceiptLineItem> receiptLineItems, String fileName) {
-        try {
-            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fileName), "UTF-8"));
-            StringBuffer headerLine = new StringBuffer();
-            headerLine.append(columnHeader[0]);
-            headerLine.append(CSV_COLUMN_SEPARATOR);
-            headerLine.append(columnHeader[1]);
-            headerLine.append(CSV_COLUMN_SEPARATOR);
-            headerLine.append(columnHeader[2]);
-            headerLine.append(CSV_COLUMN_SEPARATOR);
-            headerLine.append(columnHeader[3]);
-            bw.write(headerLine.toString());
-            bw.newLine();
-            for (ReceiptLineItem receiptLineItem : receiptLineItems) {
-                StringBuffer oneLine = new StringBuffer();
-                oneLine.append(receiptLineItem.itemDescription);
-                oneLine.append(CSV_COLUMN_SEPARATOR);
-                oneLine.append(receiptLineItem.unitPrice);
-                oneLine.append(CSV_COLUMN_SEPARATOR);
-                oneLine.append(receiptLineItem.quantity);
-                oneLine.append(CSV_COLUMN_SEPARATOR);
-                oneLine.append(receiptLineItem.price);
-                bw.write(oneLine.toString());
-                bw.newLine();
-            }
-            bw.flush();
-            bw.close();
-        } catch (UnsupportedEncodingException e) {
-        } catch (FileNotFoundException e) {
-        } catch (IOException e) {
-        }
-    }
-
     /**
      * Parses the text read from the receipt pdf, writes csv and creates receipt db entry.
      *
@@ -520,9 +520,9 @@ public class AddReceipt extends AppCompatActivity implements View.OnClickListene
         }
         //Do Woolworths
         else {
-            headerText = parsedText.substring(0, parsedText.lastIndexOf(": \n"));
+            headerText = parsedText.substring(0, parsedText.lastIndexOf("Price:") + 6);
             headerText = headerText.substring(headerText.lastIndexOf("\n") + 1);
-            String tableText = parsedText.substring(parsedText.lastIndexOf(": \n") + 3, parsedText.indexOf("Subtotal")).trim();
+            String tableText = parsedText.substring(parsedText.lastIndexOf("Price:") + 6, parsedText.indexOf("Subtotal")).trim();
             Log.i("info", headerText);
             receiptLineItems = parseReceipt(tableText);
         }

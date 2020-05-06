@@ -2,80 +2,65 @@ package com.stevecrossin.grocerytracker.utils;
 
 import android.widget.TextView;
 
-public class TextValidator{
+public class TextValidator {
     private TextView textView;
 
-    public TextValidator(TextView textView)
-    {
+    public TextValidator(TextView textView) {
         this.textView = textView;
     }
 
-    public void validateName(String text)
-    {
+    public void validateName(String text) {
         textView.setError(InputValidator.isNameValid(text));
     }
 
-    public void validateAge(String text)
-    {
+    public void validateAge(String text) {
         textView.setError(InputValidator.isAgeValid(text));
     }
 
-    public void validateHeight(String text)
-    {
+    public void validateHeight(String text) {
         textView.setError(InputValidator.isHeightValid(text));
     }
 
-    public void validateWeight(String text)
-    {
+    public void validateWeight(String text) {
         textView.setError(InputValidator.isWeightValid(text));
     }
 
-    public void validateEmail(String text)
-    {
+    public void validateEmail(String text) {
         textView.setError(InputValidator.isEmailValid(text));
     }
 
-    public void validatePassword(String text)
-    {
+    public void validatePassword(String text) {
         textView.setError(InputValidator.isPasswordValid(text));
     }
 
-    public void validateGender(String text)
-    {
+    public void validateGender(String text) {
         textView.setError(InputValidator.isGenderValid(text.equals("0") ? "" : text));
     }
 
-    public void validatePostcode(String text)
-    {
+    public void validatePostcode(String text) {
         textView.setError(InputValidator.isPostcodeValid(text));
     }
 
-    public void validateHouseholdNumber(String text)
-    {
+    public void validateHouseholdNumber(String text) {
         textView.setError(InputValidator.isFamilyNumberValid(text));
     }
 
-    public void validateAdultNumber(String text)
-    {
+    public void validateAdultNumber(String text) {
         textView.setError(InputValidator.isAdultNumberValid(text));
     }
 
-    public void validateChildNumber(String text)
-    {
+    public void validateChildNumber(String text) {
         textView.setError(InputValidator.isChildNumberValid(text));
     }
 
-    public void validateSumOfAdultAndChildrenNumber(String total, String adult, String children)
-    {
-        textView.setError(InputValidator.isTotalFamilyNumberValid(total,adult,children));
+    public void validateSumOfAdultAndChildrenNumber(String total, String adult, String children) {
+        textView.setError(InputValidator.isTotalFamilyNumberValid(total, adult, children));
     }
 
-    public void validateShoppingFrequency(String text)
-    {
+    public void validateShoppingFrequency(String text) {
         textView.setError(InputValidator.isShopFrequencyValid(text.equals("0") ? "" : text));
     }
 }
-
 
 
 //public abstract class TextValidator implements TextWatcher {

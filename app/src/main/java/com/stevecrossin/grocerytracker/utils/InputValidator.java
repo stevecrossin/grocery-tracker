@@ -6,7 +6,6 @@ import java.util.regex.Pattern;
 
 public class InputValidator {
 
-    private static final String POSTCODE_NUMBER = "\\d{4}";
     public static final String EMAIL_ADDRESS
             =
             "[a-zA-Z0-9+._%\\-]{1,256}" +
@@ -16,7 +15,7 @@ public class InputValidator {
                     "\\." +
                     "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,25}" +
                     ")+";
-
+    private static final String POSTCODE_NUMBER = "\\d{4}";
     private static final String EMPTY_NAME_ERROR = "Name is required";
     private static final String EMPTY_AGE_ERROR = "Age is required";
     private static final String RANGE_AGE_ERROR = "Age is not eligible for creating account";
@@ -36,127 +35,109 @@ public class InputValidator {
     private static final String TOTAL_FAMILY_NUMBER_ERROR = "The family number does not matches with the adult and children number";
 
 
-    public static boolean IsNotEmpty(String field)
-    {
+    public static boolean IsNotEmpty(String field) {
         return (!Strings.isEmptyOrWhitespace(field));
     }
 
-    public static boolean IsLengthGreaterThan(String field, int targetLength)
-    {
-        return (field.length()>targetLength);
+    public static boolean IsLengthGreaterThan(String field, int targetLength) {
+        return (field.length() > targetLength);
     }
 
-    public static boolean IsMatchedEmailPattern(String field)
-    {
-        return  Pattern.compile(EMAIL_ADDRESS).matcher(field).matches();
+    public static boolean IsMatchedEmailPattern(String field) {
+        return Pattern.compile(EMAIL_ADDRESS).matcher(field).matches();
     }
 
-    public static boolean IsInRange(String field, int start, int end)
-    {
+    public static boolean IsInRange(String field, int start, int end) {
         int target = Integer.parseInt(field);
-        return  (target>=start && target <= end);
+        return (target >= start && target <= end);
     }
 
-    public static boolean IsExactlyFourNumberDigit(String field)
-    {
+    public static boolean IsExactlyFourNumberDigit(String field) {
         return Pattern.compile(POSTCODE_NUMBER).matcher(field).matches();
     }
 
-    public static String isPostcodeValid(String field)
-    {
-        if  (!IsNotEmpty(field))
+    public static String isPostcodeValid(String field) {
+        if (!IsNotEmpty(field))
             return EMPTY_POSTCODE_ERROR;
         if (!IsExactlyFourNumberDigit(field))
             return FORMAT_POSTCODE_ERROR;
         return null;
     }
 
-    public static String isNameValid(String field)
-    {
-        if  (!IsNotEmpty(field))
+    public static String isNameValid(String field) {
+        if (!IsNotEmpty(field))
             return EMPTY_NAME_ERROR;
         return null;
     }
 
-    public static String isAgeValid(String field)
-    {
-        if  (!IsNotEmpty(field))
+    public static String isAgeValid(String field) {
+        if (!IsNotEmpty(field))
             return EMPTY_AGE_ERROR;
-        if (!IsInRange(field,16,150))
+        if (!IsInRange(field, 16, 150))
             return RANGE_AGE_ERROR;
         return null;
     }
 
-    public static String isWeightValid(String field)
-    {
-        if  (!IsNotEmpty(field))
+    public static String isWeightValid(String field) {
+        if (!IsNotEmpty(field))
             return EMPTY_WEIGHT_ERROR;
         return null;
     }
 
-    public static String isHeightValid(String field)
-    {
-        if  (!IsNotEmpty(field))
+    public static String isHeightValid(String field) {
+        if (!IsNotEmpty(field))
             return EMPTY_HEIGHT_ERROR;
         return null;
     }
 
-    public static String isGenderValid(String field)
-    {
-        if  (!IsNotEmpty(field))
+    public static String isGenderValid(String field) {
+        if (!IsNotEmpty(field))
             return EMPTY_GENDER_ERROR;
         return null;
     }
 
-    public static String isShopFrequencyValid(String field)
-    {
-        if  (!IsNotEmpty(field))
+    public static String isShopFrequencyValid(String field) {
+        if (!IsNotEmpty(field))
             return EMPTY_SHOP_FREQUENCY_ERROR;
         return null;
     }
 
-    public static String isFamilyNumberValid(String field)
-    {
-        if  (!IsNotEmpty(field))
+    public static String isFamilyNumberValid(String field) {
+        if (!IsNotEmpty(field))
             return EMPTY_FAMILY_NUMBER_ERROR;
         return null;
     }
 
-    public static String isAdultNumberValid(String field)
-    {
-        if  (!IsNotEmpty(field))
+    public static String isAdultNumberValid(String field) {
+        if (!IsNotEmpty(field))
             return EMPTY_ADULT_NUMBER_ERROR;
         return null;
     }
 
-    public static String isChildNumberValid(String field)
-    {
-        if  (!IsNotEmpty(field))
+    public static String isChildNumberValid(String field) {
+        if (!IsNotEmpty(field))
             return EMPTY_CHILD_NUMBER_ERROR;
         return null;
     }
 
-    public static String isTotalFamilyNumberValid(String total, String adult, String children)
-    {
-        if (Integer.parseInt(total) != Integer.parseInt(adult) +Integer.parseInt(children))
+    public static String isTotalFamilyNumberValid(String total, String adult, String children) {
+        if (Integer.parseInt(total) != Integer.parseInt(adult) + Integer.parseInt(children))
             return TOTAL_FAMILY_NUMBER_ERROR;
         return null;
     }
 
-    public static String isEmailValid(String field)
-    {
-        if  (!IsNotEmpty(field))
+    public static String isEmailValid(String field) {
+        if (!IsNotEmpty(field))
             return EMPTY_EMAIL_ERROR;
-        if  (!IsMatchedEmailPattern(field))
+        if (!IsMatchedEmailPattern(field))
             return FORMAT_EMAIL_ERROR;
         return null;
     }
 
-    public static String isPasswordValid(String field)
-    {
-        if  (!IsNotEmpty(field))
+    public static String isPasswordValid(String field) {
+        if (!IsNotEmpty(field))
             return EMPTY_PASSWORD_ERROR;
-        if  (!IsInRange(Integer.toString(field.length()),6,20))
+        if (!IsInRange(Integer.toString(field.length()), 6, 20))
             return LENGTH_PASSWORD_ERROR;
         return null;
     }

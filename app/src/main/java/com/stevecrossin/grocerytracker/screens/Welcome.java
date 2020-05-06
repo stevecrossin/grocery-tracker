@@ -32,6 +32,7 @@ public class Welcome extends AppCompatActivity implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.Bwelcome:
                 startActivity(new Intent(this, MainActivity.class));
+                finish();
                 break;
 
         }

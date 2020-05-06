@@ -34,12 +34,6 @@ public class Receipt implements Parcelable {
     @ColumnInfo(name = "receipt_file_path")
     private String receiptFilePath;
 
-    @ColumnInfo(name = "receipt_contents")
-    private String receiptContents;
-
-    @ColumnInfo(name = "receipt_time")
-    private String receiptTime;
-
     public static final Creator<Receipt> CREATOR = new Creator<Receipt>() {
         @Override
         public Receipt createFromParcel(Parcel in) {
@@ -51,6 +45,11 @@ public class Receipt implements Parcelable {
             return new Receipt[size];
         }
     };
+
+    @ColumnInfo(name = "receipt_time")
+    private String receiptTime;
+    @ColumnInfo(name = "receipt_contents")
+    private String receiptContents;
 
     protected Receipt(Parcel in) {
         receiptID = in.readInt();

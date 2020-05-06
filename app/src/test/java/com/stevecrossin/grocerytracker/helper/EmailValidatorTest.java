@@ -9,23 +9,24 @@ import static org.junit.Assert.assertNull;
 
 public class EmailValidatorTest {
 
-    /** test for the Email field
+    /**
+     * test for the Email field
      * Requirement: Required and matches email pattern
      */
     @Test
-    public void IsEmailValid_Correct(){
+    public void IsEmailValid_Correct() {
 
         assertNull(InputValidator.isEmailValid("abc@gmail.com"));
     }
 
     @Test
-    public void IsEmailValid_WrongFormat_False(){
+    public void IsEmailValid_WrongFormat_False() {
         assertNotNull(InputValidator.isEmailValid("abcgmail.com"));
     }
 
 
     @Test
-    public void IsEmailValid_IsEmpty_False(){
+    public void IsEmailValid_IsEmpty_False() {
         assertNotNull(InputValidator.isEmailValid(""));
     }
 

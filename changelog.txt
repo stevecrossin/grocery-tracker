@@ -38,7 +38,7 @@ Steve rewrote receipts function.
 Test Commit by Radika to feature/dataValidation
 
 Saturday 28 March - Radika & Steve
-*Worked on Data Validation 
+*Worked on Data Validation
 
 Saturday 28 March - Steve
 * Receipts.java - deprecated method to upload PDF files to Firebase, started integration of tested code to convert PDF to CSV. In standalone test, was able to convert PDF to CSV, having some file permission/conversion issues that
@@ -53,7 +53,7 @@ information in the PDF table. Writes this to a timestamped CSV file. Still worki
 - Updated bugs.txt with resolved issues, and this changelog.txt with changes made.
 - Updated todo file.
 
-3 April - Steve 
+3 April - Steve
 Code maintenance - merged work completed by Amie and Ben in /UnitTesting and /dynamicNotifications branch.
 
 3-4 April - Steve

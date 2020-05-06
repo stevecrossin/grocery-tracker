@@ -27,7 +27,7 @@ public class AppDataRepo {
     public boolean insertUser(User user) {
         try {
             userDao.insertUser(user);
-        } catch (SQLiteConstraintException exc){
+        } catch (SQLiteConstraintException exc) {
             return false;
         }
         return true;

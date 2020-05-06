@@ -19,16 +19,16 @@ import java.util.List;
 public class ReceiptsAdapter extends RecyclerView.Adapter<ReceiptsAdapter.ReceiptsViewHolder> {
     private List<Receipt> mReceipts;
 
+    public ReceiptsAdapter(List<Receipt> receipts) {
+        mReceipts = receipts;
+    }
+
     @NonNull
     @Override
     public ReceiptsViewHolder onCreateViewHolder(@NonNull final ViewGroup parent, int viewType) {
         ConstraintLayout container = (ConstraintLayout) LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.recyclerview_item_receipts, parent, false);
         return new ReceiptsViewHolder(container);
-    }
-
-    public ReceiptsAdapter(List<Receipt> receipts) {
-        mReceipts = receipts;
     }
 
     @Override
@@ -45,6 +45,11 @@ public class ReceiptsAdapter extends RecyclerView.Adapter<ReceiptsAdapter.Receip
         });
     }
 
+    @Override
+    public int getItemCount() {
+        return mReceipts == null ? 0 : mReceipts.size();
+    }
+
     public static class ReceiptsViewHolder extends RecyclerView.ViewHolder {
         public View mContainer;
         public TextView mTextViewReceiptName;
@@ -56,10 +61,5 @@ public class ReceiptsAdapter extends RecyclerView.Adapter<ReceiptsAdapter.Receip
             mTextViewReceiptName = container.findViewById(R.id.TextView_Receipt_Name);
             mTextViewReceiptTime = container.findViewById(R.id.TextView_Receipt_Time);
         }
-    }
-
-    @Override
-    public int getItemCount() {
-        return mReceipts == null ? 0 : mReceipts.size();
     }
 }
