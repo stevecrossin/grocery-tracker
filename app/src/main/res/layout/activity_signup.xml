@@ -98,7 +98,7 @@
                         android:layout_width="match_parent"
                         android:hint="@string/emailAddressHint"
                         android:imeOptions="actionNext"
-                        android:inputType="text" />
+                        android:inputType="textEmailAddress" />
                 </LinearLayout>
 
                 <LinearLayout
