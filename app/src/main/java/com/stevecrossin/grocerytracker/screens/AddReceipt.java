@@ -455,7 +455,7 @@ public class AddReceipt extends AppCompatActivity implements View.OnClickListene
         ReceiptLineItem receiptLineItem = new ReceiptLineItem();
         // The last three entries will be unit price, quantity and price.
         receiptLineItem.price = Float.parseFloat(columns[columns.length - 1]);
-        receiptLineItem.quantity = (int) Float.parseFloat(columns[columns.length - 2]);
+        receiptLineItem.quantity = Float.parseFloat(columns[columns.length - 2]);
         receiptLineItem.unitPrice = Float.parseFloat(columns[columns.length - 3]);
 
         // The rest of the bits will form the item name, so piece them all together before

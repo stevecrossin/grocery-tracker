@@ -42,7 +42,7 @@ public class ReceiptItemsAdapter extends RecyclerView.Adapter<ReceiptItemsAdapte
         holder.mTextViewUnitPriceLabel.setText(mHeader.unitPriceHeader);
         holder.mTextViewUnitPriceValue.setText(String.format("$%s", decimalFormat.format(receiptLineItem.unitPrice)));
         holder.mTextViewQuantityLabel.setText(mHeader.quantityHeader);
-        holder.mTextViewQuantityValue.setText(String.format(Integer.toString(receiptLineItem.quantity)));
+        holder.mTextViewQuantityValue.setText(String.format(Float.toString(receiptLineItem.quantity)));
         holder.mTextViewPriceLabel.setText(mHeader.priceHeader);
         holder.mTextViewPriceValue.setText(String.format("$%s", decimalFormat.format(receiptLineItem.price)));
     }
