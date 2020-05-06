@@ -115,3 +115,11 @@ Todo: still need to work on PDF extraction to string with comma and semicolon se
 
 25 April - Steve
 - activity_main.xml - created alternate landscape layout to fix UI bugs bleeding over etc.
+
+5/6 May 2020 - Steve
+* Implement UX fixes, issues with text not constraining in FAQ/about
+* AddReceipt.java - fixed handling of Woolworths receipts - see commit e33fbbd239f
+* Enable preview of username/password, update hints to show metrics expected (kg/cm)
+* Enable spinners to request focus of the view, enable imeOptions so next button works
+* Altered AddReceipt.java - in testing identified one receipt failing as it had a float rather than integer into quantity - updated parsing of receipt to parse qty as float.
+* More UX fixes - adjusted constraints in activity_main.xml and activity_land.xml, also adjusted how images are displayed in landscape so they take up more of the screen.
