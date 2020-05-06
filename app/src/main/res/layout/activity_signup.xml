@@ -20,7 +20,7 @@
         <LinearLayout
             android:id="@+id/parentLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal|fill_vertical"
             android:orientation="vertical"
             android:paddingLeft="30dp"
@@ -60,7 +60,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
-                    >
 
 
                     <TextView
@@ -74,6 +73,7 @@
                         style="@style/inputField"
                         android:layout_width="match_parent"
                         android:hint="@string/lblName"
+                        android:imeOptions="actionNext"
                         android:inputType="text" />
 
                 </LinearLayout>
@@ -84,7 +84,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
-                    >
+
 
                     <TextView
                         style="@style/labelText"
@@ -97,6 +97,7 @@
                         style="@style/inputField"
                         android:layout_width="match_parent"
                         android:hint="@string/emailAddressHint"
+                        android:imeOptions="actionNext"
                         android:inputType="text" />
                 </LinearLayout>
 
@@ -106,7 +107,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
-                    >
 
                     <TextView
                         style="@style/labelText"
@@ -114,12 +114,22 @@
                         android:layout_height="wrap_content"
                         android:text="@string/password" />
 
-                    <AutoCompleteTextView
-                        android:id="@+id/etPassword"
-                        style="@style/inputField"
+                    <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
-                        android:hint="@string/lblPassword"
-                        android:inputType="textPassword" />
+                        android:layout_height="match_parent"
+                        app:hintEnabled="false"
+                        app:passwordToggleEnabled="true">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etPassword"
+                            style="@style/inputField"
+                            android:layout_width="match_parent"
+                            android:hint="@string/lblPassword"
+                            android:imeOptions="actionNext"
+                            android:inputType="textPassword" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
                 </LinearLayout>
 
             </LinearLayout>
@@ -138,7 +148,6 @@
                     android:gravity="center_horizontal"
                     android:text="@string/personalInfo" />
 
-
                 <View style="@style/horizonLine" />
 
                 <LinearLayout
@@ -147,7 +156,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
-                    >
 
                     <TextView
                         style="@style/labelText"
@@ -160,6 +168,7 @@
                         style="@style/inputField"
                         android:layout_width="match_parent"
                         android:hint="@string/lblAge"
+                        android:imeOptions="actionNext"
                         android:inputType="number" />
 
                 </LinearLayout>
@@ -170,7 +179,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
-                    >
 
                     <TextView
                         style="@style/labelText"
@@ -183,6 +191,7 @@
                         style="@style/inputField"
                         android:layout_width="match_parent"
                         android:hint="@string/lblHeight"
+                        android:imeOptions="actionNext"
                         android:inputType="number" />
 
                 </LinearLayout>
@@ -194,7 +203,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
-                    >
 
                     <TextView
                         style="@style/labelText"
@@ -206,6 +214,7 @@
                         android:id="@+id/etWeight"
                         style="@style/inputField"
                         android:layout_width="match_parent"
+                        android:imeOptions="actionNext"
                         android:hint="@string/lblWeight"
                         android:inputType="numberDecimal" />
                 </LinearLayout>
@@ -216,7 +225,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
-                    >
 
                     <TextView
                         style="@style/labelText"
@@ -227,6 +235,7 @@
                     <Spinner
                         android:id="@+id/cbGender"
                         style="@style/inputField"
+                        android:spinnerMode="dropdown"
                         android:layout_width="match_parent" />
 
                 </LinearLayout>
@@ -237,7 +246,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
-                    >
 
                     <TextView
                         style="@style/labelText"
@@ -250,6 +258,7 @@
                         style="@style/inputField"
                         android:layout_width="match_parent"
                         android:hint="@string/lblPostcode"
+                        android:imeOptions="actionNext"
                         android:inputType="number" />
                 </LinearLayout>
 
@@ -278,7 +287,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
-                    >
 
                     <TextView
                         style="@style/labelText"
@@ -291,6 +299,7 @@
                         style="@style/inputField"
                         android:layout_width="match_parent"
                         android:hint="@string/lblNumberHouse"
+                        android:imeOptions="actionNext"
                         android:inputType="number" />
 
                 </LinearLayout>
@@ -301,7 +310,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
-                    >
 
                     <TextView
                         style="@style/labelText"
@@ -314,6 +322,7 @@
                         style="@style/inputField"
                         android:layout_width="match_parent"
                         android:hint="@string/lblNumberAdults"
+                        android:imeOptions="actionNext"
                         android:inputType="number" />
 
                 </LinearLayout>
@@ -324,7 +333,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
-                    >
 
                     <TextView
                         style="@style/labelText"
@@ -339,6 +347,7 @@
                     style="@style/inputField"
                     android:layout_width="match_parent"
                     android:hint="@string/lblNumberChild"
+                    android:imeOptions="actionNext"
                     android:inputType="number" />
             </LinearLayout>
 
@@ -364,7 +373,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
-                    >
 
                     <TextView
                         style="@style/labelText"

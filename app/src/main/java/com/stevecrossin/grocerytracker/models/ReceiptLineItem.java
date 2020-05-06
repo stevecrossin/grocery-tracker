@@ -3,7 +3,7 @@ package com.stevecrossin.grocerytracker.models;
 public class ReceiptLineItem {
     public String itemDescription;
     public float unitPrice;
-    public int quantity;
+    public float quantity;
     public float price;
 
     public ReceiptLineItem() {
@@ -13,7 +13,7 @@ public class ReceiptLineItem {
         String[] columns = line.split(",");
         itemDescription = (columns.length > 0) ? columns[0] : "";
         unitPrice = (columns.length > 1) ? Float.parseFloat(columns[1]) : 0.0f;
-        quantity = (columns.length > 2) ? Integer.parseInt(columns[2]) : 0;
+        quantity = (columns.length > 2) ? Float.parseFloat(columns[2]) : 0.0f;
         price = (columns.length > 3) ? Float.parseFloat(columns[3]) : 0.0f;
     }
 

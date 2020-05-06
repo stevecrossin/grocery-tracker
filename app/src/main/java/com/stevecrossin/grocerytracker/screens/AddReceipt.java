@@ -360,17 +360,20 @@ public class AddReceipt extends AppCompatActivity implements View.OnClickListene
                     // If the next line is not all integers, then it is a 3 or more lines item. In this case
                     // we collect consecutive lines till we hit a line that does not end with a space character.
                     List<String> itemLines = new ArrayList<>();
-                    int j = i;
+                    itemLines.add(prunedLines.get(i));
+                    itemLines.add(prunedLines.get(i + 1));
+                    itemLines.add(prunedLines.get(i + 2));
+                    /*int j = i;
                     while (j < prunedLines.size()) {
                         itemLines.add(prunedLines.get(j).trim());
                         if (!prunedLines.get(j).endsWith(" ")) {
                             break;
                         }
                         j++;
-                    }
+                    }*/
                     // Then we process the collected lines of a 3 or more lines item into a single line item.
                     receiptLines.add(processItemLines(itemLines));
-                    i = j + 1;
+                    i = i + 3;
                 }
             }
         }
@@ -452,7 +455,7 @@ public class AddReceipt extends AppCompatActivity implements View.OnClickListene
         ReceiptLineItem receiptLineItem = new ReceiptLineItem();
         // The last three entries will be unit price, quantity and price.
         receiptLineItem.price = Float.parseFloat(columns[columns.length - 1]);
-        receiptLineItem.quantity = Integer.parseInt(columns[columns.length - 2]);
+        receiptLineItem.quantity = Float.parseFloat(columns[columns.length - 2]);
         receiptLineItem.unitPrice = Float.parseFloat(columns[columns.length - 3]);
 
         // The rest of the bits will form the item name, so piece them all together before
@@ -517,9 +520,9 @@ public class AddReceipt extends AppCompatActivity implements View.OnClickListene
         }
         //Do Woolworths
         else {
-            headerText = parsedText.substring(0, parsedText.lastIndexOf(": \n"));
+            headerText = parsedText.substring(0, parsedText.lastIndexOf("Price:") + 6);
             headerText = headerText.substring(headerText.lastIndexOf("\n") + 1);
-            String tableText = parsedText.substring(parsedText.lastIndexOf(": \n") + 3, parsedText.indexOf("Subtotal")).trim();
+            String tableText = parsedText.substring(parsedText.lastIndexOf("Price:") + 6, parsedText.indexOf("Subtotal")).trim();
             Log.i("info", headerText);
             receiptLineItems = parseReceipt(tableText);
         }

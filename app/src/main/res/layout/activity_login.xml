@@ -63,7 +63,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
-                >
 
                 <TextView
                     style="@style/labelText"
@@ -71,13 +70,20 @@
                     android:layout_height="wrap_content"
                     android:text="@string/password" />
 
-                <EditText
-                    android:id="@+id/enterPassword"
-                    style="@style/inputField"
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
-                    android:autofillHints=""
-                    android:hint="@string/enterPasswordHint"
-                    android:inputType="textPassword" />
+                    android:layout_height="match_parent"
+                    app:hintEnabled="false"
+                    app:passwordToggleEnabled="true">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/enterPassword"
+                        style="@style/inputField"
+                        android:layout_width="match_parent"
+                        android:autofillHints=""
+                        android:hint="@string/enterPasswordHint"
+                        android:inputType="textPassword" />
+                </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
             <Button

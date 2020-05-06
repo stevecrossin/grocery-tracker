@@ -6,9 +6,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.inappmessaging.FirebaseInAppMessaging;
 import com.stevecrossin.grocerytracker.R;
@@ -115,5 +113,15 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra(Intent.EXTRA_SUBJECT, "Feedback on Grocery Tracker Application");
         intent.putExtra(Intent.EXTRA_TEXT, "What I would like to give feedback about:");
         startActivity(intent);
+    }
+
+    /**
+     * Overrides the back button function on the MainActivity - we don't want them going back to any past screens - clicking back will now just close the app.
+     */
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finishAffinity();
+
     }
 }
