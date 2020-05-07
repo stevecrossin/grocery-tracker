@@ -28,6 +28,7 @@ import com.stevecrossin.grocerytracker.database.AppDataRepo;
 import com.stevecrossin.grocerytracker.entities.User;
 import com.stevecrossin.grocerytracker.utils.AppLoginState;
 import com.stevecrossin.grocerytracker.utils.PasswordScrambler;
+import com.stevecrossin.grocerytracker.utils.TextValidator;
 
 import java.util.List;
 
@@ -49,7 +50,9 @@ public class Login extends AppCompatActivity {
     private Button loginButton;
     private AppLoginState appLoginState = INVALID_PASS;
     private StorageReference mStorageRef;
-    
+    private TextValidator textValidator;
+
+
     /**
      * Check if user already logged in, and hasn't logged out. Will perform DB query defined lower, to check DB for users that match the loggedIn = true, and if so, it will skip login/sign up and navigate directly to main home page.
      */
@@ -58,18 +61,6 @@ public class Login extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         isSignedIn();
-
-        /**
-         * Checks if password or email entered is valid. If password is less than or equal to 5 characters, invalid password will be thrown.
-         */
-    }
-
-    public static boolean isEmaiValid(CharSequence target) {
-        return (!TextUtils.isEmpty(target) && Patterns.EMAIL_ADDRESS.matcher(target).matches());
-    }
-
-    private boolean isPasswordValid(String password) {
-        return password.length() > 5;
     }
 
     /**
@@ -139,6 +130,22 @@ public class Login extends AppCompatActivity {
         startActivity(new Intent(Login.this, MainActivity.class));
     }
 
+    private void ValidateEmail() {
+        textValidator = new TextValidator(usernameView);
+        textValidator.validateEmail(usernameView.getText().toString());
+    }
+
+    private void ValidatePassword() {
+        textValidator = new TextValidator(passwordView);
+        textValidator.validatePassword(passwordView.getText().toString());
+    }
+
+    private boolean isFormValid() {
+        ValidateEmail();
+        ValidatePassword();
+        return (usernameView.getError() == null) && (passwordView.getError() == null);
+    }
+
     /**
      * This handles the attempt to login, after the login/sign in button is clicked. It will only call the async task if it's not running.
      * <p>
@@ -153,34 +160,17 @@ public class Login extends AppCompatActivity {
             return;
         }
 
-        usernameView.setError(null);
-        passwordView.setError(null);
-
-        String username = usernameView.getText().toString();
-        String password = passwordView.getText().toString();
-
-        boolean cancel = false;
-        View focusView = null;
-
-        if (!isPasswordValid(password)) {
-            passwordView.setError("Password is invalid");
-            focusView = passwordView;
-            cancel = true;
+        if (!isFormValid())
+        {
+            if (usernameView.getError() !=null)
+                usernameView.requestFocus();
+            else if (passwordView.getError() !=null)
+                passwordView.requestFocus();
         }
-        if (TextUtils.isEmpty(username)) {
-            usernameView.setError("Field cannot be empty");
-            focusView = usernameView;
-            cancel = true;
-        } else if (!isEmaiValid(username)) {
-            usernameView.setError("Email address entered is invalid");
-            focusView = usernameView;
-            cancel = true;
-        }
-
-        if (cancel) {
-            focusView.requestFocus();
-        } else {
+        else {
             showProgressUI(true);
+            String username = usernameView.getText().toString();
+            String password = passwordView.getText().toString();
             authTask = new LoginTask(username, password);
             authTask.execute((Void) null);
         }
