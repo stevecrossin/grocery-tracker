@@ -292,7 +292,7 @@
                         style="@style/labelText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/lblNumberHouse" />
+                        android:text="@string/household" />
 
                     <AutoCompleteTextView
                         android:id="@+id/etNumberOfHouseHoldMember"
@@ -315,7 +315,7 @@
                         style="@style/labelText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/lblNumberAdults" />
+                        android:text="@string/adult_number" />
 
                     <AutoCompleteTextView
                         android:id="@+id/etHouseHoldAdults"
@@ -338,7 +338,7 @@
                         style="@style/labelText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/lblNumberChild" />
+                        android:text="@string/children_number" />
                 </LinearLayout>
 
 
