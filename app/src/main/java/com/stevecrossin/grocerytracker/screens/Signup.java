@@ -139,18 +139,21 @@ public class Signup extends AppCompatActivity {
 
     private void ValidateHouseholdNumber() {
         textValidator = new TextValidator(etNumberOfHouseHoldMember);
-        textValidator.validateHouseholdNumber(etNumberOfHouseHoldMember.getText().toString());
+        textValidator.validateHouseholdNumber(etNumberOfHouseHoldMember.getText().toString(), etHouseholdAdults.getText().toString(), etHouseholdChildren.getText().toString());
     }
 
     private void ValidateAdultNumber() {
         textValidator = new TextValidator(etHouseholdAdults);
         textValidator.validateAdultNumber(etHouseholdAdults.getText().toString());
+        ValidateHouseholdNumber();
     }
 
 
     private void ValidateChildNumber() {
         textValidator = new TextValidator(etHouseholdChildren);
         textValidator.validateChildNumber(etHouseholdChildren.getText().toString());
+        ValidateHouseholdNumber();
+
     }
 
     private void ValidateShoppingFrequency() {
@@ -158,11 +161,11 @@ public class Signup extends AppCompatActivity {
         textValidator.validateShoppingFrequency(Integer.toString(selectedShopNumber));
     }
 
-    private boolean ValidateSumOfAdultAndChildrenNumber() {
-        textValidator = new TextValidator(etNumberOfHouseHoldMember);
-        textValidator.validateSumOfAdultAndChildrenNumber(etNumberOfHouseHoldMember.getText().toString(), etHouseholdAdults.getText().toString(), etHouseholdChildren.getText().toString());
-        return (etNumberOfHouseHoldMember.getError() == null);
-    }
+//    private boolean ValidateSumOfAdultAndChildrenNumber() {
+//        textValidator = new TextValidator(etNumberOfHouseHoldMember);
+//        textValidator.validateSumOfAdultAndChildrenNumber(etNumberOfHouseHoldMember.getText().toString(), etHouseholdAdults.getText().toString(), etHouseholdChildren.getText().toString());
+//        return (etNumberOfHouseHoldMember.getError() == null);
+//    }
 
     private void ValidateOnTheFly() {
         etName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -292,7 +295,7 @@ public class Signup extends AppCompatActivity {
     @SuppressLint("StaticFieldLeak")
     public void submitSignUp(View view) {
         final AppDataRepo dataRepo = new AppDataRepo(this);
-        if (!isFormValid() || !ValidateSumOfAdultAndChildrenNumber()) {
+        if (!isFormValid()) {
             Toast.makeText(Signup.this, "Form is invalid", Toast.LENGTH_LONG).show();
             return;
         }

@@ -9,89 +9,56 @@ public class TextValidator {
         this.textView = textView;
     }
 
-    public void validateName(String text) {
-        textView.setError(InputValidator.isNameValid(text));
+    public void validateName(String nameText) {
+        textView.setError(InputValidator.isNameValid(nameText));
     }
 
-    public void validateAge(String text) {
-        textView.setError(InputValidator.isAgeValid(text));
+    public void validateAge(String ageText)
+    {
+        textView.setError(InputValidator.isAgeValid(ageText));
     }
 
-    public void validateHeight(String text) {
-        textView.setError(InputValidator.isHeightValid(text));
+    public void validateHeight(String heightText) {
+        textView.setError(InputValidator.isHeightValid(heightText));
     }
 
-    public void validateWeight(String text) {
-        textView.setError(InputValidator.isWeightValid(text));
+    public void validateWeight(String weightText) {
+        textView.setError(InputValidator.isWeightValid(weightText));
     }
 
-    public void validateEmail(String text) {
-        textView.setError(InputValidator.isEmailValid(text));
+    public void validateEmail(String emailText) {
+        textView.setError(InputValidator.isEmailValid(emailText));
     }
 
-    public void validatePassword(String text) {
-        textView.setError(InputValidator.isPasswordValid(text));
+    public void validatePassword(String passwordText) {
+        textView.setError(InputValidator.isPasswordValid(passwordText));
     }
 
-    public void validateGender(String text) {
-        textView.setError(InputValidator.isGenderValid(text.equals("0") ? "" : text));
+    public void validateGender(String genderText) {
+        textView.setError(InputValidator.isGenderValid(genderText.equals("0") ? "" : genderText));
     }
 
-    public void validatePostcode(String text) {
-        textView.setError(InputValidator.isPostcodeValid(text));
+    public void validatePostcode(String postcodeText) {
+        textView.setError(InputValidator.isPostcodeValid(postcodeText));
     }
 
-    public void validateHouseholdNumber(String text) {
-        textView.setError(InputValidator.isFamilyNumberValid(text));
+    public void validateHouseholdNumber(String householdNumberText, String adultNumberText, String childrenNumberText) {
+        textView.setError(InputValidator.isFamilyNumberValid(householdNumberText,adultNumberText,childrenNumberText));
     }
 
-    public void validateAdultNumber(String text) {
-        textView.setError(InputValidator.isAdultNumberValid(text));
+    public void validateAdultNumber(String adultNumberText) {
+        textView.setError(InputValidator.isAdultNumberValid(adultNumberText));
     }
 
-    public void validateChildNumber(String text) {
-        textView.setError(InputValidator.isChildNumberValid(text));
+    public void validateChildNumber(String childNumberText) {
+        textView.setError(InputValidator.isChildNumberValid(childNumberText));
     }
 
-    public void validateSumOfAdultAndChildrenNumber(String total, String adult, String children) {
-        textView.setError(InputValidator.isTotalFamilyNumberValid(total, adult, children));
-    }
+//    public void validateSumOfAdultAndChildrenNumber(String totalText, String adultNumberText, String childrenNumberText) {
+//        textView.setError(InputValidator.isTotalFamilyNumberValid(totalText,adultNumberText,childrenNumberText));
+//    }
 
-    public void validateShoppingFrequency(String text) {
-        textView.setError(InputValidator.isShopFrequencyValid(text.equals("0") ? "" : text));
+    public void validateShoppingFrequency(String shoppingFrequencyText) {
+        textView.setError(InputValidator.isShopFrequencyValid(shoppingFrequencyText.equals("0") ? "" : shoppingFrequencyText));
     }
 }
-
-
-//public abstract class TextValidator implements TextWatcher {
-//
-//    private TextView textView;
-//
-//    public TextValidator(TextView textView)
-//    {
-//        this.textView = textView;
-//    }
-//
-//    public abstract void Validate(TextView textView, String field);
-//
-//
-//    @Override
-//    final public void afterTextChanged(Editable s){
-//        String text= textView.getText().toString();
-//        Validate(textView,text);
-//    }
-//
-//
-//    @Override
-//    final public void beforeTextChanged(CharSequence s, int start, int count, int after) {  }
-//
-//    @Override
-//    final public void onTextChanged(CharSequence s, int start, int before, int count) { }
-//}
-
-//        etName.addTextChangedListener(new TextValidator(etName) {
-//@Override public void Validate(TextView textView, String text) {
-//        if (!validator.isNameValid(text))
-//        etName.setError("abc");
-//        }
-//        });

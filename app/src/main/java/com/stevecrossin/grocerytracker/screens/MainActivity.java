@@ -14,7 +14,7 @@ import com.stevecrossin.grocerytracker.database.AppDataRepo;
 import com.stevecrossin.grocerytracker.entities.User;
 
 public class MainActivity extends AppCompatActivity {
-
+    
     private FirebaseAnalytics mFirebaseAnalytics;
     private FirebaseInAppMessaging mInAppMessaging;
 
