@@ -34,7 +34,7 @@ public class AppDataRepo {
     }
 
     /**
-     * Wrapper method. Perform dao operation to get sign in user from the db.
+     * Wrapper method. Perform dao operation to get sign in user from the db based on their email address.
      */
     public User getSignedUser() {
         return userDao.getSignInUser();
@@ -53,6 +53,13 @@ public class AppDataRepo {
      */
     public User getUserByEmail(String email) {
         return userDao.getUser(email);
+    }
+
+    /**
+     * Perform dao operation to get users from Users db based on id.
+     */
+    public User getUserById(int userId) {
+        return userDao.getUser(userId);
     }
 
     public List<User> getAllUsers() {
