@@ -86,15 +86,21 @@ public class WoolworthsReceipt {
             itemDescription += " "+items[i];
         }
 
-        itemDescription += " " +itemsName;
+        itemDescription += " " + itemsName;
 
-        for (int i =items.length-3; i<items.length;i++) {
+        for (int i = items.length - 3; i < items.length; i++) {
             itemDescription += " " + items[i];
         }
 
         return itemDescription.trim();
     }
 
+    /**
+     * Parses the items in the receipt
+     *
+     * @param lineItem
+     * @return receiptLineItem
+     */
     private ReceiptLineItem parseItem(String lineItem) {
         // Split by space character.
         String[] columns = lineItem.split(" ");

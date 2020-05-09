@@ -306,167 +306,6 @@ public class AddReceipt extends AppCompatActivity implements View.OnClickListene
     }
 
     /**
-     * Parses items in a receipt.
-     *
-     * @param receipt String containing the receipt items.
-     * @return
-     */
-    private List<ReceiptLineItem> parseReceipt(String receipt) {
-        String[] lines = receipt.split("\n");
-        List<String> prunedLines = pruneLines(lines);
-        int i = 0;
-        List<String> receiptLines = new ArrayList<>();
-        while (i < prunedLines.size()) {
-            String prunedLine = prunedLines.get(i).trim();
-            // If a line ends with a float, that means it is a single line item and so can be processed.
-            if (endsWithFloat(prunedLine)) {
-                receiptLines.add(prunedLine);
-                i++;
-            } else {
-                // If the next line contains only integers then it is part of a 2 line item. The next to
-                // next line should be appended to the current one as they form the item name. The next
-                // should then be appended to the end of the item name as that will contain unit price,
-                // quantity and price information. This will make it like the single line item.
-                if (isOnlyIntegers(prunedLines.get(i + 1))) {
-                    receiptLines.add(prunedLine + " " + prunedLines.get(i + 2).trim() + " " + prunedLines.get(i + 1).trim());
-                    i += 3;
-                } else {
-                    // If the next line is not all integers, then it is a 3 or more lines item. In this case
-                    // we collect consecutive lines till we hit a line that does not end with a space character.
-                    List<String> itemLines = new ArrayList<>();
-                    itemLines.add(prunedLines.get(i));
-                    itemLines.add(prunedLines.get(i + 1));
-                    itemLines.add(prunedLines.get(i + 2));
-                    itemLines.add(prunedLines.get(i + 3));
-                    // Then we process the collected lines of a 3 or more lines item into a single line item.
-                    receiptLines.add(processItemLines(itemLines));
-                    i = i + 4;
-                }
-            }
-        }
-        return processReceiptLines(receiptLines);
-    }
-
-    /**
-     * Collects the segmented item name in multiple lines into a single line and apeends the unit price, quantity and
-     * price details at the end, creating a single line item.
-     *
-     * @param itemLines Lines to be processed.
-     * @return Single line receipt item.
-     */
-    private String processItemLines(List<String> itemLines) {
-        String numerics = "";
-        StringBuilder builder = new StringBuilder();
-        for (String itemLine : itemLines) {
-            if (endsWithFloat(itemLine)) {
-                ReceiptLineItem item = parseLineItem(itemLine);
-                builder.append(item.itemDescription);
-                numerics = item.unitPrice + " " + item.quantity + " " + item.price;
-            } else {
-                builder.append(itemLine);
-            }
-            builder.append(" ");
-        }
-        builder.append(numerics);
-        return builder.toString().trim();
-    }
-
-    /**
-     * Returns true if the String ends with a period character followed by 2 integers.
-     *
-     * @param line The receipt line.
-     * @return true if ends with float. false otherwise.
-     */
-    private boolean endsWithFloat(String line) {
-        char lastChar = line.charAt(line.length() - 1);
-        char lastBeforeChar = line.charAt(line.length() - 2);
-        char periodCharacter = line.charAt(line.length() - 3);
-
-        if (lastChar >= '0' && lastChar <= '9' && lastBeforeChar >= '0' && lastBeforeChar <= '9'
-                && periodCharacter == '.') {
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Checks if the String consists only integers ignoring space and period character.
-     *
-     * @param text The receipt line.
-     * @return true if all are integers. false otherwise.
-     */
-    private boolean isOnlyIntegers(String text) {
-        char[] characters = text.toCharArray();
-        for (char c : characters) {
-            if (c == '.' || c == ' ') {
-                continue;
-            }
-
-            if (c < '0' || c > '9') {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /**
-     * Parses a single line receipt item String into ReceiptLineItem
-     *
-     * @param lineItem Single line receipt item String.
-     * @return Processed ReceiptLineItem object.
-     */
-    private ReceiptLineItem parseLineItem(String lineItem) {
-        // Split by space character.
-        String[] columns = lineItem.split(" ");
-        ReceiptLineItem receiptLineItem = new ReceiptLineItem();
-        // The last three entries will be unit price, quantity and price.
-        receiptLineItem.price = Float.parseFloat(columns[columns.length - 1]);
-        receiptLineItem.quantity = Float.parseFloat(columns[columns.length - 2]);
-        receiptLineItem.unitPrice = Float.parseFloat(columns[columns.length - 3]);
-
-        // The rest of the bits will form the item name, so piece them all together before
-        // putting them in ReceiptLineItem.
-        receiptLineItem.itemDescription = "";
-        for (int i = 0; i < columns.length - 3; i++) {
-            receiptLineItem.itemDescription = receiptLineItem.itemDescription + " ";
-            receiptLineItem.itemDescription = receiptLineItem.itemDescription + columns[i];
-        }
-        receiptLineItem.itemDescription = receiptLineItem.itemDescription.trim();
-        return receiptLineItem;
-    }
-
-    /**
-     * Process a list of single line receipt item Strings.
-     *
-     * @param receiptLines List of single line receipt item Strings.
-     * @return List of ReceiptLineItems
-     */
-    private List<ReceiptLineItem> processReceiptLines(List<String> receiptLines) {
-        List<ReceiptLineItem> receiptLineItems = new ArrayList<>();
-        for (String receiptLine : receiptLines) {
-            receiptLineItems.add(parseLineItem(receiptLine));
-        }
-
-        return receiptLineItems;
-    }
-
-    /**
-     * Discards empty lines in a set of lines.
-     *
-     * @param lines A set of lines
-     * @return List of lines containing no empty lines.
-     */
-    private List<String> pruneLines(String[] lines) {
-        List<String> prunedLines = new ArrayList<>();
-        for (String line : lines) {
-            if (!line.startsWith(" ")) {
-                prunedLines.add(line);
-            }
-        }
-        return prunedLines;
-    }
-
-    /**
      * Parses the text read from the receipt pdf, writes csv and creates receipt db entry.
      *
      * @param parsedText String containing the text of the entire receipt pdf.
@@ -478,7 +317,6 @@ public class AddReceipt extends AppCompatActivity implements View.OnClickListene
         String headerText;
 
         // If contains Woolworths -> do Woolworths or do Coles - first case will handle Coles receipts, other returns Woolworths
-
         if (!parsedText.contains("Woolworths")) {
             ColesReceipt colesReceipt = new ColesReceipt(parsedText);
             receiptLineItems = colesReceipt.Parse();
@@ -489,12 +327,6 @@ public class AddReceipt extends AppCompatActivity implements View.OnClickListene
             WoolworthsReceipt woolwothsReceipt = new WoolworthsReceipt(parsedText);
             receiptLineItems = woolwothsReceipt.Parse();
             headerText = "Item Description: Unit Price: Quantity: Price";
-
-//            headerText = parsedText.substring(0, parsedText.lastIndexOf("Price:") + 6);
-//            headerText = headerText.substring(headerText.lastIndexOf("\n") + 1);
-//            String tableText = parsedText.substring(parsedText.lastIndexOf("Price:") + 6, parsedText.indexOf("Subtotal")).trim();
-//            Log.i("info", headerText);
-//            receiptLineItems = parseReceipt(tableText);
         }
 
         if (receiptLineItems == null || receiptLineItems.size() == 0) {
