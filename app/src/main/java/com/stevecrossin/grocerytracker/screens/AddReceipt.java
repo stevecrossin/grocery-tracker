@@ -30,6 +30,7 @@ import com.stevecrossin.grocerytracker.models.ReceiptLineItem;
 import com.stevecrossin.grocerytracker.models.UserReceipt;
 import com.stevecrossin.grocerytracker.models.WoolworthsReceipt;
 import com.stevecrossin.grocerytracker.utils.Constants;
+import com.stevecrossin.grocerytracker.utils.Reminders;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -101,26 +102,24 @@ public class AddReceipt extends AppCompatActivity implements View.OnClickListene
     private static void writeToCSV(String[] columnHeader, List<ReceiptLineItem> receiptLineItems, String fileName) {
         try {
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fileName), "UTF-8"));
-            StringBuffer headerLine = new StringBuffer();
-            headerLine.append(columnHeader[0]);
-            headerLine.append(CSV_COLUMN_SEPARATOR);
-            headerLine.append(columnHeader[1]);
-            headerLine.append(CSV_COLUMN_SEPARATOR);
-            headerLine.append(columnHeader[2]);
-            headerLine.append(CSV_COLUMN_SEPARATOR);
-            headerLine.append(columnHeader[3]);
-            bw.write(headerLine.toString());
+            String headerLine = columnHeader[0] +
+                    CSV_COLUMN_SEPARATOR +
+                    columnHeader[1] +
+                    CSV_COLUMN_SEPARATOR +
+                    columnHeader[2] +
+                    CSV_COLUMN_SEPARATOR +
+                    columnHeader[3];
+            bw.write(headerLine);
             bw.newLine();
             for (ReceiptLineItem receiptLineItem : receiptLineItems) {
-                StringBuffer oneLine = new StringBuffer();
-                oneLine.append(receiptLineItem.itemDescription);
-                oneLine.append(CSV_COLUMN_SEPARATOR);
-                oneLine.append(receiptLineItem.unitPrice);
-                oneLine.append(CSV_COLUMN_SEPARATOR);
-                oneLine.append(receiptLineItem.quantity);
-                oneLine.append(CSV_COLUMN_SEPARATOR);
-                oneLine.append(receiptLineItem.price);
-                bw.write(oneLine.toString());
+                String oneLine = receiptLineItem.itemDescription +
+                        CSV_COLUMN_SEPARATOR +
+                        receiptLineItem.unitPrice +
+                        CSV_COLUMN_SEPARATOR +
+                        receiptLineItem.quantity +
+                        CSV_COLUMN_SEPARATOR +
+                        receiptLineItem.price;
+                bw.write(oneLine);
                 bw.newLine();
             }
             bw.flush();
@@ -188,18 +187,16 @@ public class AddReceipt extends AppCompatActivity implements View.OnClickListene
      */
 
     private void setInProgress() {
-        // Indicate progress to the user in foreground thread.
         mHandler.post(new Runnable() {
             @Override
             public void run() {
                 progressBar.setVisibility(View.VISIBLE);
-                textViewStatus.setText("Converting pdf to csv...");
+                textViewStatus.setText(R.string.converting);
             }
         });
     }
 
     private void setSuccess() {
-        // Indicate success to the user in foreground thread.
         mHandler.post(new Runnable() {
             @Override
             public void run() {
@@ -208,10 +205,10 @@ public class AddReceipt extends AppCompatActivity implements View.OnClickListene
                 progressBar.setVisibility(View.GONE);
             }
         });
+        Reminders.getInstance().schedule(getApplicationContext());
     }
 
     private void setFailure() {
-        // Indicate failure to the user in foreground thread.
         mHandler.post(new Runnable() {
             @Override
             public void run() {
@@ -310,7 +307,6 @@ public class AddReceipt extends AppCompatActivity implements View.OnClickListene
      *
      * @param parsedText String containing the text of the entire receipt pdf.
      * @param fileAlias  The name of the receipt specified by the user when adding a receipt.
-     * @return
      */
     private boolean parseReceiptPdf(String parsedText, String fileAlias) {
         List<ReceiptLineItem> receiptLineItems;
