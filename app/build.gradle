@@ -9,7 +9,7 @@ android {
         applicationId "com.stevecrossin.grocerytracker"
         minSdkVersion 16
         targetSdkVersion 29
-        versionCode 4
+        versionCode 5
         versionName "0.12"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -40,6 +40,8 @@ dependencies {
     implementation 'com.google.android.material:material:1.1.0'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'androidx.cardview:cardview:1.0.0'
+    implementation "androidx.work:work-runtime:2.3.4"
+    implementation 'com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'

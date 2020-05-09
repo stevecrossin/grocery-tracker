@@ -29,6 +29,7 @@ import com.stevecrossin.grocerytracker.models.ColesReceipt;
 import com.stevecrossin.grocerytracker.models.ReceiptLineItem;
 import com.stevecrossin.grocerytracker.models.UserReceipt;
 import com.stevecrossin.grocerytracker.utils.Constants;
+import com.stevecrossin.grocerytracker.utils.Reminders;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -100,26 +101,24 @@ public class AddReceipt extends AppCompatActivity implements View.OnClickListene
     private static void writeToCSV(String[] columnHeader, List<ReceiptLineItem> receiptLineItems, String fileName) {
         try {
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fileName), "UTF-8"));
-            StringBuffer headerLine = new StringBuffer();
-            headerLine.append(columnHeader[0]);
-            headerLine.append(CSV_COLUMN_SEPARATOR);
-            headerLine.append(columnHeader[1]);
-            headerLine.append(CSV_COLUMN_SEPARATOR);
-            headerLine.append(columnHeader[2]);
-            headerLine.append(CSV_COLUMN_SEPARATOR);
-            headerLine.append(columnHeader[3]);
-            bw.write(headerLine.toString());
+            String headerLine = columnHeader[0] +
+                    CSV_COLUMN_SEPARATOR +
+                    columnHeader[1] +
+                    CSV_COLUMN_SEPARATOR +
+                    columnHeader[2] +
+                    CSV_COLUMN_SEPARATOR +
+                    columnHeader[3];
+            bw.write(headerLine);
             bw.newLine();
             for (ReceiptLineItem receiptLineItem : receiptLineItems) {
-                StringBuffer oneLine = new StringBuffer();
-                oneLine.append(receiptLineItem.itemDescription);
-                oneLine.append(CSV_COLUMN_SEPARATOR);
-                oneLine.append(receiptLineItem.unitPrice);
-                oneLine.append(CSV_COLUMN_SEPARATOR);
-                oneLine.append(receiptLineItem.quantity);
-                oneLine.append(CSV_COLUMN_SEPARATOR);
-                oneLine.append(receiptLineItem.price);
-                bw.write(oneLine.toString());
+                String oneLine = receiptLineItem.itemDescription +
+                        CSV_COLUMN_SEPARATOR +
+                        receiptLineItem.unitPrice +
+                        CSV_COLUMN_SEPARATOR +
+                        receiptLineItem.quantity +
+                        CSV_COLUMN_SEPARATOR +
+                        receiptLineItem.price;
+                bw.write(oneLine);
                 bw.newLine();
             }
             bw.flush();
@@ -176,56 +175,27 @@ public class AddReceipt extends AppCompatActivity implements View.OnClickListene
     }
 
     /***
-     NOTE! This code is depreceated.
-     * Method that performs the uploading of the file to Firebase.
-     * The progress bar that says "Uploading" will appear, and it wil perform the operation to put the file into Firebase, and append with the PDF extension.
-     * After the upload is successfully completed, the status textview will be updated with a success message, the filename box will be cleared, and the uploading bar will disappear.
-     * <p>
-     * Similar operations will happen if file upload fails, but the message to the end user will differ.
-     *//*
-    private void uploadFile(Uri data) {
-        progressBar.setVisibility(View.VISIBLE);
-        StorageReference sRef = mStorageReference.child(Constants.STORAGE_PATH_UPLOADS + System.currentTimeMillis() + ".pdf");
-        sRef.putFile(data)
-                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        Task<Uri> uri = taskSnapshot.getStorage().getDownloadUrl();
-                        while (!uri.isComplete()) ;
-                        Uri url = uri.getResult();
-                        textViewStatus.setText(R.string.msgUploadSuccess);
-                        editTextFilename.setText("");
-                        progressBar.setVisibility(View.GONE);
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception exception) {
-                        textViewStatus.setText(R.string.msgUploadFailed);
-                        editTextFilename.setText("");
-                        progressBar.setVisibility(View.GONE);
-                    }
-                })
-                .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onProgress(@NonNull UploadTask.TaskSnapshot taskSnapshot) {
-                        textViewStatus.setText(MessageFormat.format("Uploading...", (int) getProgress(taskSnapshot)));
-                    }
-                });
-    }*/
+     * These three methods, setInProgress, setSuccess and setFailure are called post the onActivityResult above.
+     * While the inProgress is occurring, all the background processes are working that will be converting the PDF to CSV, extracing receipt items and inserting into the database. This is usually a quick operation.
+     * If this process is successful and error free, setSuccess will be shown which changes the content of the TextView accordingly.
+     * setFailure will appear if the conversion process is unsuccessful.
+     *
+     * Note for future developers - in a tiny minority of cases (less than 1%) - if the end user has forwarded their email receipt repeatedly across different email clients and retained all email bodies,
+     * and then only if due to a single receipt line item being split across multiple pages without any price/qty/any other integers before the next receipt item appearing, it can cause an error in parsing in the parseReceipt method,
+     * causing an IndexOutOfBounds exception in the method. This will be documented in the technical documentation.
+     */
+
     private void setInProgress() {
-        // Indicate progress to the user in foreground thread.
         mHandler.post(new Runnable() {
             @Override
             public void run() {
                 progressBar.setVisibility(View.VISIBLE);
-                textViewStatus.setText("Converting pdf to csv...");
+                textViewStatus.setText(R.string.converting);
             }
         });
     }
 
     private void setSuccess() {
-        // Indicate success to the user in foreground thread.
         mHandler.post(new Runnable() {
             @Override
             public void run() {
@@ -234,10 +204,10 @@ public class AddReceipt extends AppCompatActivity implements View.OnClickListene
                 progressBar.setVisibility(View.GONE);
             }
         });
+        Reminders.getInstance().schedule(getApplicationContext());
     }
 
     private void setFailure() {
-        // Indicate failure to the user in foreground thread.
         mHandler.post(new Runnable() {
             @Override
             public void run() {
@@ -312,7 +282,7 @@ public class AddReceipt extends AppCompatActivity implements View.OnClickListene
      *
      * @param pdfFilePath Path to the copy of pdf file in local storage.
      * @param fileAlias   The name of the receipt specified by the user when adding a receipt.
-     * @return
+     * @return result - the parsedText of all the receiptText in a string format, as well as the alias of the file.
      */
     private boolean parseAndUploadPDF(final String pdfFilePath, final String fileAlias) {
         try {
@@ -321,7 +291,7 @@ public class AddReceipt extends AppCompatActivity implements View.OnClickListene
             int n = reader.getNumberOfPages();
             // Read all pages in the receipt pdf and collect them into a single string.
             for (int i = 0; i < n; i++) {
-                parsedText = parsedText + PdfTextExtractor.getTextFromPage(reader, i + 1).trim() + "\n"; //Extracting the content from the different pages
+                parsedText = parsedText + PdfTextExtractor.getTextFromPage(reader, i + 1).replace(" \n", "\n").trim() + "\n"; //Extracting the content from the different pages
             }
             boolean result = parseReceiptPdf(parsedText, fileAlias);
             reader.close();
@@ -335,7 +305,7 @@ public class AddReceipt extends AppCompatActivity implements View.OnClickListene
      * Parses items in a receipt.
      *
      * @param receipt String containing the receipt items.
-     * @return
+     * @return receiptLineItems - all the items that were parsed and collated together from the method examining the prunedLines.
      */
     private List<ReceiptLineItem> parseReceipt(String receipt) {
         String[] lines = receipt.split("\n");
@@ -363,21 +333,13 @@ public class AddReceipt extends AppCompatActivity implements View.OnClickListene
                     itemLines.add(prunedLines.get(i));
                     itemLines.add(prunedLines.get(i + 1));
                     itemLines.add(prunedLines.get(i + 2));
-                    /*int j = i;
-                    while (j < prunedLines.size()) {
-                        itemLines.add(prunedLines.get(j).trim());
-                        if (!prunedLines.get(j).endsWith(" ")) {
-                            break;
-                        }
-                        j++;
-                    }*/
-                    // Then we process the collected lines of a 3 or more lines item into a single line item.
+                    itemLines.add(prunedLines.get(i + 3));
+                    // Process the collected lines of a 3 or more lines item into a single line item.
                     receiptLines.add(processItemLines(itemLines));
-                    i = i + 3;
+                    i = i + 4;
                 }
             }
         }
-
         return processReceiptLines(receiptLines);
     }
 
@@ -416,11 +378,8 @@ public class AddReceipt extends AppCompatActivity implements View.OnClickListene
         char lastBeforeChar = line.charAt(line.length() - 2);
         char periodCharacter = line.charAt(line.length() - 3);
 
-        if (lastChar >= '0' && lastChar <= '9' && lastBeforeChar >= '0' && lastBeforeChar <= '9'
-                && periodCharacter == '.') {
-            return true;
-        }
-        return false;
+        return lastChar >= '0' && lastChar <= '9' && lastBeforeChar >= '0' && lastBeforeChar <= '9'
+                && periodCharacter == '.';
     }
 
     /**
@@ -554,8 +513,7 @@ public class AddReceipt extends AppCompatActivity implements View.OnClickListene
     private void writeCSVFileToFirebase(Receipt savedReceipt, String[] columnHeader, List<ReceiptLineItem> receiptLineItems) {
         UserReceipt userReceipt = new UserReceipt();
         AppDataRepo dataRepo = new AppDataRepo(this);
-        User currentUser = dataRepo.getSignedUser();
-        //userReceipt.user = new User(currentUser.getEmail()); //depreceated, as we don't need user data here anymore.
+        dataRepo.getSignedUser();
         savedReceipt.setReceiptContents(composeLineItemsToCSVString(columnHeader, receiptLineItems));
         userReceipt.receipt = new Receipt(savedReceipt);
         String id = databaseReference.push().getKey();

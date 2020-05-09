@@ -40,4 +40,10 @@ public interface UserDao {
     @Query("SELECT * from user WHERE email=:email")
     User getUser(String email);
 
+    /**
+     * Selects users from database where userId entered matches one in db
+     */
+    @Query("SELECT * from user WHERE userID=:userId")
+    User getUser(int userId);
+
 }
