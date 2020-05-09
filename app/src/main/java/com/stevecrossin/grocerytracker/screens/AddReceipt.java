@@ -28,6 +28,7 @@ import com.stevecrossin.grocerytracker.entities.User;
 import com.stevecrossin.grocerytracker.models.ColesReceipt;
 import com.stevecrossin.grocerytracker.models.ReceiptLineItem;
 import com.stevecrossin.grocerytracker.models.UserReceipt;
+import com.stevecrossin.grocerytracker.models.WoolworthsReceipt;
 import com.stevecrossin.grocerytracker.utils.Constants;
 
 import java.io.BufferedWriter;
@@ -485,11 +486,15 @@ public class AddReceipt extends AppCompatActivity implements View.OnClickListene
         }
         //Do Woolworths
         else {
-            headerText = parsedText.substring(0, parsedText.lastIndexOf("Price:") + 6);
-            headerText = headerText.substring(headerText.lastIndexOf("\n") + 1);
-            String tableText = parsedText.substring(parsedText.lastIndexOf("Price:") + 6, parsedText.indexOf("Subtotal")).trim();
-            Log.i("info", headerText);
-            receiptLineItems = parseReceipt(tableText);
+            WoolworthsReceipt woolwothsReceipt = new WoolworthsReceipt(parsedText);
+            receiptLineItems = woolwothsReceipt.Parse();
+            headerText = "Item Description: Unit Price: Quantity: Price";
+
+//            headerText = parsedText.substring(0, parsedText.lastIndexOf("Price:") + 6);
+//            headerText = headerText.substring(headerText.lastIndexOf("\n") + 1);
+//            String tableText = parsedText.substring(parsedText.lastIndexOf("Price:") + 6, parsedText.indexOf("Subtotal")).trim();
+//            Log.i("info", headerText);
+//            receiptLineItems = parseReceipt(tableText);
         }
 
         if (receiptLineItems == null || receiptLineItems.size() == 0) {
