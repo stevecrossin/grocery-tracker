@@ -77,6 +77,21 @@
         android:onClick="receipts"
         android:text="@string/receipts"
         app:layout_constraintTop_toBottomOf="@id/AboutBtn"
+        app:layout_constraintBottom_toTopOf="@id/reminders_debug"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/reminders_debug"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="@color/secondaryColor"
+        android:onClick="remindersDebug"
+        android:text="@string/reminders_debug"
+        app:layout_constraintTop_toBottomOf="@id/receipts"
         app:layout_constraintBottom_toTopOf="@id/logout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -92,7 +107,7 @@
         android:onClick="logout"
         android:background="@color/secondaryColor"
         android:text="@string/logout"
-        app:layout_constraintTop_toBottomOf="@id/receipts"
+        app:layout_constraintTop_toBottomOf="@id/reminders_debug"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/feedback" />

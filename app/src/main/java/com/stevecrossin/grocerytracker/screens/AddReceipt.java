@@ -29,6 +29,7 @@ import com.stevecrossin.grocerytracker.models.ColesReceipt;
 import com.stevecrossin.grocerytracker.models.ReceiptLineItem;
 import com.stevecrossin.grocerytracker.models.UserReceipt;
 import com.stevecrossin.grocerytracker.utils.Constants;
+import com.stevecrossin.grocerytracker.utils.Reminders;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -100,26 +101,24 @@ public class AddReceipt extends AppCompatActivity implements View.OnClickListene
     private static void writeToCSV(String[] columnHeader, List<ReceiptLineItem> receiptLineItems, String fileName) {
         try {
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fileName), "UTF-8"));
-            StringBuffer headerLine = new StringBuffer();
-            headerLine.append(columnHeader[0]);
-            headerLine.append(CSV_COLUMN_SEPARATOR);
-            headerLine.append(columnHeader[1]);
-            headerLine.append(CSV_COLUMN_SEPARATOR);
-            headerLine.append(columnHeader[2]);
-            headerLine.append(CSV_COLUMN_SEPARATOR);
-            headerLine.append(columnHeader[3]);
-            bw.write(headerLine.toString());
+            String headerLine = columnHeader[0] +
+                    CSV_COLUMN_SEPARATOR +
+                    columnHeader[1] +
+                    CSV_COLUMN_SEPARATOR +
+                    columnHeader[2] +
+                    CSV_COLUMN_SEPARATOR +
+                    columnHeader[3];
+            bw.write(headerLine);
             bw.newLine();
             for (ReceiptLineItem receiptLineItem : receiptLineItems) {
-                StringBuffer oneLine = new StringBuffer();
-                oneLine.append(receiptLineItem.itemDescription);
-                oneLine.append(CSV_COLUMN_SEPARATOR);
-                oneLine.append(receiptLineItem.unitPrice);
-                oneLine.append(CSV_COLUMN_SEPARATOR);
-                oneLine.append(receiptLineItem.quantity);
-                oneLine.append(CSV_COLUMN_SEPARATOR);
-                oneLine.append(receiptLineItem.price);
-                bw.write(oneLine.toString());
+                String oneLine = receiptLineItem.itemDescription +
+                        CSV_COLUMN_SEPARATOR +
+                        receiptLineItem.unitPrice +
+                        CSV_COLUMN_SEPARATOR +
+                        receiptLineItem.quantity +
+                        CSV_COLUMN_SEPARATOR +
+                        receiptLineItem.price;
+                bw.write(oneLine);
                 bw.newLine();
             }
             bw.flush();
@@ -187,18 +186,16 @@ public class AddReceipt extends AppCompatActivity implements View.OnClickListene
      */
 
     private void setInProgress() {
-        // Indicate progress to the user in foreground thread.
         mHandler.post(new Runnable() {
             @Override
             public void run() {
                 progressBar.setVisibility(View.VISIBLE);
-                textViewStatus.setText("Converting pdf to csv...");
+                textViewStatus.setText(R.string.converting);
             }
         });
     }
 
     private void setSuccess() {
-        // Indicate success to the user in foreground thread.
         mHandler.post(new Runnable() {
             @Override
             public void run() {
@@ -207,10 +204,10 @@ public class AddReceipt extends AppCompatActivity implements View.OnClickListene
                 progressBar.setVisibility(View.GONE);
             }
         });
+        Reminders.getInstance().schedule(getApplicationContext());
     }
 
     private void setFailure() {
-        // Indicate failure to the user in foreground thread.
         mHandler.post(new Runnable() {
             @Override
             public void run() {
@@ -308,7 +305,7 @@ public class AddReceipt extends AppCompatActivity implements View.OnClickListene
      * Parses items in a receipt.
      *
      * @param receipt String containing the receipt items.
-     * @return
+     * @return receiptLineItems - all the items that were parsed and collated together from the method examining the prunedLines.
      */
     private List<ReceiptLineItem> parseReceipt(String receipt) {
         String[] lines = receipt.split("\n");
@@ -337,7 +334,7 @@ public class AddReceipt extends AppCompatActivity implements View.OnClickListene
                     itemLines.add(prunedLines.get(i + 1));
                     itemLines.add(prunedLines.get(i + 2));
                     itemLines.add(prunedLines.get(i + 3));
-                    // Then we process the collected lines of a 3 or more lines item into a single line item.
+                    // Process the collected lines of a 3 or more lines item into a single line item.
                     receiptLines.add(processItemLines(itemLines));
                     i = i + 4;
                 }
@@ -381,11 +378,8 @@ public class AddReceipt extends AppCompatActivity implements View.OnClickListene
         char lastBeforeChar = line.charAt(line.length() - 2);
         char periodCharacter = line.charAt(line.length() - 3);
 
-        if (lastChar >= '0' && lastChar <= '9' && lastBeforeChar >= '0' && lastBeforeChar <= '9'
-                && periodCharacter == '.') {
-            return true;
-        }
-        return false;
+        return lastChar >= '0' && lastChar <= '9' && lastBeforeChar >= '0' && lastBeforeChar <= '9'
+                && periodCharacter == '.';
     }
 
     /**

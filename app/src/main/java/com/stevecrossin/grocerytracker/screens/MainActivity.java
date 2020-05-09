@@ -1,17 +1,26 @@
 package com.stevecrossin.grocerytracker.screens;
 
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.inappmessaging.FirebaseInAppMessaging;
+import com.stevecrossin.grocerytracker.BuildConfig;
 import com.stevecrossin.grocerytracker.R;
 import com.stevecrossin.grocerytracker.database.AppDataRepo;
 import com.stevecrossin.grocerytracker.entities.User;
+import com.stevecrossin.grocerytracker.utils.Reminders;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -21,6 +30,8 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Sets the content view to the activity_main layout.
      * This will also initialise any UI elements, and control core behaviour of the main activity.
+     * Reminders.getInstance - this is for newly signed up users, and for users
+     * using a previous version of the app - we need to schedule the reminder for them.
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +41,14 @@ public class MainActivity extends AppCompatActivity {
         mInAppMessaging = FirebaseInAppMessaging.getInstance();
         mInAppMessaging.setAutomaticDataCollectionEnabled(true);
         mInAppMessaging.setMessagesSuppressed(false);
+        Button remindersDebugButton = findViewById(R.id.reminders_debug);
+        if (!BuildConfig.DEBUG) {
+            remindersDebugButton.setVisibility(View.GONE);
+        }
+
+        // For newly signed up users and existing users from previous version of the app, we need
+        // to schedule reminder.
+        Reminders.getInstance().scheduleIfNecessary(getApplicationContext());
     }
 
     /**
@@ -38,11 +57,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void GotoReceipts(View view) {
         mFirebaseAnalytics.logEvent("engagement_party", new Bundle());
-/*
-        Snackbar.make(view, "'engagement_party' event triggered!", Snackbar.LENGTH_LONG)
-                .setAction("Action", null)
-                .show();
-*/
         Intent intent = new Intent(this, AddReceipt.class);
         startActivity(intent);
     }
@@ -85,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
                 AppDataRepo repo = new AppDataRepo(MainActivity.this);
                 User user = repo.getSignedUser();
 
-                if (user != null && repo !=null) {
+                if (user != null) {
                     repo.updateLoginStatus(user.getUserID(), false);
                 }
                 return null;
@@ -105,6 +119,37 @@ public class MainActivity extends AppCompatActivity {
     @SuppressLint("StaticFieldLeak")
     public void receipts(View view) {
         startActivity(new Intent(this, Receipts.class));
+    }
+
+    public void remindersDebug(View view) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Reminders Debug");
+
+        final View remindersDebugLayout = getLayoutInflater().inflate(R.layout.reminders_debug_dialog, null);
+        builder.setView(remindersDebugLayout);
+
+        builder.setPositiveButton("Set", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                SharedPreferences preferences = MainActivity.this.getSharedPreferences("reminders_debug", MODE_PRIVATE);
+                EditText editText = remindersDebugLayout.findViewById(R.id.editTextRemindersDebug);
+                preferences.edit().putString("reminder_minutes", editText.getText().toString()).apply();
+            }
+        });
+
+        builder.setNegativeButton("Clear", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                SharedPreferences preferences = MainActivity.this.getSharedPreferences("reminders_debug", MODE_PRIVATE);
+                preferences.edit().remove("reminder_minutes").apply();
+                EditText editText = remindersDebugLayout.findViewById(R.id.editTextRemindersDebug);
+                editText.setText("");
+            }
+        });
+
+        builder.create().show();
+        EditText editText = remindersDebugLayout.findViewById(R.id.editTextRemindersDebug);
+        editText.setText(getSharedPreferences("reminders_debug", MODE_PRIVATE).getString("reminder_minutes", ""));
     }
 
     public void sendFeedbackMail(View view) {

@@ -76,4 +76,14 @@
         <item>Fortnightly</item>
         <item>Monthly or less</item>
     </string-array>
+    <string name="week">week</string>
+    <string name="fortnight">fortnight</string>
+    <string name="month">month</string>
+    <string name="channel_name">Grocery Tracker Reminders</string>
+    <string name="channel_description">Reminds you to add your receipts at regular intervals.</string>
+    <string name="reminder">Reminder</string>
+    <string name="reminder_text">You\'ve not added a grocery receipt in a  </string>
+    <string name="reminders_debug">Reminders Debug</string>
+    <string name="minutes">Minutes</string>
+    <string name="converting">Converting pdf to csv...</string>
 </resources>
