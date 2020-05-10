@@ -58,7 +58,7 @@ public class Signup extends AppCompatActivity {
         Bcancel = findViewById(R.id.Bcancel);
 
         adapter = ArrayAdapter.createFromResource(this, R.array.gender, android.R.layout.simple_spinner_dropdown_item);
-
+        passwordLayoutDetail = findViewById(R.id.passwordLayoutDetail);
 
         /*
          * Enables the gender and shop number boxes to be focusable and request focus
@@ -100,6 +100,23 @@ public class Signup extends AppCompatActivity {
             }
         });
 
+        etPassword.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                passwordLayoutDetail.setEndIconVisible(true);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+
+        });
 
     }
 
@@ -136,6 +153,7 @@ public class Signup extends AppCompatActivity {
     private void ValidatePassword() {
         textValidator = new TextValidator(etPassword);
         textValidator.validatePassword(etPassword.getText().toString());
+
     }
 
     private void ValidatePostcode() {
@@ -212,7 +230,15 @@ public class Signup extends AppCompatActivity {
         etPassword.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) ValidatePassword();
+                if (!hasFocus) {
+                    ValidatePassword();
+                    if (etPassword.getError()!=null)
+                    {
+                        String error = etPassword.getError().toString();
+                        passwordLayoutDetail.setEndIconVisible(false);
+                        etPassword.setError(error);
+                    }
+                }
             }
         });
 
@@ -289,25 +315,7 @@ public class Signup extends AppCompatActivity {
         InitializeView();
         databaseReference = FirebaseDatabase.getInstance().getReference("Users");
         ValidateOnTheFly();
-        if (etPassword != null) {
-            etPassword.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-                }
-
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    //passwordLayoutDetail.setEndIconVisible(true);
-                }
-
-                @Override
-                public void afterTextChanged(Editable s) {
-
-                }
-
-            });
-        }
     }
 
     /**

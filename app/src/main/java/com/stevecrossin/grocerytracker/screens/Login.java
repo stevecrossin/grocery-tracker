@@ -91,14 +91,14 @@ public class Login extends AppCompatActivity {
             }
         });
 
-        passwordView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-                    loginPasswordDetail.setEndIconVisible(true);
-                }
-            }
-        });
+//        passwordView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+//            @Override
+//            public void onFocusChange(View v, boolean hasFocus) {
+//                if (hasFocus) {
+//                    loginPasswordDetail.setEndIconVisible(true);
+//                }
+//            }
+//        });
     }
 
     @SuppressLint("StaticFieldLeak")
@@ -151,11 +151,7 @@ public class Login extends AppCompatActivity {
     private void ValidatePassword() {
         textValidator = new TextValidator(passwordView);
         textValidator.validatePassword(passwordView.getText().toString());
-        if (passwordView.getError()!=null)
-        {
-            loginPasswordDetail.setEndIconVisible(false);
-            passwordView.requestFocus();
-        }
+
     }
 
     private boolean isFormValid() {
@@ -281,8 +277,8 @@ public class Login extends AppCompatActivity {
                 loginButton.setText(getString(R.string.sign_in_text));
             }
             else {
-                passwordView.setError("Password Incorrect");
-                loginPasswordDetail.setEndIconVisible(false);
+                passwordView.setError("Password Incorrect",null);
+//                loginPasswordDetail.setEndIconVisible(false);
                 passwordView.requestFocus();
                 loginButton.setText(getString(R.string.sign_in_text));
             }

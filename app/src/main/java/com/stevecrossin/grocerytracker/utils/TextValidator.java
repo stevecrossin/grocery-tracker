@@ -35,9 +35,7 @@ public class TextValidator {
     }
 
     public void validatePassword(String passwordText) {
-        textView.setError(InputValidator.isPasswordValid(passwordText));
-//        textInputLayout.setEndIconVisible(false);
-//        textView.requestFocus();
+        textView.setError(InputValidator.isPasswordValid(passwordText),null);
     }
 
     public void validateGender(String genderText) {
