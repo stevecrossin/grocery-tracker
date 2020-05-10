@@ -149,8 +149,13 @@ public class Login extends AppCompatActivity {
     }
 
     private void ValidatePassword() {
-        textValidator = new TextValidator(passwordView, loginPasswordDetail);
+        textValidator = new TextValidator(passwordView);
         textValidator.validatePassword(passwordView.getText().toString());
+        if (passwordView.getError()!=null)
+        {
+            loginPasswordDetail.setEndIconVisible(false);
+            passwordView.requestFocus();
+        }
     }
 
     private boolean isFormValid() {

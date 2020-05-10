@@ -7,16 +7,12 @@ import com.stevecrossin.grocerytracker.screens.Signup;
 
 public class TextValidator {
     private TextView textView;
-    private TextInputLayout textInputLayout;
 
     public TextValidator(TextView textView) {
         this.textView = textView;
     }
 
-    public TextValidator(TextView textView, TextInputLayout textLayout) {
-        this.textView = textView;
-        this.textInputLayout = textLayout;
-    }
+
 
     public void validateName(String nameText) {
         textView.setError(InputValidator.isNameValid(nameText));
@@ -40,8 +36,8 @@ public class TextValidator {
 
     public void validatePassword(String passwordText) {
         textView.setError(InputValidator.isPasswordValid(passwordText));
-        textInputLayout.setEndIconVisible(false);
-        textView.requestFocus();
+//        textInputLayout.setEndIconVisible(false);
+//        textView.requestFocus();
     }
 
     public void validateGender(String genderText) {
