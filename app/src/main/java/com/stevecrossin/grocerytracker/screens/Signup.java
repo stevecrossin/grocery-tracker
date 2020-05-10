@@ -1,9 +1,12 @@
 package com.stevecrossin.grocerytracker.screens;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -13,6 +16,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.stevecrossin.grocerytracker.R;
@@ -34,6 +38,7 @@ public class Signup extends AppCompatActivity {
     private int selectedShopNumber = 0;
     private TextValidator textValidator;
     private int selectedGenderPosition = 0;
+    public TextInputLayout passwordLayoutDetail;
 
     private void InitializeView() {
         etName = findViewById(R.id.etName);
@@ -75,6 +80,7 @@ public class Signup extends AppCompatActivity {
                     etPostcode.requestFocus();
                 }
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
@@ -283,6 +289,25 @@ public class Signup extends AppCompatActivity {
         InitializeView();
         databaseReference = FirebaseDatabase.getInstance().getReference("Users");
         ValidateOnTheFly();
+        if (etPassword != null) {
+            etPassword.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    //passwordLayoutDetail.setEndIconVisible(true);
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+
+                }
+
+            });
+        }
     }
 
     /**
