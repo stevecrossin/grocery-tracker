@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -100,23 +101,23 @@ public class Signup extends AppCompatActivity {
             }
         });
 
-        etPassword.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                passwordLayoutDetail.setEndIconVisible(true);
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-
-        });
+//        etPassword.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//                passwordLayoutDetail.setEndIconVisible(true);
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//
+//            }
+//
+//        });
 
     }
 
@@ -237,6 +238,14 @@ public class Signup extends AppCompatActivity {
                         String error = etPassword.getError().toString();
                         passwordLayoutDetail.setEndIconVisible(false);
                         etPassword.setError(error);
+                    }
+                }
+                else if (hasFocus)
+                {
+                    passwordLayoutDetail.setEndIconVisible(true);
+                    if (etPassword.getError()!=null) {
+                        String error = etPassword.getError().toString();
+                        etPassword.setError(error, null);
                     }
                 }
             }
