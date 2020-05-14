@@ -5,7 +5,7 @@ public class WoolworthsReceiptItem {
     public static final String SUBTOTAL_KEYWORD = "Subtotal:";
 
     /**
-     * Returns true if the String ends with a period character followed by 2 integers.
+     * Returns true if the String ends with float number
      */
     public static boolean endsWithFloat(String line) {
         return line.matches(".*[+-]?([0-9]*[.])?[0-9]+.$");
