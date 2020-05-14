@@ -249,7 +249,7 @@ public class Reminders {
     //
     private void remind(Context context, String shoppingFrequency) {
         createNotificationChannelIfNecessary(context);
-        String text = context.getString(R.string.reminder_text) + shoppingFrequency;
+        String text = context.getString(R.string.reminder_text) + " " + shoppingFrequency + (R.string.reminder_text_end);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
                 .setSmallIcon(R.drawable.globe)
                 .setContentTitle(context.getString(R.string.reminder))

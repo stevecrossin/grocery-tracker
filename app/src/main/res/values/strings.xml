@@ -88,4 +88,5 @@
     <string name="reminders_debug">Reminders Debug</string>
     <string name="minutes">Minutes</string>
     <string name="converting">Converting pdf to csv...</string>
+    <string name="reminder_text_end">. Please remember to upload your receipts as soon as possible.</string>
 </resources>
