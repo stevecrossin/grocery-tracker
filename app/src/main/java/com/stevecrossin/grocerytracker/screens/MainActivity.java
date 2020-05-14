@@ -154,7 +154,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void sendFeedbackMail(View view) {
         Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
-                "mailto", "stevecrossin@gmail.com", null));
+                "mailto", "globedeakin@gmail.com", null));
         intent.putExtra(Intent.EXTRA_SUBJECT, "Feedback on Grocery Tracker Application");
         intent.putExtra(Intent.EXTRA_TEXT, "What I would like to give feedback about:");
         startActivity(intent);
