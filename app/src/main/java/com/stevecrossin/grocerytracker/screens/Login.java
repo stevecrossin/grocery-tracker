@@ -8,7 +8,9 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Patterns;
 import android.view.KeyEvent;
 import android.view.View;
@@ -21,6 +23,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.stevecrossin.grocerytracker.R;
@@ -51,7 +54,7 @@ public class Login extends AppCompatActivity {
     private AppLoginState appLoginState = INVALID_PASS;
     private StorageReference mStorageRef;
     private TextValidator textValidator;
-
+    private TextInputLayout loginPasswordDetail;
 
     /**
      * Check if user already logged in, and hasn't logged out. Will perform DB query defined lower, to check DB for users that match the loggedIn = true, and if so, it will skip login/sign up and navigate directly to main home page.
@@ -75,6 +78,7 @@ public class Login extends AppCompatActivity {
         loginProg = findViewById(R.id.loginprog);
         usernameView = findViewById(R.id.enterUsername);
         passwordView = findViewById(R.id.enterPassword);
+        loginPasswordDetail = findViewById(R.id.loginPasswordDetail);
         loginButton = findViewById(R.id.loginButton);
         passwordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -86,6 +90,15 @@ public class Login extends AppCompatActivity {
                 return false;
             }
         });
+
+//        passwordView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+//            @Override
+//            public void onFocusChange(View v, boolean hasFocus) {
+//                if (hasFocus) {
+//                    loginPasswordDetail.setEndIconVisible(true);
+//                }
+//            }
+//        });
     }
 
     @SuppressLint("StaticFieldLeak")
@@ -138,6 +151,7 @@ public class Login extends AppCompatActivity {
     private void ValidatePassword() {
         textValidator = new TextValidator(passwordView);
         textValidator.validatePassword(passwordView.getText().toString());
+
     }
 
     private boolean isFormValid() {
@@ -162,9 +176,9 @@ public class Login extends AppCompatActivity {
 
         if (!isFormValid())
         {
-            if (usernameView.getError() !=null)
+            if (usernameView.getError() != null)
                 usernameView.requestFocus();
-            else if (passwordView.getError() !=null)
+            else if (passwordView.getError() != null) ;
                 passwordView.requestFocus();
         }
         else {
@@ -233,7 +247,6 @@ public class Login extends AppCompatActivity {
                 if (user == null) {
                     return INVALID_USER;
                 }
-
                 if (!user.getPassKey().equals(hashPass)) {
                     return INVALID_PASS;
                 }
@@ -264,7 +277,8 @@ public class Login extends AppCompatActivity {
                 loginButton.setText(getString(R.string.sign_in_text));
             }
             else {
-                passwordView.setError("Password Incorrect");
+                passwordView.setError("Password Incorrect",null);
+//                loginPasswordDetail.setEndIconVisible(false);
                 passwordView.requestFocus();
                 loginButton.setText(getString(R.string.sign_in_text));
             }

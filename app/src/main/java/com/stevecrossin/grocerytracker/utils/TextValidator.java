@@ -2,6 +2,9 @@ package com.stevecrossin.grocerytracker.utils;
 
 import android.widget.TextView;
 
+import com.google.android.material.textfield.TextInputLayout;
+import com.stevecrossin.grocerytracker.screens.Signup;
+
 public class TextValidator {
     private TextView textView;
 
@@ -9,12 +12,13 @@ public class TextValidator {
         this.textView = textView;
     }
 
+
+
     public void validateName(String nameText) {
         textView.setError(InputValidator.isNameValid(nameText));
     }
 
-    public void validateAge(String ageText)
-    {
+    public void validateAge(String ageText) {
         textView.setError(InputValidator.isAgeValid(ageText));
     }
 
@@ -31,7 +35,7 @@ public class TextValidator {
     }
 
     public void validatePassword(String passwordText) {
-        textView.setError(InputValidator.isPasswordValid(passwordText));
+        textView.setError(InputValidator.isPasswordValid(passwordText),null);
     }
 
     public void validateGender(String genderText) {

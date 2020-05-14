@@ -1,10 +1,14 @@
 package com.stevecrossin.grocerytracker.screens;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -13,6 +17,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.stevecrossin.grocerytracker.R;
@@ -34,6 +39,7 @@ public class Signup extends AppCompatActivity {
     private int selectedShopNumber = 0;
     private TextValidator textValidator;
     private int selectedGenderPosition = 0;
+    public TextInputLayout passwordLayoutDetail;
 
     private void InitializeView() {
         etName = findViewById(R.id.etName);
@@ -53,7 +59,7 @@ public class Signup extends AppCompatActivity {
         Bcancel = findViewById(R.id.Bcancel);
 
         adapter = ArrayAdapter.createFromResource(this, R.array.gender, android.R.layout.simple_spinner_dropdown_item);
-
+        passwordLayoutDetail = findViewById(R.id.passwordLayoutDetail);
 
         /*
          * Enables the gender and shop number boxes to be focusable and request focus
@@ -75,6 +81,7 @@ public class Signup extends AppCompatActivity {
                     etPostcode.requestFocus();
                 }
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
@@ -94,6 +101,23 @@ public class Signup extends AppCompatActivity {
             }
         });
 
+//        etPassword.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//                passwordLayoutDetail.setEndIconVisible(true);
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//
+//            }
+//
+//        });
 
     }
 
@@ -130,6 +154,7 @@ public class Signup extends AppCompatActivity {
     private void ValidatePassword() {
         textValidator = new TextValidator(etPassword);
         textValidator.validatePassword(etPassword.getText().toString());
+
     }
 
     private void ValidatePostcode() {
@@ -206,7 +231,23 @@ public class Signup extends AppCompatActivity {
         etPassword.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) ValidatePassword();
+                if (!hasFocus) {
+                    ValidatePassword();
+                    if (etPassword.getError()!=null)
+                    {
+                        String error = etPassword.getError().toString();
+                        passwordLayoutDetail.setEndIconVisible(false);
+                        etPassword.setError(error);
+                    }
+                }
+                else if (hasFocus)
+                {
+                    passwordLayoutDetail.setEndIconVisible(true);
+                    if (etPassword.getError()!=null) {
+                        String error = etPassword.getError().toString();
+                        etPassword.setError(error, null);
+                    }
+                }
             }
         });
 
@@ -283,6 +324,7 @@ public class Signup extends AppCompatActivity {
         InitializeView();
         databaseReference = FirebaseDatabase.getInstance().getReference("Users");
         ValidateOnTheFly();
+
     }
 
     /**
