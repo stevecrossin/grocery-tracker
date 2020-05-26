@@ -216,7 +216,7 @@
                         android:layout_width="match_parent"
                         android:imeOptions="actionNext"
                         android:hint="@string/lblWeight"
-                        android:inputType="numberDecimal" />
+                        android:inputType="number" />
                 </LinearLayout>
 
                 <LinearLayout
