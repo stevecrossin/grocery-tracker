@@ -17,7 +17,9 @@ public class InputValidator {
                     ")+";
     public static final String NAME = "^[\\p{L} .'-]+$";
     public static final String POSTCODE_NUMBER = "\\d{4}";
+    public static final String INTEGER_TYPE = "^([1-9]\\d*|0)$";
 
+    public static final String INTEGER_TYPE_ERROR = "Value must be a whole number ";
     public static final String EMPTY_NAME_ERROR = "Name is required";
     public static final String FORMAT_NAME_ERROR = "Name is not in correct form ";
     public static final String EMPTY_AGE_ERROR = "Age is required";
@@ -48,6 +50,10 @@ public class InputValidator {
 
     public static boolean IsMatchedEmailPattern(String field) {
         return Pattern.compile(EMAIL_ADDRESS).matcher(field).matches();
+    }
+
+    public static boolean IsMatchedIntegerPattern(String field){
+        return Pattern.compile(INTEGER_TYPE).matcher(field).matches();
     }
 
     public static boolean ISMatchedNamePattern(String field) {
@@ -86,6 +92,8 @@ public class InputValidator {
     public static String isAgeValid(String field) {
         if (!IsNotEmpty(field))
             return EMPTY_AGE_ERROR;
+        if (!IsMatchedIntegerPattern(field))
+            return INTEGER_TYPE_ERROR;
         if (!IsInRange(field, 18, 150))
             return RANGE_AGE_ERROR;
         return null;
@@ -94,6 +102,8 @@ public class InputValidator {
     public static String isWeightValid(String field) {
         if (!IsNotEmpty(field))
             return EMPTY_WEIGHT_ERROR;
+        if (!IsMatchedIntegerPattern(field))
+            return INTEGER_TYPE_ERROR;
         if (field.length()>3)
             return FORMAT_WEIGHT_ERROR;
         return null;
@@ -102,6 +112,8 @@ public class InputValidator {
     public static String isHeightValid(String field) {
         if (!IsNotEmpty(field))
             return EMPTY_HEIGHT_ERROR;
+        if (!IsMatchedIntegerPattern(field))
+            return INTEGER_TYPE_ERROR;
         if (field.length()>3)
             return FORMAT_HEIGHT_ERROR;
         return null;
@@ -122,6 +134,8 @@ public class InputValidator {
     public static String isFamilyNumberValid(String totalNumberText, String adultNumberText, String childrenNumberText) {
         if (!IsNotEmpty(totalNumberText))
             return EMPTY_FAMILY_NUMBER_ERROR;
+        if (!IsMatchedIntegerPattern(totalNumberText))
+            return INTEGER_TYPE_ERROR;
         if (IsNotEmpty(adultNumberText) && !IsInRange(adultNumberText,0,Integer.parseInt(totalNumberText)))
             return TOTAL_FAMILY_NUMBER_EXCEED_ERROR;
         if (IsNotEmpty(childrenNumberText) && !IsInRange(childrenNumberText,0,Integer.parseInt(totalNumberText)))
@@ -134,6 +148,8 @@ public class InputValidator {
     public static String isAdultNumberValid(String adultNumberText) {
         if (!IsNotEmpty(adultNumberText))
             return EMPTY_ADULT_NUMBER_ERROR;
+        if (!IsMatchedIntegerPattern(adultNumberText))
+            return INTEGER_TYPE_ERROR;
         if (Integer.parseInt(adultNumberText)<1)
             return ADULT_NUMBER_ERROR;
         return null;
@@ -142,6 +158,8 @@ public class InputValidator {
     public static String isChildNumberValid(String field) {
         if (!IsNotEmpty(field))
             return EMPTY_CHILD_NUMBER_ERROR;
+        if (!IsMatchedIntegerPattern(field))
+            return INTEGER_TYPE_ERROR;
         return null;
     }
 

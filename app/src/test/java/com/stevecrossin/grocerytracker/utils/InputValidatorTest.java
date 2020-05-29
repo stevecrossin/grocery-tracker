@@ -15,6 +15,12 @@ public class InputValidatorTest {
     }
 
     @Test
+    public void isAdultNumberValid_DecimalAdultNumber_NullErrorReturned() {
+        String actualError = InputValidator.isAdultNumberValid("1.5");
+        assertEquals(InputValidator.INTEGER_TYPE_ERROR,actualError);
+    }
+
+    @Test
     public void isAdultNumberValid_AdultNumberEmpty_AdultNumberRequiredErrorReturned() {
         String actualError = InputValidator.isAdultNumberValid("");
         assertEquals(InputValidator.EMPTY_ADULT_NUMBER_ERROR,actualError);
@@ -40,6 +46,12 @@ public class InputValidatorTest {
     public void isAgeValid_AgeLessThan18_AgeRangeErrorReturned() {
         String actualError = InputValidator.isAgeValid("16");
         assertEquals(InputValidator.RANGE_AGE_ERROR,actualError);
+    }
+
+    @Test
+    public void isAgeValid_DecimalAge_AgeRangeErrorReturned() {
+        String actualError = InputValidator.isAgeValid("25.5");
+        assertEquals(InputValidator.INTEGER_TYPE_ERROR,actualError);
     }
 
     @Test
@@ -80,6 +92,12 @@ public class InputValidatorTest {
     public void isChildNumberValid_ChildNumberEmpty_ChildNumberRequiredErrorReturned() {
         String actualError = InputValidator.isChildNumberValid("");
         assertEquals(InputValidator.EMPTY_CHILD_NUMBER_ERROR,actualError);
+    }
+
+    @Test
+    public void isChildNumberValid_DecimalChildNumber_ChildNumberRequiredErrorReturned() {
+        String actualError = InputValidator.isChildNumberValid("1.5");
+        assertEquals(InputValidator.INTEGER_TYPE_ERROR,actualError);
     }
 
     //endregion
@@ -140,6 +158,12 @@ public class InputValidatorTest {
     public void isHeightValid_HeightMoreThan3Numbers_HeightFormatErrorReturned() {
         String actualError = InputValidator.isHeightValid("1234567");
         assertEquals(InputValidator.FORMAT_HEIGHT_ERROR,actualError);
+    }
+
+    @Test
+    public void isHeightValid_DecimalHeight_HeightFormatErrorReturned() {
+        String actualError = InputValidator.isHeightValid("156.6");
+        assertEquals(InputValidator.INTEGER_TYPE_ERROR,actualError);
     }
 
     @Test
@@ -295,6 +319,12 @@ public class InputValidatorTest {
     }
 
     @Test
+    public void isTotalFamilyNumberValid_DecimalTotalNumberWithAdultAndChildrenNumberEmpty_TotalNumberRequiredErrorReturned() {
+        String actualError = InputValidator.isFamilyNumberValid("2.5","","");
+        assertEquals(InputValidator.INTEGER_TYPE_ERROR,actualError);
+    }
+
+    @Test
     public void isTotalFamilyNumberValid_TotalNumberEmptyWithAdultAndChildrenNumber_TotalNumberRequiredErrorReturned() {
         String actualError = InputValidator.isFamilyNumberValid("","2","3");
         assertEquals(InputValidator.EMPTY_FAMILY_NUMBER_ERROR,actualError);
@@ -337,6 +367,12 @@ public class InputValidatorTest {
     public void isWeightValid_ValidWeight_NullErrorReturned() {
         String actualError = InputValidator.isWeightValid("145");
         assertNull(actualError);
+    }
+
+    @Test
+    public void isWeightValid_DecimalWeight_WeightFormatErrorReturned() {
+        String actualError = InputValidator.isWeightValid("123.4");
+        assertEquals(InputValidator.INTEGER_TYPE_ERROR,actualError);
     }
 
     @Test
