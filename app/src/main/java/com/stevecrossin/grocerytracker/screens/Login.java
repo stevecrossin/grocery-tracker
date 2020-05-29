@@ -90,15 +90,6 @@ public class Login extends AppCompatActivity {
                 return false;
             }
         });
-
-//        passwordView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-//            @Override
-//            public void onFocusChange(View v, boolean hasFocus) {
-//                if (hasFocus) {
-//                    loginPasswordDetail.setEndIconVisible(true);
-//                }
-//            }
-//        });
     }
 
     @SuppressLint("StaticFieldLeak")

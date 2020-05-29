@@ -23,7 +23,7 @@ import com.stevecrossin.grocerytracker.entities.User;
 import com.stevecrossin.grocerytracker.utils.Reminders;
 
 public class MainActivity extends AppCompatActivity {
-    
+
     private FirebaseAnalytics mFirebaseAnalytics;
     private FirebaseInAppMessaging mInAppMessaging;
 
@@ -77,7 +77,9 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    /** Navigate to FAQ screen */
+    /**
+     * Navigate to FAQ screen
+     */
     public void GotoFAQ(View view) {
         Intent intent = new Intent(this, FaqscreenActivity.class);
         startActivity(intent);

@@ -38,7 +38,6 @@ public class Reminders {
     private static final String CHANNEL_ID = "grocery_tracker_reminders";
     private static final int NOTIFICATION_ID = 40;
     private static final int SUBSEQUENT_REMINDER_DELAY_DAYS = 7;
-
     private static Reminders mInstance;
 
     private Reminders() {

@@ -3,7 +3,6 @@ package com.stevecrossin.grocerytracker.database;
 import android.content.Context;
 import android.database.sqlite.SQLiteConstraintException;
 
-
 import com.stevecrossin.grocerytracker.entities.Receipt;
 import com.stevecrossin.grocerytracker.entities.ReceiptsDao;
 import com.stevecrossin.grocerytracker.entities.User;
@@ -60,10 +59,6 @@ public class AppDataRepo {
      */
     public User getUserById(int userId) {
         return userDao.getUser(userId);
-    }
-
-    public List<User> getAllUsers() {
-        return userDao.getAllUsers();
     }
 
     public void insertReceipt(Receipt receipt) {

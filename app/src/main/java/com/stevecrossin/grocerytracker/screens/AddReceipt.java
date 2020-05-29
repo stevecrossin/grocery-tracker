@@ -57,9 +57,7 @@ public class AddReceipt extends AppCompatActivity implements View.OnClickListene
     ProgressBar progressBar;
     StorageReference mStorageReference;
     DatabaseReference mDatabaseReference;
-    // RG: Adding another database reference for test purposes.
     DatabaseReference databaseReference;
-
     Handler mHandler = new Handler(Looper.getMainLooper());
 
     /**
@@ -72,7 +70,6 @@ public class AddReceipt extends AppCompatActivity implements View.OnClickListene
         setContentView(R.layout.activity_add_receipt);
         mStorageReference = FirebaseStorage.getInstance().getReference();
         mDatabaseReference = FirebaseDatabase.getInstance().getReference(Constants.DATABASE_PATH_UPLOADS);
-        // RG: Adding another database reference for test purposes.
         databaseReference = FirebaseDatabase.getInstance().getReference("Receipts");
         textViewStatus = findViewById(R.id.textViewStatus);
         editTextFilename = findViewById(R.id.editTextFileName);
@@ -347,7 +344,7 @@ public class AddReceipt extends AppCompatActivity implements View.OnClickListene
     }
 
     /**
-     * // RG TBA - need to get the actual items - not just the filename, email of user etc.
+     * Writes contents of CSV to Firebase
      **/
     private void writeCSVFileToFirebase(Receipt savedReceipt, String[] columnHeader, List<ReceiptLineItem> receiptLineItems) {
         UserReceipt userReceipt = new UserReceipt();

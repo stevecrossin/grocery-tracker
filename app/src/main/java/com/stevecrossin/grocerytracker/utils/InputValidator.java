@@ -6,15 +6,7 @@ import java.util.regex.Pattern;
 
 public class InputValidator {
 
-    public static final String EMAIL_ADDRESS
-            =
-            "[a-zA-Z0-9+._%\\-]{1,256}" +
-                    "@" +
-                    "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,64}" +
-                    "(" +
-                    "\\." +
-                    "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,25}" +
-                    ")+";
+    public static final String EMAIL_ADDRESS = "[a-zA-Z0-9+._%\\-]{1,256}" + "@" + "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,64}" + "(" + "\\." + "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,25}" + ")+";
     public static final String NAME = "^[\\p{L} .'-]+$";
     public static final String POSTCODE_NUMBER = "\\d{4}";
     public static final String INTEGER_TYPE = "^([1-9]\\d*|0)$";
@@ -52,7 +44,7 @@ public class InputValidator {
         return Pattern.compile(EMAIL_ADDRESS).matcher(field).matches();
     }
 
-    public static boolean IsMatchedIntegerPattern(String field){
+    public static boolean IsMatchedIntegerPattern(String field) {
         return Pattern.compile(INTEGER_TYPE).matcher(field).matches();
     }
 
@@ -70,7 +62,7 @@ public class InputValidator {
     }
 
     public static boolean IsSumValid(String total, String sub1, String sub2) {
-        return (Integer.parseInt(total) == Integer.parseInt(sub1)+ Integer.parseInt(sub2));
+        return (Integer.parseInt(total) == Integer.parseInt(sub1) + Integer.parseInt(sub2));
     }
 
     public static String isPostcodeValid(String field) {
@@ -104,7 +96,7 @@ public class InputValidator {
             return EMPTY_WEIGHT_ERROR;
         if (!IsMatchedIntegerPattern(field))
             return INTEGER_TYPE_ERROR;
-        if (field.length()>3)
+        if (field.length() > 3)
             return FORMAT_WEIGHT_ERROR;
         return null;
     }
@@ -114,7 +106,7 @@ public class InputValidator {
             return EMPTY_HEIGHT_ERROR;
         if (!IsMatchedIntegerPattern(field))
             return INTEGER_TYPE_ERROR;
-        if (field.length()>3)
+        if (field.length() > 3)
             return FORMAT_HEIGHT_ERROR;
         return null;
     }
@@ -136,11 +128,11 @@ public class InputValidator {
             return EMPTY_FAMILY_NUMBER_ERROR;
         if (!IsMatchedIntegerPattern(totalNumberText))
             return INTEGER_TYPE_ERROR;
-        if (IsNotEmpty(adultNumberText) && !IsInRange(adultNumberText,0,Integer.parseInt(totalNumberText)))
+        if (IsNotEmpty(adultNumberText) && !IsInRange(adultNumberText, 0, Integer.parseInt(totalNumberText)))
             return TOTAL_FAMILY_NUMBER_EXCEED_ERROR;
-        if (IsNotEmpty(childrenNumberText) && !IsInRange(childrenNumberText,0,Integer.parseInt(totalNumberText)))
+        if (IsNotEmpty(childrenNumberText) && !IsInRange(childrenNumberText, 0, Integer.parseInt(totalNumberText)))
             return TOTAL_FAMILY_NUMBER_EXCEED_ERROR;
-        if (IsNotEmpty(adultNumberText) && IsNotEmpty(childrenNumberText) && !IsSumValid(totalNumberText,adultNumberText,childrenNumberText))
+        if (IsNotEmpty(adultNumberText) && IsNotEmpty(childrenNumberText) && !IsSumValid(totalNumberText, adultNumberText, childrenNumberText))
             return TOTAL_FAMILY_NUMBER_ERROR;
         return null;
     }
@@ -150,7 +142,7 @@ public class InputValidator {
             return EMPTY_ADULT_NUMBER_ERROR;
         if (!IsMatchedIntegerPattern(adultNumberText))
             return INTEGER_TYPE_ERROR;
-        if (Integer.parseInt(adultNumberText)<1)
+        if (Integer.parseInt(adultNumberText) < 1)
             return ADULT_NUMBER_ERROR;
         return null;
     }
@@ -162,7 +154,6 @@ public class InputValidator {
             return INTEGER_TYPE_ERROR;
         return null;
     }
-
 
 
     public static String isEmailValid(String field) {

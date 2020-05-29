@@ -47,7 +47,7 @@ public class User {
     @ColumnInfo(name = "householdChildren")
     private String houseHoldChildren;
 
-    @ColumnInfo(name ="login_status")
+    @ColumnInfo(name = "login_status")
     private boolean isLoggedIn;
 
     @ColumnInfo(name = "shop_number")
@@ -167,6 +167,23 @@ public class User {
     public void setLoggedIn(boolean loggedIn) {
         isLoggedIn = loggedIn;
     }
+
+    /**
+     * Constructor
+     *
+     * @param userName
+     * @param email
+     * @param passKey
+     * @param userAge
+     * @param userHeight
+     * @param userWeight
+     * @param userGender
+     * @param postCode
+     * @param householdMembers
+     * @param houseHoldAdults
+     * @param houseHoldChildren
+     * @param shopNumber
+     */
 
     public User(String userName, String email, String passKey, String userAge, String userHeight, String userWeight, String userGender, String postCode, String householdMembers, String houseHoldAdults, String houseHoldChildren, String shopNumber) {
         this.userName = userName;

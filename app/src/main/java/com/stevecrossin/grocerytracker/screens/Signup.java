@@ -1,4 +1,5 @@
 package com.stevecrossin.grocerytracker.screens;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
@@ -233,17 +234,14 @@ public class Signup extends AppCompatActivity {
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
                     ValidatePassword();
-                    if (etPassword.getError()!=null)
-                    {
+                    if (etPassword.getError() != null) {
                         String error = etPassword.getError().toString();
                         passwordLayoutDetail.setEndIconVisible(false);
                         etPassword.setError(error);
                     }
-                }
-                else if (hasFocus)
-                {
+                } else if (hasFocus) {
                     passwordLayoutDetail.setEndIconVisible(true);
-                    if (etPassword.getError()!=null) {
+                    if (etPassword.getError() != null) {
                         String error = etPassword.getError().toString();
                         etPassword.setError(error, null);
                     }
@@ -380,12 +378,13 @@ public class Signup extends AppCompatActivity {
                     return null;
                 }
             }.execute();
-        }  catch (Exception ex) {
+        } catch (Exception ex) {
             Toast.makeText(Signup.this, "Error scrambling password", Toast.LENGTH_SHORT).show();
         }
     }
+
     public void cancelSignUp(View view) {
-        Intent intent = new Intent (this, Login.class);
+        Intent intent = new Intent(this, Login.class);
         startActivity(intent);
     }
 
