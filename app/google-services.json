@@ -8,12 +8,65 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:403836245569:android:bf7f666cced74242f218c0",
+        "android_client_info": {
+          "package_name": "com.globe.grocerytracker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "403836245569-4i62igvp5lg1dea60tcnqq16ar3empub.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.globe.grocerytracker",
+            "certificate_hash": "9b8b94747e8d74b59f4b4c78ef1e3f2a01bfb728"
+          }
+        },
+        {
+          "client_id": "403836245569-npdbli5qj0tajqqfpc77lh682g01r30b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAHW1i04gwXrh-sXj8X6zYCeuqVqJ0JVy4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "403836245569-npdbli5qj0tajqqfpc77lh682g01r30b.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:403836245569:android:a25076a969aae920f218c0",
         "android_client_info": {
           "package_name": "com.stevecrossin.grocerytracker"
         }
       },
       "oauth_client": [
+        {
+          "client_id": "403836245569-0uh4rks4u64ov3q5682bsbj6ram8020a.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.stevecrossin.grocerytracker",
+            "certificate_hash": "145355d4425a716fb5770da64d30b7b21320e897"
+          }
+        },
+        {
+          "client_id": "403836245569-rc6parrhdlelv4d60npfagrfhb2258cq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.stevecrossin.grocerytracker",
+            "certificate_hash": "d7ecb2ed127c86433c1613edf204ac1d1c9d8c49"
+          }
+        },
         {
           "client_id": "403836245569-a0dooja1i4s9icv6jpq9oig95rano6di.apps.googleusercontent.com",
           "client_type": 1,
