@@ -57,7 +57,7 @@ public class Login extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        isSignedIn();
+        startSignIn();
     }
 
     /**
@@ -88,37 +88,13 @@ public class Login extends AppCompatActivity {
     }
 
     @SuppressLint("StaticFieldLeak")
-    private void isSignedIn() {
-        new AsyncTask<Void, Void, User>() {
-
+    private void startSignIn() {
+        loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
-                loginProg.setVisibility(View.VISIBLE);
+            public void onClick(View view) {
+                tryLogin();
             }
-
-            @Override
-            protected User doInBackground(Void... voids) {
-                AppDataRepo repo = new AppDataRepo(Login.this);
-                return repo.getSignedUser();
-            }
-
-            @Override
-            protected void onPostExecute(User user) {
-                super.onPostExecute(user);
-                loginProg.setVisibility(View.GONE);
-                if (user != null) {
-                    goToNextScreen();
-                } else {
-                    loginButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            tryLogin();
-                        }
-                    });
-                }
-            }
-        }.execute();
+        });
     }
 
     /**

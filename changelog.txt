@@ -125,3 +125,12 @@ Todo: still need to work on PDF extraction to string with comma and semicolon se
 * More UX fixes - adjusted constraints in activity_main.xml and activity_land.xml, also adjusted how images are displayed in landscape so they take up more of the screen.
 
 Final prep
+
+31 May 2020 - Steve
+* Renamed package and all files to com.globe.grocerytracker
+* Introduced splash screen to application, also moved all checks for current login status from Login screen to Splash Screen - this is more seamless way to do it. It will auto-jump to the login/main activity depending on
+whether or not they are logged in.
+* Rewrote methods in Login activity based on removed code.
+* Tested code to ensure works OK.
+
+
