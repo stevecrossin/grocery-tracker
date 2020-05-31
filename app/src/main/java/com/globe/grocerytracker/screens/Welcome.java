@@ -12,9 +12,15 @@ import com.globe.grocerytracker.R;
 
 public class Welcome extends AppCompatActivity implements View.OnClickListener {
 
+    /**
+     * Declare View variables
+     */
     Button Bwelcome;
     TextView tvWelcomeMessage;
 
+    /**
+     * Initialize and add on listener for the button
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

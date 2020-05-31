@@ -61,7 +61,8 @@ public class Login extends AppCompatActivity {
     }
 
     /**
-     * OnCreate method to go here, that sets current view as login activity XML file, sets elements to display based on their ID, sets a listener for the views, and will add a textwatcher to username field to ensure details are valid.
+     * OnCreate method to go here, that sets current view as login activity XML file, sets elements to display based on their ID,
+     * sets a listener for the views, and will add a textwatcher to username field to ensure details are valid.
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {

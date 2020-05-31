@@ -2,14 +2,15 @@ package com.globe.grocerytracker.utils;
 
 import android.widget.TextView;
 
+/**
+ * Call specific InputValidation for each field and set error for each field based on the error
+ */
 public class TextValidator {
     private TextView textView;
 
     public TextValidator(TextView textView) {
         this.textView = textView;
     }
-
-
 
     public void validateName(String nameText) {
         textView.setError(InputValidator.isNameValid(nameText));
@@ -54,10 +55,6 @@ public class TextValidator {
     public void validateChildNumber(String childNumberText) {
         textView.setError(InputValidator.isChildNumberValid(childNumberText));
     }
-
-//    public void validateSumOfAdultAndChildrenNumber(String totalText, String adultNumberText, String childrenNumberText) {
-//        textView.setError(InputValidator.isTotalFamilyNumberValid(totalText,adultNumberText,childrenNumberText));
-//    }
 
     public void validateShoppingFrequency(String shoppingFrequencyText) {
         textView.setError(InputValidator.isShopFrequencyValid(shoppingFrequencyText.equals("0") ? "" : shoppingFrequencyText));

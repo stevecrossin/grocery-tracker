@@ -16,54 +16,23 @@ public class ColesReceipt {
         IdentifyHeaderAndFooter();
     }
 
-    private void IdentifyHeaderAndFooter() {
-        receipt_Header = receipt_lines.length > 0 ? receipt_lines[0] : null;
-        receipt_Footer = receipt_lines.length > 1 ? receipt_lines[receipt_lines.length - 1].split(" ")[0] : null;
-    }
-
-    // Grab only the order summary part
-    private ArrayList<String> GetOrderContent() {
-        ArrayList<String> order_content = new ArrayList<>();
-        boolean added = false;
-        for (String line : receipt_lines) {
-            if (IsReceiptHeader(line) || IsReceiptFooter(line) || ColesReceiptItem.Is_So_On_Keyword(line) || ColesReceiptItem.Is_Empty(line))
-                continue;
-            if (ColesReceiptItem.Is_Total_Line(line)) break;
-            if (ColesReceiptItem.Is_Order_Summary_Keyword(line))
-                added = true;
-            else if (added) order_content.add(line);
-        }
-        return order_content;
-    }
-
-    // Store the position of each category
-    private ArrayList<Integer> FindEachCategoryPosition(ArrayList<String> order_content) {
-        ArrayList<Integer> categoryPositions = new ArrayList<>();
-        for (int i = 0; i < order_content.size(); i++) {
-            String line = order_content.get(i);
-            if (ColesReceiptItem.Is_Quantity_Price_Keyword(line))
-                categoryPositions.add(i);
-        }
-        categoryPositions.add(order_content.size());
-
-        return categoryPositions;
-    }
-
-    // Resolve The Content when multiple information stay in the same line (quantity, price)
-    private void resolveInlined(ArrayList<String> order_content) {
-        for (int i = 0; i < order_content.size(); i++) {
-            String line = order_content.get(i);
-            if (ColesReceiptItem.Contain_Price(line)) {
-                if (!ColesReceiptItem.Is_Per_Unit_Price_Line(line) && (!ColesReceiptItem.Is_Price(line))) {
-                    String[] items = line.split(" ");
-                    order_content.remove(i);
-                    for (int j = 0; j < items.length; j++)
-                        order_content.add(i + j, items[j]);
-                }
-            }
-        }
-    }
-
+    /**
+     * Assumption: Each item has EXPECTED_ITEM_SECTION_LINE information
+     *
+     * Parse the Coles receipt
+     *
+     * The parse concept follow those steps:
+     * Remove all unnecessary info of the receipt, only keep the purchased items info
+     * Parse all inline information into separate lines (Ex: if price and quantity are in the same line then they need to be separated
+     * As Coles separate items into different category so we need to identify the start and end of each category
+     * Check for each category whether its items has follow the assumption about number of line. If not, it means
+     *  there are items which the name stay in 2 or more line -> Resolve the name to put it all in one line
+     *
+     * After those steps, each item should align with the rules EXPECTED_ITEM_SECTION_LINE (=5)
+     *  includes: branch, price, name ,unit price, quantity and is ready to parse to the ReceiptLineItem list
+     *
+     * @return the ReceiptLineItem list of object
+     */
     public List<ReceiptLineItem> Parse() {
         List<ReceiptLineItem> receiptLineItems = new ArrayList<>();
 
@@ -90,6 +59,79 @@ public class ColesReceipt {
         return receiptLineItems;
     }
 
+
+    /**
+     * Get the header and footer default of the email text format
+     */
+    private void IdentifyHeaderAndFooter() {
+        receipt_Header = receipt_lines.length > 0 ? receipt_lines[0] : null;
+        receipt_Footer = receipt_lines.length > 1 ? receipt_lines[receipt_lines.length - 1].split(" ")[0] : null;
+    }
+
+    /**
+     * Remove all unnecessary parts of the receipts, includes:
+     *  Email Footer and Header, '...' symbols, blank line
+     * Get the main content of the receipt information
+     * @return The list of purchased items of receipt information
+     */
+    private ArrayList<String> GetOrderContent() {
+        ArrayList<String> order_content = new ArrayList<>();
+        boolean added = false;
+        for (String line : receipt_lines) {
+            if (IsReceiptHeader(line) || IsReceiptFooter(line) || ColesReceiptItem.Is_So_On_Keyword(line) || ColesReceiptItem.Is_Empty(line))
+                continue;
+            if (ColesReceiptItem.Is_Total_Line(line)) break;
+            if (ColesReceiptItem.Is_Order_Summary_Keyword(line))
+                added = true;
+            else if (added) order_content.add(line);
+        }
+        return order_content;
+    }
+
+    /**
+     * Fnd and store the start and end position of each category
+     * @param order_content: the receipt content
+     * @return a list of position represent for the position of the category
+     */
+    private ArrayList<Integer> FindEachCategoryPosition(ArrayList<String> order_content) {
+        ArrayList<Integer> categoryPositions = new ArrayList<>();
+        for (int i = 0; i < order_content.size(); i++) {
+            String line = order_content.get(i);
+            if (ColesReceiptItem.Is_Quantity_Price_Keyword(line))
+                categoryPositions.add(i);
+        }
+        categoryPositions.add(order_content.size());
+
+        return categoryPositions;
+    }
+
+
+    /**
+     * When we have line with quantity and price -> separate into 2 separate lines
+     * Steps: if any line appears the $ symbol and is not the Unit Price only or price only
+     *  -> the line contains 2 piece of info (price and unit price)
+     * @param order_content the receipt content
+     */
+    private void resolveInlined(ArrayList<String> order_content) {
+        for (int i = 0; i < order_content.size(); i++) {
+            String line = order_content.get(i);
+            if (ColesReceiptItem.Contain_Price(line)) {
+                if (!ColesReceiptItem.Is_Per_Unit_Price_Line(line) && (!ColesReceiptItem.Is_Price(line))) {
+                    String[] items = line.split(" ");
+                    order_content.remove(i);
+                    for (int j = 0; j < items.length; j++)
+                        order_content.add(i + j, items[j]);
+                }
+            }
+        }
+    }
+
+
+    /**
+     * Parse each line based on its characteristic to be a price , quantity or description
+     * @param itemSection the EXPECTED_ITEM__SECTION_LINE (=5) information of the item
+     * @return the ReceiptLineItem object of the purchased item
+     */
     private ReceiptLineItem ParseItem(List<String> itemSection) {
         ReceiptLineItem receiptLineItem = new ReceiptLineItem();
         for (int i = 1; i < ColesReceiptItem.EXPECTED_ITEM__SECTION_LINE - 1; i++) {
@@ -106,7 +148,11 @@ public class ColesReceipt {
         return receiptLineItem;
     }
 
-    //Remove empty line or 'Quantity Price" line
+
+    /**
+     * Remove chunk of empty line or label lines
+     * @param order_content receipt content
+     */
     private void RemoveCategoryNameChunk(ArrayList<String> order_content) {
         for (int index = order_content.size() - 1; index >= 0; index--) {
             if (ColesReceiptItem.Is_Empty(order_content.get(index))) order_content.remove(index);
@@ -117,7 +163,12 @@ public class ColesReceipt {
         }
     }
 
-    // Re-connect the description name of each item from multiple line to one line
+    /**
+     * If the description of the item is in different lines so we need to concat all the piece of info into one line
+     * @param order_content : the receipt content
+     * @param startLine : the start index of the line included info of the item
+     * @param endLine : the end index of the line included info of the item
+     */
     private void ResolveTheItemSection(ArrayList<String> order_content, int startLine, int endLine) {
         int currentLine = endLine;
         while (currentLine > startLine) {

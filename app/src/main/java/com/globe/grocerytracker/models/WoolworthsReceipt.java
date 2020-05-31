@@ -16,36 +16,6 @@ public class WoolworthsReceipt {
     }
 
     /**
-     * The method is used to remove all un-necessary part of the receipt and only keep the items details
-     *
-     * @param parsedText :full text of receipt
-     * @return : the text after remove the header and footer, only keep the content related to items
-     */
-    private String removeHeaderAndFooter(String parsedText) {
-        receipt_Header = parsedText.substring(0, parsedText.lastIndexOf(WoolworthsReceiptItem.PRICE_KEYWORD));
-        receipt_Footer = parsedText.substring(parsedText.lastIndexOf(WoolworthsReceiptItem.SUBTOTAL_KEYWORD));
-        String contentText = parsedText.substring(parsedText.lastIndexOf(WoolworthsReceiptItem.PRICE_KEYWORD) + WoolworthsReceiptItem.PRICE_KEYWORD.length()
-                , parsedText.lastIndexOf(WoolworthsReceiptItem.SUBTOTAL_KEYWORD));
-        return contentText;
-    }
-
-    /**
-     * the method is used to remove all empty lines
-     *
-     * @return The array list without out empty lines (space only line)
-     */
-    private ArrayList<String> removeEmptyLines() {
-        ArrayList<String> order_content = new ArrayList<>();
-        for (String line : receipt_lines) {
-            if (ColesReceiptItem.Is_Empty(line))
-                continue;
-            else order_content.add(line);
-        }
-        return order_content;
-    }
-
-
-    /**
      * The method is used to parse the text
      * Assumption: The start of the item's description (the beginning of each item) should be in the same line with or in the line before the price/quantity/unit price
      * In another words: if quantity/price/unit price is in line n then the begining of each item should be in line (n-1) or n
@@ -120,6 +90,32 @@ public class WoolworthsReceipt {
     }
 
     /**
+     * The method is used to remove all un-necessary part of the receipt and only keep the items details
+     *
+     * @param parsedText :full text of receipt
+     * @return : the text after remove the header and footer, only keep the content related to items
+     */
+    private String removeHeaderAndFooter(String parsedText) {
+        receipt_Header = parsedText.substring(0, parsedText.lastIndexOf(WoolworthsReceiptItem.PRICE_KEYWORD));
+        receipt_Footer = parsedText.substring(parsedText.lastIndexOf(WoolworthsReceiptItem.SUBTOTAL_KEYWORD));
+        return parsedText.substring(parsedText.lastIndexOf(WoolworthsReceiptItem.PRICE_KEYWORD) + WoolworthsReceiptItem.PRICE_KEYWORD.length()
+                , parsedText.lastIndexOf(WoolworthsReceiptItem.SUBTOTAL_KEYWORD));
+    }
+
+    /**
+     * the method is used to remove all empty lines
+     *
+     * @return The array list without out empty lines (space only line)
+     */
+    private ArrayList<String> removeEmptyLines() {
+        ArrayList<String> order_content = new ArrayList<>();
+        for (String line : receipt_lines) {
+            if (!ColesReceiptItem.Is_Empty(line)) order_content.add(line);
+        }
+        return order_content;
+    }
+
+    /**
      * The method is used to re-connect item's description parts which are located in different lines
      *
      * @param itemsName : the name collect from different lines
@@ -127,29 +123,29 @@ public class WoolworthsReceipt {
      * @return the proper line follows order :full description -> price /quantity/ unit price
      */
     private String resolvedDifferentLinesItemName(String itemsName, String line) {
-        String itemDescription = "";
+        StringBuilder itemDescription = new StringBuilder();
         String[] items = line.split(" ");
 
         // As the last 3 items are price/quantity/unit price so all before are the item's description
         for (int i = 0; i < items.length - 3; i++) {
-            itemDescription += " " + items[i];
+            itemDescription.append(" ").append(items[i]);
         }
 
         // add the extra parts (collects from other lines) to the items description
-        itemDescription += " " + itemsName;
+        itemDescription.append(" ").append(itemsName);
 
         // add price/quantity/ unit price at the end
         for (int i = items.length - 3; i < items.length; i++) {
-            itemDescription += " " + items[i];
+            itemDescription.append(" ").append(items[i]);
         }
 
-        return itemDescription.trim();
+        return itemDescription.toString().trim();
     }
 
     /**
      * Parses the items in the receipt
      *
-     * @param lineItem
+     * @param lineItem : the receipt line
      * @return receiptLineItem
      */
     private ReceiptLineItem parseItem(String lineItem) {

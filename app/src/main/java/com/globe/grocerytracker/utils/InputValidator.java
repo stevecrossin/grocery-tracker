@@ -4,6 +4,9 @@ import com.google.android.gms.common.util.Strings;
 
 import java.util.regex.Pattern;
 
+/**
+ * Class to match the rules for each fields and return suitable error methods based on the errors and the fields
+ */
 public class InputValidator {
 
     public static final String EMAIL_ADDRESS = "[a-zA-Z0-9+._%\\-]{1,256}" + "@" + "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,64}" + "(" + "\\." + "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,25}" + ")+";
@@ -123,6 +126,8 @@ public class InputValidator {
         return null;
     }
 
+    // Family number should equal the sum of adult and children number
+    // Children and adult number, each could not exceed the value of the family number
     public static String isFamilyNumberValid(String totalNumberText, String adultNumberText, String childrenNumberText) {
         if (!IsNotEmpty(totalNumberText))
             return EMPTY_FAMILY_NUMBER_ERROR;
