@@ -23,7 +23,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:background="@color/primaryLightColor"
         android:gravity="center_horizontal"
         android:text="@string/lblReceiptDescription"
         android:textAlignment="center"

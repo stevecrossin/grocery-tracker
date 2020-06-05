@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.stevecrossin.grocerytracker">
+    package="com.globe.grocerytracker">
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -12,22 +12,24 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-        <activity android:name=".screens.Login">
+        <activity
+            android:name=".screens.SplashScreen"
+            android:noHistory="true"
+            android:theme="@style/AppTheme.SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".screens.MainActivity" />
-        <activity android:name=".screens.Signup" />
-        <activity android:name=".screens.Welcome" />
-        <activity android:name=".screens.AddReceipt" />
-        <activity android:name=".screens.FaqscreenActivity" />
-        <activity android:name=".screens.About" />
-        <activity android:name=".screens.ViewReceiptActivity" />
-        <activity android:name=".screens.Receipts" />
+        <activity android:name="com.globe.grocerytracker.screens.Login" />
+        <activity android:name="com.globe.grocerytracker.screens.MainActivity" />
+        <activity android:name="com.globe.grocerytracker.screens.Signup" />
+        <activity android:name="com.globe.grocerytracker.screens.Welcome" />
+        <activity android:name="com.globe.grocerytracker.screens.AddReceipt" />
+        <activity android:name="com.globe.grocerytracker.screens.FaqscreenActivity" />
+        <activity android:name="com.globe.grocerytracker.screens.About" />
+        <activity android:name="com.globe.grocerytracker.screens.ViewReceiptActivity" />
+        <activity android:name="com.globe.grocerytracker.screens.Receipts" />
     </application>
 
 </manifest>

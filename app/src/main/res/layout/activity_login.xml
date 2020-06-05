@@ -91,6 +91,7 @@
                 android:id="@+id/loginButton"
                 style="@style/button"
                 android:layout_width="match_parent"
+                android:onClick="tryLogin"
                 android:layout_height="wrap_content"
                 android:text="@string/signInLabel"
                 android:layout_marginTop="16dp" />
