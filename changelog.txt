@@ -133,4 +133,5 @@ whether or not they are logged in.
 * Rewrote methods in Login activity based on removed code.
 * Tested code to ensure works OK.
 
+Project completed!
 
