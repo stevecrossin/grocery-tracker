@@ -1,51 +1,54 @@
-## GLOBE - Grocery Tracker - Trimester 3 2019.
+# GLOBE - Grocery Tracker - Android Application #
 
-This is the start of the ReadMe document for the GLOBE grocery tracker. More information will follow soon, but in the interim, please get familiar with the below.
-SourceTree (https://www.sourcetreeapp.com/) is the recommended repository tool for this project. Please install it, and then let me know if you need assistance setting it up.
+This is a working directory for an Android application, coded in Java.
 
-Tutorial on setting up Android Studio to connect to BitBucket: http://theworkingdad.it/2018/10/04/quickly-setup-android-studio-with-git-and-bitbucket/
+The purpose of the application is to enable our client, the GLOBE research institute at Deakin University to easily capture grocery receipt purchases from research participants.
 
-To get started you will need to run these commands in your terminal.
-New to Git? [Learn the basic Git commands](http://docs.atlassian.com/bitbucketserver/docs-061/Basic+Git+commands?utm_campaign=in-app-help&amp;utm_medium=in-app-help&amp;utm_source=stash)
+All features have been fully implemented, and an overview of the progress it took to get the application from start to completion can be found in the changelog.txt file.
 
-### Configure Git for the first time
+###
+* The BitBucket link for the project can be found [here](https://bitbucket-students.deakin.edu.au/projects/GLOBE/repos/globe---t319/browse)
+* The application has also been published as an internal app test to [Google Play](https://play.google.com/apps/testing/com.stevecrossin.grocerytracker)
 
-    git config --global user.name "Your Name"
-    git config --global user.email "yourusername@deakin.edu.au"
+## Getting Started ##
 
-### Working with your repository
+As this is an Android application, it can be run several different ways.
 
-#### **How do I obtain a Repository Git URL ?**
+The BitBucket repo can be cloned or downloaded in a ZIP format from GitHub and compiled in Android Studio and then run on an emulator, or a physical device.
 
-#### Browse to the Repository browse page location that you wish to clone/fork from the server
-[https://bitbucket-students.deakin.edu.au](https://bitbucket-students.deakin.edu.au)
+You can do so by performing this operation.
+```
+$ git clone https://bitbucket-students.deakin.edu.au/scm/globe/globe---t319.git
+```
+The application can also be downloaded from Google Play once you are enrolled in the application demo.
 
-Ensure you have entered the repository page browser and then: hover, find and click on the &#39;Clone&#39; button from the repository left menu.
+## Directory structure ##
+The root of the project contains:
 
-This should show you the full URL of the repository which you can use.
+[/app](https://bitbucket-students.deakin.edu.au/projects/GLOBE/repos/globe---t319/browse/app) - contains all source files for the app. Broken down further, it contains:
+
+* [/documentation](https://bitbucket-students.deakin.edu.au/projects/GLOBE/repos/globe---t319/browse/app/documentation) - contains all project documentation, such as the guide to integrate with Google Sheets & Firebase, the user and technical documents, and a list of tutorials for new developers.
+
+[Java files](https://bitbucket-students.deakin.edu.au/projects/GLOBE/repos/globe---t319/browse/app/src/main/java/com/globe/grocerytracker) - contains all source code for the application. Further broken down into:
+* [/adapters](https://bitbucket-students.deakin.edu.au/projects/GLOBE/repos/globe---t319/browse/app/src/main/java/com/globe/grocerytracker/adapters) - contains the code for all the elements that make adapters and viewholders that are contained in the application function
+* [/database](https://bitbucket-students.deakin.edu.au/projects/GLOBE/repos/globe---t319/browse/app/src/main/java/com/globe/grocerytracker/database) - contains the data repositories for the application and entities that exist in that database
+* [entities](https://bitbucket-students.deakin.edu.au/projects/GLOBE/repos/globe---t319/browse/app/src/main/java/com/globe/grocerytracker/entities) - contains the information for each database table in the application, and the SQL operations for each database
+* [models](https://bitbucket-students.deakin.edu.au/projects/GLOBE/repos/globe---t319/browse/app/src/main/java/com/globe/grocerytracker/models) - contains the source code that handles parsing of grocery receipts
+* [/screens](https://bitbucket-students.deakin.edu.au/projects/GLOBE/repos/globe---t319/browse/app/src/main/java/com/globe/grocerytracker/screens) - contains the files that dictates how each activity in the application functions and the operations of those activities
+* [/utils](https://bitbucket-students.deakin.edu.au/projects/GLOBE/repos/globe---t319/browse/app/src/main/java/com/globe/grocerytracker/utils) - contains java files not elsewhere classified, which includes the password scrambling, validation of text input, and definition of app state.
+
+[/res folder](https://bitbucket-students.deakin.edu.au/projects/GLOBE/repos/globe---t319/browse/app/src/main/res) - contains all layout XML files for the app, colours, strings, styles and drawable objects. Also contains a raw directory which holds all text files.
+
+Additionally, the root of the project contains:
+* [bugs.txt](https://bitbucket-students.deakin.edu.au/projects/GLOBE/repos/globe---t319/browse/bugs.txt) - a list of all bugs that were encountered while developing the application. All were fixed, and method to fix in most cases were noted for future reference.
+* [changelog.txt](https://bitbucket-students.deakin.edu.au/projects/GLOBE/repos/globe---t319/browse/changelog.txt) - list of all changes made in the application
+
+## Core Features & Technical Information ##
+For a full breakdown of the application features, please review the [technical documentation](https://bitbucket-students.deakin.edu.au/projects/GLOBE/repos/globe---t319/browse/app/documentation/GLOBE%20-%20Technical%20Documentation.pdf)
+
+## Permission ##
+While this application is a student project created by the GLOBE Capstone squad at Deakin for the GLOBE research institute at Deakin University, the code has been written by the students listed below, and reuse of this code should be attributed to them.
+
+* Steven Crossin, Ryan Gallagher, Radika Dissanayake, Amie Le, Ben Bruggemann, Faiz Shibly, Charith Siriwardhanage, Joel Daniel
 
 
-#### **I just want to clone a repository**
-
-If you want to simply clone a repository then visit the repo page, find and copy the repository&#39;s git URL. The git URL should end with .git
-
-You can then use a git terminal to type
-git clone &quot;Insert-your-git-url-here&quot;
-
-  
-    **Example only:** git clone https://bitbucket-students.deakin.edu.au/scm/test/testing.git
-
-#### **I just want to check commit in this project**
- 
-If you want to check who pushed commit 
-
-You can use #git log
-
-
-#### **I just want to switch the branch**
- 
-If you want to switch your local branch
-
-You can use #git checkout branchname
-
-**Example only: git checkout working-files 
