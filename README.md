@@ -47,8 +47,6 @@ Additionally, the root of the project contains:
 For a full breakdown of the application features, please review the [technical documentation](https://bitbucket-students.deakin.edu.au/projects/GLOBE/repos/globe---t319/browse/app/documentation/GLOBE%20-%20Technical%20Documentation.pdf)
 
 ## Permission ##
-While this application is a student project created by the GLOBE Capstone squad at Deakin for the GLOBE research institute at Deakin University, the code has been written by the students listed below, and reuse of this code should be attributed to them.
-
-* Steven Crossin, Ryan Gallagher, Radika Dissanayake, Amie Le, Ben Bruggemann, Faiz Shibly, Charith Siriwardhanage, Joel Daniel
+While this application is a student project created by the GLOBE Capstone squad at Deakin for the GLOBE research institute at Deakin University, the code has been written by the students and should be attributed as such.
 
 
